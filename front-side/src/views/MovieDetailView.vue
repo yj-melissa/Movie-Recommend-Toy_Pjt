@@ -47,18 +47,17 @@ export default {
         url: 'https://www.googleapis.com/youtube/v3/search',
         params: {
           part: 'snippet',
-          key: 'AIzaSyCTQdxnD8YHI6JBqZZ6iQJkA9JQT2zEAsM',
+          // key: 'YOUTUBE API KEY',
           q: this.title,
           type: 'video',
           videoDuration: 'short',
           regionCode: 'KR',
           maxResults: '1',
-        }
+        },
       })
         .then(res => {
           const videoId = res.data.items[0].id.videoId
-          console.log(this.videoSrc)
-          this.videoSrc = baseUrl + videoId
+          this.videoSrc = baseUrl + videoId + '&output=embed'
         })
         .catch(err => {
           console.log(err)
