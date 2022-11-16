@@ -3,7 +3,9 @@
     <MovieCarousel
       :Movies = getMovieList
     />
-    <MoviesItems/>
+    <MoviesItems
+     v-for="movie in getMovieList" :key="movie.number" :movie="movie"
+    />
   </div>
 </template>
 

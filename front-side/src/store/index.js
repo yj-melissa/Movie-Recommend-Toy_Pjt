@@ -22,7 +22,7 @@ export default new Vuex.Store({
         url : 'http://127.0.0.1:8000/api/v1/server/getmovie'
       })
         .then((res)=>{
-          console.log(res.data)
+          // console.log(res.data)
           const Movies =res.data
           context.commit('GET_MOVIE',Movies)
         })

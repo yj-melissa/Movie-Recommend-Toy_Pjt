@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    영화 나열하기
+    {{movie.title}}
+    무비
   </div>
 </template>
 
@@ -8,7 +9,8 @@
 // @ is an alias to /src
 export default {
   name: 'MoviesItems',
-  components: {
-  }
+  props: {
+    movie : Object
+  },
 }
 </script>
