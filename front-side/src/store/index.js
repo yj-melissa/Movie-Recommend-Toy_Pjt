@@ -6,15 +6,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    Movies : []
+    Movies : [],
   },
   getters: {
   },
   mutations: {
     GET_MOVIE(state,Movies){
       state.Movies = Movies
-    }
-  },
+    },
+  }, 
   actions: {
     getMovie(context){
       axios({
@@ -29,7 +29,7 @@ export default new Vuex.Store({
         .catch((error)=> {
           console.log(error)
         })
-    }
+    },
   },
   modules: {
   }
