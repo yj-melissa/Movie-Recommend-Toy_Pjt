@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'servers',
+    'accounts',
     'rest_framework',
     'corsheaders',
 
@@ -136,3 +137,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8080'
 ]
+
+AUTH_USER_MODEL = 'accounts.User'

@@ -12,4 +12,3 @@ class Movie(models.Model):
     poster_path = models.TextField()
     release_date = models.DateField()
     vote_average = models.FloatField()
-
