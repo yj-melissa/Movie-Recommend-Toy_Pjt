@@ -19,11 +19,11 @@ export default new Vuex.Store({
     getMovie(context){
       axios({
         method : 'get',
-        url : 'https://api.themoviedb.org/3/movie/popular?api_key=81d72b8b58e4b26b26aae316e0bbad5c&language=ko-KR&page=1' 	
+        url : 'http://127.0.0.1:8000/api/v1/server/getmovie'
       })
         .then((res)=>{
           console.log(res.data)
-          const Movies =res.data.results
+          const Movies =res.data
           context.commit('GET_MOVIE',Movies)
         })
         .catch((error)=> {
