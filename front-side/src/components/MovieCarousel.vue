@@ -2,7 +2,7 @@
   <carousel :per-page="1" class="bannaer_list"
     paginationActiveColor ='#e01a31'
     paginationColor ="#999"
-  :paginatioinPadding=3
+    :paginatioinPadding=3
     style="height:100%; width:100%"
     autoplay = True
     autoplayTimeout = 4000
