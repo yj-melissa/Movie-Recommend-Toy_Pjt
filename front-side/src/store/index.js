@@ -7,12 +7,17 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     Movies : [],
+    DefaultMovies : []
   },
   getters: {
+    getMovies(state){
+      return state.Movies
+    }
   },
   mutations: {
     GET_MOVIE(state,Movies){
       state.Movies = Movies
+      state.DefaultMovies = Movies
     },
   }, 
   actions: {

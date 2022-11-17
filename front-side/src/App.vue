@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :style="{'background-color': '#302C24'}">
     <nav>
       <router-link :to="{name : 'HomeView'} ">Home</router-link> |
       <router-link :to="{name : 'RecommendView'} ">Recommend</router-link> |
@@ -26,7 +26,7 @@ nav {
 
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #FAF9D9;
 }
 
 nav a.router-link-exact-active {
