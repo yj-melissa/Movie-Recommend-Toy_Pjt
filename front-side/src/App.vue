@@ -20,10 +20,8 @@ export default ({
       return this.$store.getters.isLogin
     },
   },
-  // methods: {
-  //   getLogin
-
-  // },
+  methods: {
+  },
 })
 </script>
 

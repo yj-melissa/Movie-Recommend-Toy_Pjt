@@ -28,6 +28,11 @@ export default {
   },
   components: {
   },
+  computed: {
+    isLogin() {
+      return this.$store.getters.isLogin
+    }
+  },
   methods: {
     login() {
       const username = this.username
@@ -37,6 +42,13 @@ export default {
         username, password,
       }
       this.$store.dispatch('login', payload)
+    },
+    LoginCheck() {
+      if (this.isLogin) {
+        this.$router.push({ name: 'HomeView' })
+      } else {
+        this.$store.dispatch('login')
+      }
     },
   },
 }

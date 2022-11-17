@@ -65,7 +65,7 @@ REST_FRAMEWORK = {
     # permission
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-        # 'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.AllowAny',
 
     ],
 }
@@ -166,5 +166,14 @@ CORS_ALLOWED_ORIGINS = [
 
 AUTH_USER_MODEL = 'accounts.User'
 
-ACCOUNT_EMAIL_VERIFICATION = 'none' # Allow logins with an unverified e-mail address
+
+# dj-rest-auth 관련 설정
+
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True # E-mail address is automatically confirmed by a GET request
+ACCOUNT_EMAIL_VERIFICATION = 'none' # Allow logins with an unverified e-mail address
+
+ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer'
+}

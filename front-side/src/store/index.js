@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+// import router from '@/router'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -13,9 +14,10 @@ export default new Vuex.Store({
   ],
 
   state: {
-    Movies: []
+    Movies: [],
     DefaultMovies : [],
     token: null,
+    userName: null,
   },
 
   getters: {
@@ -25,6 +27,9 @@ export default new Vuex.Store({
     getMovies(state){
       return state.Movies
     },
+    getUserName(state) {
+      return state.userName
+    },
   },
 
   mutations: {
@@ -33,8 +38,12 @@ export default new Vuex.Store({
       state.DefaultMovies = Movies
     },
 
-    SAVE_TOKEN(state, token) {
-      state.token = token
+    SAVE_USER_INFO(state, data) {      
+      const userInfo = data.config.data
+      const jsonUserInfo = JSON.parse(userInfo)
+      state.token = data.token
+      state.userName = jsonUserInfo.username
+      // router.push({name: 'HomeView'})
     },
   }, 
 
@@ -64,8 +73,7 @@ export default new Vuex.Store({
         }
       })
         .then((res) => {
-          // console.log(res)
-          context.commit('SAVE_TOKEN', res.data.key)
+          context.commit('SAVE_USER_INFO', res)
         })
         .catch((err) => {
           console.log(err)
@@ -84,8 +92,7 @@ export default new Vuex.Store({
         }
       })
         .then(res => {
-          // console.log(res)
-          context.commit('SAVE_TOKEN', res.data.key)
+          context.commit('SAVE_USER_INFO', res)
         })
         .catch(err => {
           console.log(err)
