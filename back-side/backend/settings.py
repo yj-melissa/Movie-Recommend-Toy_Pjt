@@ -34,9 +34,18 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'servers',
     'accounts',
-    'rest_framework',
     'corsheaders',
     'community',
+
+    # accounts 관련
+    'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +54,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+SITE_ID = 1
+
+REST_FRAMEWORK = {
+    # authentication
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    # permission
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.AllowAny',
+
+    ],
+}
+
 
 MIDDLEWARE = [
     
@@ -140,3 +165,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
+
+ACCOUNT_EMAIL_VERIFICATION = 'none' # Allow logins with an unverified e-mail address
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True # E-mail address is automatically confirmed by a GET request
