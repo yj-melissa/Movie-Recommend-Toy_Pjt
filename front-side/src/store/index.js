@@ -13,7 +13,8 @@ export default new Vuex.Store({
   ],
 
   state: {
-    Movies: [],
+    Movies: []
+    DefaultMovies : [],
     token: null,
   },
 
@@ -21,11 +22,15 @@ export default new Vuex.Store({
     isLogin(state) {
       return state.token? true : false
     },
+    getMovies(state){
+      return state.Movies
+    },
   },
 
   mutations: {
     GET_MOVIE(state, Movies) {
       state.Movies = Movies
+      state.DefaultMovies = Movies
     },
 
     SAVE_TOKEN(state, token) {

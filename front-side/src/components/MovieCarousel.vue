@@ -4,9 +4,9 @@
     paginationColor ="#999"
     :paginatioinPadding=3
     style="height:100%; width:100%"
-    autoplay = True
-    autoplayTimeout = 4000
-    loop = True
+    :autoplay = "true"
+    :autoplayTimeout = "4000"
+    :loop = "true"
     >
     <slide v-for="movie of Movies.slice(0, 4)" :key="movie.seq" class="slide_item">
       <img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2/'+movie.poster_path" alt="">
@@ -24,10 +24,9 @@ export default {
   },
   name: 'MovieCarousel',
   props : {
-    Movies : Array
+    Movies : Array,
   },
   methods:{
   },
-
 }
 </script>
