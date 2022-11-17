@@ -1,6 +1,6 @@
 <template>
-  <div id="app" :style="{'background-color': '#302C24'}">
-    <nav>
+  <div id="app">
+    <nav :style="{'background-color': '#302C24'}">
       <router-link :to="{name : 'HomeView'} ">Home</router-link> |
       <router-link :to="{name : 'RecommendView'} ">Recommend</router-link> |
       <router-link :to="{name : 'CommunityView'}">Community</router-link> | 

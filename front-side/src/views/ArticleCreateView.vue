@@ -35,11 +35,22 @@ export default {
   },
   methods: {
     createArticle(){
+      const title = this.title
+      const content = this.content
+      if (!title){
+        alert('제목을 입력해주세요')
+        return
+      } else if(!content){
+        alert('내용을 입력해주세요')
+        return
+      } else{
         const data = {
-            title : this.title,
-            content : this.content
+          title : title,
+          content : content
         }
         this.$store.dispatch('createArticle',data)
+      }
+      
     }
   },
 

@@ -103,7 +103,7 @@ export default new Vuex.Store({
     getArticles(context){
       axios({
         method : 'get',
-        url: `${API_URL}/api/v1/community/getarticles`
+        url: `${API_URL}/api/v1/community/getarticles/`
       })
         .then((res) => {
           context.commit('GET_ARTICLES', res.data)
@@ -115,10 +115,9 @@ export default new Vuex.Store({
     createArticle(context,payload){
       const title = payload.title
       const content = payload.content
-      console.log(payload)
       axios({
         method : 'post',
-        url: `${API_URL}/api/v1/community/getarticles`,
+        url: `${API_URL}/api/v1/community/getarticles/`,
         data :{
           title, content
         }
@@ -129,6 +128,28 @@ export default new Vuex.Store({
         })
         .catch((err)=>{
           console.log(err)
+        })
+    },
+    createComment(context, data){
+      const Article = data.Article
+      // const User = data.User
+      const Content = data.Content
+      axios({
+        method : 'post',
+        url : `${API_URL}/api/v1/community/createcomment/`,
+        data : {
+          Article,
+          // User,
+          Content
+        }
+      })
+        .then((res)=> {
+          const data = res.data
+          console.log(data)
+        })
+        .catch((err)=> {
+          console.log(err)
+          console.log(context)
         })
     }
   },

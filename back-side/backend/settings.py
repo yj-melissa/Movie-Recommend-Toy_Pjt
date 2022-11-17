@@ -90,7 +90,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -168,3 +168,7 @@ AUTH_USER_MODEL = 'accounts.User'
 
 ACCOUNT_EMAIL_VERIFICATION = 'none' # Allow logins with an unverified e-mail address
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True # E-mail address is automatically confirmed by a GET request
+
+DEFAULT_AUTENTICATION_CLASSES = [
+    'TokenAuthentication'
+]
