@@ -13,9 +13,10 @@ export default new Vuex.Store({
   ],
 
   state: {
-    Movies: []
+    Movies: [],
     DefaultMovies : [],
     token: null,
+    Articles : []
   },
 
   getters: {
@@ -36,6 +37,14 @@ export default new Vuex.Store({
     SAVE_TOKEN(state, token) {
       state.token = token
     },
+
+    GET_ARTICLES(state, Articels){
+      state.Articles = Articels
+    },
+
+    CREATE_ARTICLES(state, Articels){
+      state.Articles = Articels
+    }
   }, 
 
   actions: {
@@ -88,6 +97,37 @@ export default new Vuex.Store({
           context.commit('SAVE_TOKEN', res.data.key)
         })
         .catch(err => {
+          console.log(err)
+        })
+    },
+    getArticles(context){
+      axios({
+        method : 'get',
+        url: `${API_URL}/api/v1/community/getarticles`
+      })
+        .then((res) => {
+          context.commit('GET_ARTICLES', res.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    createArticle(context,payload){
+      const title = payload.title
+      const content = payload.content
+      console.log(payload)
+      axios({
+        method : 'post',
+        url: `${API_URL}/api/v1/community/getarticles`,
+        data :{
+          title, content
+        }
+      })
+        .then((res)=> {
+          const data = res.data
+          context.commit('CREATE_ARTICLES', data)
+        })
+        .catch((err)=>{
           console.log(err)
         })
     }
