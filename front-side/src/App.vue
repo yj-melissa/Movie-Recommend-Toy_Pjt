@@ -4,9 +4,14 @@
       <router-link :to="{name : 'HomeView'} ">Home</router-link> |
       <router-link :to="{name : 'RecommendView'} ">Recommend</router-link> |
       <router-link :to="{name : 'CommunityView'}">Community</router-link> | 
-      <router-link :to="{name : 'SignUpView'}">SignUp</router-link> |
       <router-link :to="{name : 'MovieDetailView'}">Detail</router-link> |
-      <router-link :to="{name : 'LoginView'}">Login</router-link>
+      <div v-if="isLogin">
+        <a @click="logout">Logout</a>
+      </div>
+      <div v-else>
+        <router-link :to="{name : 'LoginView'}">Login</router-link> |
+        <router-link :to="{name : 'SignUpView'}">SignUp</router-link>
+      </div>
     </nav>
     <router-view/>
   </div>
@@ -18,12 +23,13 @@ export default ({
   computed: {
     isLogin() {
       return this.$store.getters.isLogin
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
     },
   },
-  // methods: {
-  //   getLogin
-
-  // },
 })
 </script>
 
