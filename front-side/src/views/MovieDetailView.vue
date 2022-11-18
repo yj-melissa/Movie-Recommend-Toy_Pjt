@@ -1,19 +1,27 @@
 <template>
-  <b-container class="bv-example-row my-4 " id="grid" >
+  <b-container class="bv-example-row my-4" id="grid" :style="{ backgroundColor: '#000000'}" >
+    <!-- :style="{ backgroundImage: 'url(https://www.themoviedb.org/t/p/w600_and_h900_bestv2/' + changeMovie.backdrop_path + ')' }" -->
       <b-row class="text-left">
-        <b-col cols="6" class="px-0" >
+        <b-col cols="6" class="px-0 text-center p-5" >
           <img :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+changeMovie.poster_path" alt="">
         </b-col>
-        <b-col cols="6" class="px-0" >
-          <h1>{{ changeMovie.title }}</h1>
-          <p>{{ changeMovie.overview }}</p>
-          <p> 평점 : {{ changeMovie.vote_average}}</p>
-          <p> 개봉일자 : {{ changeMovie.release_date}}</p>
-          <p> 상영시간 : {{ changeMovie.runtime}} 분 </p>
+        <b-col cols="6" class="p-5" id="box" >
+          <h1 class="white-text">{{ changeMovie.title }}</h1>
+          <p class="white-text" >{{ changeMovie.overview }}</p>
+          <p class="white-text" > 평점 : {{ changeMovie.vote_average}}</p>
+          <p class="white-text"> 개봉일자 : {{ changeMovie.release_date}}</p>
+          <p class="white-text"> 상영시간 : {{ changeMovie.runtime}} 분 </p>
         </b-col>
       </b-row>
       <b-row>
-        <!-- <youtube :video-id="videoId" :player-vars="playerVars" @playing="playing"></youtube> -->
+        <b-col cols='12' class="my-4">
+          <div v-if="this.videoId" id="video">
+              <iframe :src="getUrl" width="900" height="400" class="responsive-iframe"
+              frameborder="0" 
+              >
+              </iframe>
+          </div>
+        </b-col>
       </b-row>
       <b-row class="my-4">
         <b-col>
@@ -30,8 +38,8 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-list-group class="w-100 text-left">
-          <b-list-group-item v-for="review in this.ReviewList" :key="review.number" :review="review">{{review. content}}</b-list-group-item>
+        <b-list-group class="w-100 text-left px-4 mb-5">
+          <b-list-group-item v-for="review in this.ReviewList" :key="review.number" :review="review">{{review.content}}</b-list-group-item>
         </b-list-group>
       </b-row>
   </b-container>
@@ -48,7 +56,10 @@ export default {
       Star : null,
       newComment : null,
       ReviewList : [],
-      videoSrc : null
+      videoId : null,
+      playerVars: {
+        autoplay: 1
+      }
     }
   },
   methods: {
@@ -59,31 +70,6 @@ export default {
       this.$store.dispatch('getReview')
     },
     
-    // 영화 트레일러 가져오기 (axios, youtubeAPI 이용)
-    // youTube key 암호화 처리 필요함!
-    getVideo() {
-      const baseUrl = 'https://www.youtube.com/watch?v='
-      axios({
-        method: 'get',
-        url: 'https://www.googleapis.com/youtube/v3/search',
-        params: {
-          part: 'snippet',
-          // key: 'YOUTUBE API KEY',
-          q: this.title,
-          type: 'video',
-          videoDuration: 'short',
-          regionCode: 'KR',
-          maxResults: '1',
-        },
-      })
-        .then(res => {
-          const videoId = res.data.items[0].id.videoId
-          this.videoSrc = baseUrl + videoId + '&output=embed'
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
     createComment(){
       const data = {
         movie_id : this.$route.params.movieid,
@@ -101,7 +87,21 @@ export default {
         }
       }
       this.ReviewList = List
+      this.Moviedata = this.$store.state.MovieDetail
+      console.log(this.Moviedata)
     },
+    getVedio(){
+      axios({
+        method : 'get',
+        url : `https://www.googleapis.com/youtube/v3/search?key=${process.env.VUE_APP_YOUTUBE_APIKEY}&part=snippet&type=video&q=${this.$store.state.MovieDetail.title}공식예고편`
+      })
+        .then((res)=>{
+          this.videoId = res.data.items[0].id.videoId
+        })
+        .catch((err)=> {
+          console.log(err)
+        })
+    }
   },
   created() {
     this.getReviewList()
@@ -114,11 +114,22 @@ export default {
     changeReview(){
       return this.$store.state.ReviewList
     },
+    getUrl(){
+        return `https://www.youtube.com/embed/${this.videoId}?autoplay=1&mute=1 `
+    },
   },
   watch : {
     changeReview() {
       this.getReviewList()
+    },
+    changeMovie(){
+      this.getVedio()
     }
   }
 }
 </script>
+<style>
+#box{
+  color: lightgray;
+}
+</style>
