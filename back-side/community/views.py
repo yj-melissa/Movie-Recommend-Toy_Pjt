@@ -31,9 +31,9 @@ def comment_list(request):
 
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
-def comment_create(request):
-    article = get_object_or_404(Article, pk=request.data.article)
-    serializer = CommentSerializer(date=request.data)
+def comment_create(request, article_pk):
+    article = get_object_or_404(Article, id=article_pk)
+    serializer = CommentSerializer(data=request.data)
     if serializer.is_valid(raise_exception = True):
         serializer.save(article=article)
         return Response(serializer.data, status=status.HTTP_201_CREATED)

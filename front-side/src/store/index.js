@@ -19,7 +19,8 @@ export default new Vuex.Store({
     MovieDetail : null,
     token: null,
     userName: null,
-    Articles : []
+    Articles : [],
+    ReviewList : [],
   },
 
   getters: {
@@ -66,6 +67,10 @@ export default new Vuex.Store({
 
     GET_DETAIL(state,data){
       state.MovieDetail = data
+    },
+
+    GET_REVIEW(state, data){
+      state.ReviewList = data
     }
   }, 
 
@@ -178,11 +183,11 @@ export default new Vuex.Store({
       const content = data.Content
       axios({
         method : 'post',
-        url : `${API_URL}/api/v1/community/createcomment/`,
+        url : `${API_URL}/api/v1/community/${article.id}/createcomment/`,
         data : {
-          article,
+          // article,
           // User,
-          content
+          content : content
         }
       })
         .then((res)=> {
@@ -207,20 +212,39 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
-    createMovieComment(context, data){
+    createMovieReview(context, data){
+      console.log(data)
+      const movieid = data.movie_id
+      // const User = data.User
+      const content = data.content
       axios({
         method : 'POST',
-        data : data
+        url : `${API_URL}/api/v1/server/${movieid}/createreview/`,
+        data : {
+          content : content
+        }
       })
         .then((res) => {
-          console.log(res)
+          const data = res.data
+          context.commit('GET_REVIEW',data)
         })
         .catch((err)=> {
           console.log(err)
-          console.log(context)
         })
-    }
-    
+    },
+    getReview(context){
+      axios({
+        method : 'GET',
+        url : `${API_URL}/api/v1/server/getreview/`
+      })
+        .then((res)=>{
+          const data = res.data
+          context.commit('GET_REVIEW',data)
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+    },
   },
   modules: {
   }

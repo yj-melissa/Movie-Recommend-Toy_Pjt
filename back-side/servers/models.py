@@ -13,3 +13,11 @@ class Movie(models.Model):
     poster_path = models.TextField()
     release_date = models.DateField()
     vote_average = models.FloatField()
+
+
+class Review(models.Model):
+    movie = models.ForeignKey(Movie, on_delete= models.CASCADE)
+    content = models.CharField(max_length=50)
+    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add= True)
+    updated_at = models.DateTimeField(auto_now = True)

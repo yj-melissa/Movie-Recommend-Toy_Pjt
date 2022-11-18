@@ -31,8 +31,12 @@ export default {
     getMovie(){
       this.$store.dispatch('getMovie')
     },
+    getReview(){
+      this.$store.dispatch('getReview')
+    }
   },
-  created(){ 
+  created(){
+    this.getReview() 
     return this.getMovie()
   },
   computed: {
