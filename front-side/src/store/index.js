@@ -18,6 +18,7 @@ export default new Vuex.Store({
     DefaultMovies : [],
     token: null,
     userName: null,
+    Articles : []
   },
 
   getters: {
@@ -54,6 +55,14 @@ export default new Vuex.Store({
       state.userName = null
       router.push({name: 'HomeView'})
     },
+
+    GET_ARTICLES(state, Articels){
+      state.Articles = Articels
+    },
+
+    CREATE_ARTICLES(state, Articels){
+      state.Articles = Articels
+    }
   }, 
 
   actions: {
@@ -124,6 +133,58 @@ export default new Vuex.Store({
         })
         .catch(err => {
           console.log(err)
+        })
+    },
+    getArticles(context){
+      axios({
+        method : 'get',
+        url: `${API_URL}/api/v1/community/getarticles/`
+      })
+        .then((res) => {
+          context.commit('GET_ARTICLES', res.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    createArticle(context,payload){
+      const title = payload.title
+      const content = payload.content
+      axios({
+        method : 'post',
+        url: `${API_URL}/api/v1/community/getarticles/`,
+        data :{
+          title, content
+        }
+      })
+        .then((res)=> {
+          const data = res.data
+          context.commit('CREATE_ARTICLES', data)
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+    },
+    createComment(context, data){
+      const Article = data.Article
+      // const User = data.User
+      const Content = data.Content
+      axios({
+        method : 'post',
+        url : `${API_URL}/api/v1/community/createcomment/`,
+        data : {
+          Article,
+          // User,
+          Content
+        }
+      })
+        .then((res)=> {
+          const data = res.data
+          console.log(data)
+        })
+        .catch((err)=> {
+          console.log(err)
+          console.log(context)
         })
     }
   },

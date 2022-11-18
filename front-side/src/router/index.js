@@ -6,7 +6,8 @@ import CommunityView from '@/views/CommunityView.vue'
 import LoginView from '@/views/LoginView.vue'
 import MovieDetailView from '@/views/MovieDetailView.vue'
 import SignUpView from '@/views/SignUpView'
-
+import ArticleCreateView from '@/views/ArticleCreateView'
+import ArticleDetailView from '@/views/ArticleDetailView'
 Vue.use(VueRouter)
 
 const routes = [
@@ -39,6 +40,16 @@ const routes = [
     path: '/signup',
     name: 'SignUpView',
     component: SignUpView
+  },  
+  {
+    path: '/articlecreate',
+    name: 'ArticleCreateView',
+    component: ArticleCreateView
+  },  
+  {
+    path: '/articledetail/:articleid',
+    name: 'ArticleDetailView',
+    component: ArticleDetailView
   },  
 
 ]

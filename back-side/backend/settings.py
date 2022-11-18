@@ -90,7 +90,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -177,3 +177,7 @@ ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer'
 }
+
+DEFAULT_AUTENTICATION_CLASSES = [
+    'TokenAuthentication'
+]

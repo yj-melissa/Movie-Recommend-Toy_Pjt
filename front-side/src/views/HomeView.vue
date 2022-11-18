@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="mt-3">
     <MovieCarousel
       :Movies = getDefaultMovies
     />
