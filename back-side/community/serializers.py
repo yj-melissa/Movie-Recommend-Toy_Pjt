@@ -13,7 +13,7 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ('article',)
 
 class ArticleSerializer(serializers.ModelSerializer):
-    comment_set = CommentSerializer(many=True, read_only = True)
+    # comment_set = CommentSerializer(many=True, read_only = True)
     
     class Meta:
         model = Article

@@ -20,6 +20,7 @@ export default new Vuex.Store({
     userName: null,
     Articles : [],
     ReviewList : [],
+    article : [],
   },
 
   getters: {
@@ -35,6 +36,9 @@ export default new Vuex.Store({
     getUserName(state) {
       return state.userName
     },
+    getArticle(state) {
+      return state.article
+    }
   },
 
   mutations: {
@@ -71,6 +75,10 @@ export default new Vuex.Store({
 
     GET_REVIEW(state, data){
       state.ReviewList = data
+    },
+
+    GET_ARTICLE_DATA(state, data) {
+      state.article = data
     }
   }, 
 
@@ -187,28 +195,21 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
-    createComment(context, data){
-      const article = data.Article
-      // const User = data.User
-      const content = data.Content
+    getArticleData(context, articleId) {
       axios({
-        method : 'post',
-        url : `${API_URL}/api/v1/community/${article.id}/createcomment/`,
-        data : {
-          // article,
-          // User,
-          content : content
-        }
+        method: "get",
+        url: `${API_URL}/api/v1/community/${articleId}/`,
       })
-        .then((res)=> {
-          const data = res.data
-          console.log(data)
+        .then((res) => {
+          const data = res.request.response
+          const jsonData = JSON.parse(data)
+          // console.log(jsonData)
+          context.commit('GET_ARTICLE_DATA', jsonData)
         })
-        .catch((err)=> {
+        .catch((err) => {
           console.log(err)
-          console.log(context)
         })
-    },
+      },
     getDetail(context,movieid){
       axios({
         method: 'GET',

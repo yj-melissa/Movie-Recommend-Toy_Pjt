@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>{{ comment.content }}</p>
+    <p class="m-0">{{ comment.content }}</p>
   </div>
 </template>
 
