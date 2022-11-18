@@ -20,6 +20,7 @@ def get_movie_datas():
                     'fields' : {
                     'title': movie.get('title'),
                     'overview': movie['overview'],
+                    'id' : movie.get('id'),
                     'genre_ids': movie.get('genre_ids'),
                     'adult' : movie.get('adult'),
                     'backdrop_path' : movie.get('backdrop_path'),
@@ -35,7 +36,7 @@ def get_movie_datas():
                 
                 total_data.append(movie_dict)
 
-    with open("servers/fixtures/movie_data.json", "w", encoding="utf-8") as make_file:
+    with open("back-side/servers/fixtures/movie_data.json", "w", encoding="utf-8") as make_file:
         json.dump(total_data, make_file, indent="\t", ensure_ascii=False)
 
 get_movie_datas()

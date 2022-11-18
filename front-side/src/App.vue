@@ -4,14 +4,12 @@
       <router-link :to="{name : 'HomeView'} ">Home</router-link> |
       <router-link :to="{name : 'RecommendView'} ">Recommend</router-link> |
       <router-link :to="{name : 'CommunityView'}">Community</router-link> | 
-      <router-link :to="{name : 'MovieDetailView'}">Detail</router-link> |
-      <div v-if="isLogin">
+      <span v-if="isLogin">
         <a @click="logout">Logout</a>
-      </div>
-      <div v-else>
-        <router-link :to="{name : 'LoginView'}">Login</router-link> |
-        <router-link :to="{name : 'SignUpView'}">SignUp</router-link>
-      </div>
+      </span>
+      <span v-else>
+        <router-link :to="{name : 'LoginView'}">Login</router-link>
+      </span>
     </nav>
     <router-view/>
   </div>

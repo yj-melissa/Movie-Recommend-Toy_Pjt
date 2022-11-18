@@ -16,6 +16,7 @@ export default new Vuex.Store({
   state: {
     Movies: [],
     DefaultMovies : [],
+    MovieDetail : null,
     token: null,
     userName: null,
     Articles : []
@@ -53,7 +54,6 @@ export default new Vuex.Store({
     LOGOUT(state) {
       state.token = null
       state.userName = null
-      router.push({name: 'HomeView'})
     },
 
     GET_ARTICLES(state, Articels){
@@ -62,6 +62,10 @@ export default new Vuex.Store({
 
     CREATE_ARTICLES(state, Articels){
       state.Articles = Articels
+    },
+
+    GET_DETAIL(state,data){
+      state.MovieDetail = data
     }
   }, 
 
@@ -74,6 +78,9 @@ export default new Vuex.Store({
         .then((res)=>{
           // console.log(res.data)
           const Movies =res.data
+          Movies.sort(function(a,b){
+            return b.popularity - a.popularity
+          })
           context.commit('GET_MOVIE',Movies)
         })
         .catch((error)=> {
@@ -166,16 +173,16 @@ export default new Vuex.Store({
         })
     },
     createComment(context, data){
-      const Article = data.Article
+      const article = data.Article
       // const User = data.User
-      const Content = data.Content
+      const content = data.Content
       axios({
         method : 'post',
         url : `${API_URL}/api/v1/community/createcomment/`,
         data : {
-          Article,
+          article,
           // User,
-          Content
+          content
         }
       })
         .then((res)=> {
@@ -193,13 +200,27 @@ export default new Vuex.Store({
         url : `https://api.themoviedb.org/3/movie/${movieid}?api_key=${process.env.VUE_APP_APIKEY}&language=ko-KR`
       })
         .then((res)=> {
-          console.log(res.data)
+          const data = res.data
+          context.commit('GET_DETAIL',data)
         })
         .catch((err)=>{
+          console.log(err)
+        })
+    },
+    createMovieComment(context, data){
+      axios({
+        method : 'POST',
+        data : data
+      })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err)=> {
           console.log(err)
           console.log(context)
         })
     }
+    
   },
   modules: {
   }

@@ -13,27 +13,35 @@
     <div>한줄평 작성</div>
     <button>좋아요</button>
   </div> -->
-  <!-- <b-container class="bv-example-row my-4">
+  
+  <b-container class="bv-example-row my-4 " id="grid" >
       <b-row class="text-left">
         <b-col cols="6" class="px-0" >
-          <img :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+MovieD.poster_path" alt="">
+          <img :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+changeMovie.poster_path" alt="">
         </b-col>
         <b-col cols="6" class="px-0" >
-          <h1>{{ MovieD.title }}</h1>
-          <p>{{ MovieD.overview }}</p>
-          <p> 평점 : {{ MovieD.vote_average}}</p>
-          <p> 개봉일자 : {{ MovieD.release_date}}</p>
+          <h1>{{ changeMovie.title }}</h1>
+          <p>{{ changeMovie.overview }}</p>
+          <p> 평점 : {{ changeMovie.vote_average}}</p>
+          <p> 개봉일자 : {{ changeMovie.release_date}}</p>
+          <p> 상영시간 : {{ changeMovie.runtime}} 분 </p>
         </b-col>
       </b-row>
-      <b-row>
+      <b-row class="my-4">
         <b-col>
-          
+          <b-form-textarea
+              id="textarea-rows"
+              placeholder="댓글을 입력해주세요"
+              rows="4"
+              v-model="newComment"
+              @keyup.enter="createComment"
+          ></b-form-textarea>
+          <div class="text-right my-2">
+              <button @click="createComment">입력</button>
+          </div>
         </b-col>
       </b-row>
-  </b-container> -->
-  <div>
-    1
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -44,14 +52,14 @@ export default {
   data() {
     return {
       Moviedata : [],
-      MovieD : null,
-      Star : null
+      Star : null,
+      newComment : null
     }
   },
   methods: {
     getDetail(data){
       this.$store.dispatch('getDetail',data)
-    }
+    },
     // 영화 트레일러 가져오기 (axios, youtubeAPI 이용)
     // youTube key 암호화 처리 필요함!
     // getVideo() {
@@ -77,9 +85,18 @@ export default {
     //       console.log(err)
     //     })
     // },
+    createComment(){
+      this.$store.dispatch('createMovieComment',this.newComment)
+      this.newComment = null
+    }
   },
   created() {
     this.getDetail(this.$route.params.movieid)
-  }
+  },
+  computed: {
+    changeMovie(){
+      return this.$store.state.MovieDetail
+    },
+  },
 }
 </script>
