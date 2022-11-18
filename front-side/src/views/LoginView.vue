@@ -17,6 +17,7 @@
 </template>
 
 <script>
+
 // @ is an alias to /src
 export default {
   name: 'LoginView',
@@ -24,13 +25,6 @@ export default {
     return {
       username: null,
       password: null,
-    }
-  },
-  components: {
-  },
-  computed: {
-    isLogin() {
-      return this.$store.getters.isLogin
     }
   },
   methods: {
@@ -41,14 +35,8 @@ export default {
       const payload = {
         username, password,
       }
+
       this.$store.dispatch('login', payload)
-    },
-    LoginCheck() {
-      if (this.isLogin) {
-        this.$router.push({ name: 'HomeView' })
-      } else {
-        this.$store.dispatch('login')
-      }
     },
   },
 }

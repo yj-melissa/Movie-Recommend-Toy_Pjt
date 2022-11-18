@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-// import router from '@/router'
+import router from '@/router'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -22,7 +22,10 @@ export default new Vuex.Store({
 
   getters: {
     isLogin(state) {
-      return state.token? true : false
+      return state.token ? true : false
+    },
+    getToken(state) {
+      return state.token
     },
     getMovies(state){
       return state.Movies
@@ -38,12 +41,18 @@ export default new Vuex.Store({
       state.DefaultMovies = Movies
     },
 
-    SAVE_USER_INFO(state, data) {      
-      const userInfo = data.config.data
+    SAVE_USER_INFO(state, payload) {      
+      const userInfo = payload.config.data
       const jsonUserInfo = JSON.parse(userInfo)
-      state.token = data.token
+      state.token = payload.data.key
       state.userName = jsonUserInfo.username
-      // router.push({name: 'HomeView'})
+      router.push({name: 'HomeView'})
+    },
+    
+    LOGOUT(state) {
+      state.token = null
+      state.userName = null
+      router.push({name: 'HomeView'})
     },
   }, 
 
@@ -79,16 +88,35 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
+    logout(context) {
+      const token = context.getters.getToken
+      axios({
+        method: 'POST',
+        url: `${API_URL}/api/v1/accounts/logout/`,
+        data: {
+          key: token,
+        }
+      })
+        .then((res) => {
+          console.log(res)
+          context.commit('LOGOUT', res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     signUp(context, payload) {
       const username = payload.username
       const password1 = payload.password1
       const password2 = payload.password2
       const email = payload.email
+      const nickname = payload.nickname
+
       axios({
         method: 'POST',
         url: `${API_URL}/api/v1/accounts/signup/`,
         data: {
-          username, password1, password2, email,
+          username, password1, password2, email, nickname
         }
       })
         .then(res => {

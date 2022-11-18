@@ -41,7 +41,7 @@ export default {
     },
     getDefaultMovies(){
       return this.$store.state.DefaultMovies
-    }
+    },
   }
 }
 </script>
