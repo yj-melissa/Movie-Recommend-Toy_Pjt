@@ -32,7 +32,7 @@ const routes = [
     component: LoginView
   },  
   {
-    path: '/detail',
+    path: '/detail/:movieid',
     name: 'MovieDetailView',
     component: MovieDetailView
   },  

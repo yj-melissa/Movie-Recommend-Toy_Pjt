@@ -151,6 +151,19 @@ export default new Vuex.Store({
           console.log(err)
           console.log(context)
         })
+    },
+    getDetail(context,movieid){
+      axios({
+        method: 'GET',
+        url : `https://api.themoviedb.org/3/movie/${movieid}?api_key=${process.env.VUE_APP_APIKEY}&language=ko-KR`
+      })
+        .then((res)=> {
+          console.log(res.data)
+        })
+        .catch((err)=>{
+          console.log(err)
+          console.log(context)
+        })
     }
   },
   modules: {

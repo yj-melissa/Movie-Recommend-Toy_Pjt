@@ -9,7 +9,9 @@
     :loop = "true"
     >
     <slide v-for="movie of Movies.slice(0, 4)" :key="movie.seq" class="slide_item">
+      <router-link :to="{name : 'MovieDetailView', params:{movieid : movie.id}}">
       <img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2/'+movie.poster_path" alt="">
+      </router-link>
     </slide>
   </carousel>
 </template>

@@ -13,18 +13,27 @@
     <div>한줄평 작성</div>
     <button>좋아요</button>
   </div> -->
-  <b-container class="bv-example-row my-4">
+  <!-- <b-container class="bv-example-row my-4">
       <b-row class="text-left">
-          <b-col cols="6" class="px-0" >
-            <img :src="imgSrc" alt="">
-          </b-col>
-          <b-col cols="6" class="px-0" >
-            <h1>{{ title }}</h1>
-            <p>{{ overview }}</p>
-
-          </b-col>
+        <b-col cols="6" class="px-0" >
+          <img :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+MovieD.poster_path" alt="">
+        </b-col>
+        <b-col cols="6" class="px-0" >
+          <h1>{{ MovieD.title }}</h1>
+          <p>{{ MovieD.overview }}</p>
+          <p> 평점 : {{ MovieD.vote_average}}</p>
+          <p> 개봉일자 : {{ MovieD.release_date}}</p>
+        </b-col>
       </b-row>
-  </b-container>
+      <b-row>
+        <b-col>
+          
+        </b-col>
+      </b-row>
+  </b-container> -->
+  <div>
+    1
+  </div>
 </template>
 
 <script>
@@ -34,22 +43,15 @@ export default {
   name: 'MovieDetailView',
   data() {
     return {
-      title: null,
-      overview: null,
-      imgSrc: null,
-      videoSrc: null,
+      Moviedata : [],
+      MovieD : null,
+      Star : null
     }
   },
   methods: {
-    getDetail(){
-      const movie = this.getMovie
-      this.title = movie.title
-      this.overview = movie.overview
-      // poster url
-      const baseUrl = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2'
-      const posterPath = movie.poster_path
-      this.imgSrc = baseUrl + posterPath
-    },
+    getDetail(data){
+      this.$store.dispatch('getDetail',data)
+    }
     // 영화 트레일러 가져오기 (axios, youtubeAPI 이용)
     // youTube key 암호화 처리 필요함!
     // getVideo() {
@@ -76,14 +78,8 @@ export default {
     //     })
     // },
   },
-  computed: {
-    getMovie(){
-      return this.$store.state.Movies[0]
-    },
-  },
   created() {
-    this.getDetail()
-    this.getVideo()
+    this.getDetail(this.$route.params.movieid)
   }
 }
 </script>
