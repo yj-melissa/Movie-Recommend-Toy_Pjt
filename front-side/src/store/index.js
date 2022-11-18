@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import router from '@/router'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
-const API_URL = 'http://127.0.0.1:8000'
+const API_URL = `${process.env.VUE_APP_API_URL}`
 
 export default new Vuex.Store({
   plugins: [
@@ -18,7 +17,7 @@ export default new Vuex.Store({
     DefaultMovies : [],
     token: null,
     userName: null,
-    Articles : []
+    Articles : [],
   },
 
   getters: {
@@ -47,13 +46,13 @@ export default new Vuex.Store({
       const jsonUserInfo = JSON.parse(userInfo)
       state.token = payload.data.key
       state.userName = jsonUserInfo.username
-      router.push({name: 'HomeView'})
+      this.$router.push({ name: 'HomeView' })
     },
     
     LOGOUT(state) {
       state.token = null
       state.userName = null
-      router.push({name: 'HomeView'})
+      this.$router.push({ name: 'HomeView' })
     },
 
     GET_ARTICLES(state, Articels){
@@ -62,7 +61,7 @@ export default new Vuex.Store({
 
     CREATE_ARTICLES(state, Articels){
       state.Articles = Articels
-    }
+    },
   }, 
 
   actions: {
@@ -94,7 +93,12 @@ export default new Vuex.Store({
           context.commit('SAVE_USER_INFO', res)
         })
         .catch((err) => {
-          console.log(err)
+          // const errMessage = err.response.request.responseText 
+          const errMessage = err.response.request.response
+          const jsonErrMessage = JSON.parse(errMessage)
+          for (const [key, value] of Object.entries(jsonErrMessage)) {
+            alert(`${key}: ${value}`)
+          }
         })
     },
     logout(context) {
@@ -132,7 +136,11 @@ export default new Vuex.Store({
           context.commit('SAVE_USER_INFO', res)
         })
         .catch(err => {
-          console.log(err)
+          const errMessage = err.response.request.response
+          const jsonErrMessage = JSON.parse(errMessage)
+          for (const [key, value] of Object.entries(jsonErrMessage)) {
+            alert(`${key}: ${value}`)
+          }
         })
     },
     getArticles(context){
@@ -171,12 +179,12 @@ export default new Vuex.Store({
       const Content = data.Content
       axios({
         method : 'post',
-        url : `${API_URL}/api/v1/community/createcomment/`,
+        url : `${API_URL}/api/v1/community/${Article.id}/createcomment/`,
         data : {
-          Article,
+          // Article,
           // User,
-          Content
-        }
+          content: Content
+        },
       })
         .then((res)=> {
           const data = res.data
@@ -199,7 +207,7 @@ export default new Vuex.Store({
           console.log(err)
           console.log(context)
         })
-    }
+    },
   },
   modules: {
   }
