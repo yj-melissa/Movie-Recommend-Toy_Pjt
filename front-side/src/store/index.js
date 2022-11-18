@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import router from '@/router'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
-const API_URL = 'http://127.0.0.1:8000'
+const API_URL = `${process.env.VUE_APP_API_URL}`
 
 export default new Vuex.Store({
   plugins: [
@@ -20,7 +19,10 @@ export default new Vuex.Store({
     token: null,
     userName: null,
     Articles : [],
+<<<<<<< HEAD
+=======
     ReviewList : [],
+>>>>>>> e3adb2f24747955865d5c54ffe67c59b4a2d9d0c
   },
 
   getters: {
@@ -49,12 +51,16 @@ export default new Vuex.Store({
       const jsonUserInfo = JSON.parse(userInfo)
       state.token = payload.data.key
       state.userName = jsonUserInfo.username
-      router.push({name: 'HomeView'})
+      this.$router.push({ name: 'HomeView' })
     },
     
     LOGOUT(state) {
       state.token = null
       state.userName = null
+<<<<<<< HEAD
+      this.$router.push({ name: 'HomeView' })
+=======
+>>>>>>> e3adb2f24747955865d5c54ffe67c59b4a2d9d0c
     },
 
     GET_ARTICLES(state, Articels){
@@ -64,6 +70,8 @@ export default new Vuex.Store({
     CREATE_ARTICLES(state, Articels){
       state.Articles = Articels
     },
+<<<<<<< HEAD
+=======
 
     GET_DETAIL(state,data){
       state.MovieDetail = data
@@ -72,6 +80,7 @@ export default new Vuex.Store({
     GET_REVIEW(state, data){
       state.ReviewList = data
     }
+>>>>>>> e3adb2f24747955865d5c54ffe67c59b4a2d9d0c
   }, 
 
   actions: {
@@ -106,7 +115,12 @@ export default new Vuex.Store({
           context.commit('SAVE_USER_INFO', res)
         })
         .catch((err) => {
-          console.log(err)
+          // const errMessage = err.response.request.responseText 
+          const errMessage = err.response.request.response
+          const jsonErrMessage = JSON.parse(errMessage)
+          for (const [key, value] of Object.entries(jsonErrMessage)) {
+            alert(`${key}: ${value}`)
+          }
         })
     },
     logout(context) {
@@ -144,7 +158,11 @@ export default new Vuex.Store({
           context.commit('SAVE_USER_INFO', res)
         })
         .catch(err => {
-          console.log(err)
+          const errMessage = err.response.request.response
+          const jsonErrMessage = JSON.parse(errMessage)
+          for (const [key, value] of Object.entries(jsonErrMessage)) {
+            alert(`${key}: ${value}`)
+          }
         })
     },
     getArticles(context){
@@ -183,12 +201,21 @@ export default new Vuex.Store({
       const content = data.Content
       axios({
         method : 'post',
+<<<<<<< HEAD
+        url : `${API_URL}/api/v1/community/${Article.id}/createcomment/`,
+        data : {
+          // Article,
+          // User,
+          content: Content
+        },
+=======
         url : `${API_URL}/api/v1/community/${article.id}/createcomment/`,
         data : {
           // article,
           // User,
           content : content
         }
+>>>>>>> e3adb2f24747955865d5c54ffe67c59b4a2d9d0c
       })
         .then((res)=> {
           const data = res.data
@@ -212,6 +239,8 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
+<<<<<<< HEAD
+=======
     createMovieReview(context, data){
       console.log(data)
       const movieid = data.movie_id
@@ -245,6 +274,7 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
+>>>>>>> e3adb2f24747955865d5c54ffe67c59b4a2d9d0c
   },
   modules: {
   }

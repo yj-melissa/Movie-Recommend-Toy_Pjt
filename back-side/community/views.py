@@ -23,7 +23,14 @@ def getarticles(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def comment_list(request):
+def article_detail(request, article_pk):
+    article = Article.objects.get(pk=article_pk)
+    serializer = ArticleSerializer(article)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def comment_list(request, article_pk):
     if request.method == 'GET':
         comments = get_list_or_404(Comment)
         serializer = CommentSerializer(comments, many = True)
@@ -32,7 +39,11 @@ def comment_list(request):
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
 def comment_create(request, article_pk):
+<<<<<<< HEAD
+    article = get_object_or_404(Article, pk=article_pk)
+=======
     article = get_object_or_404(Article, id=article_pk)
+>>>>>>> e3adb2f24747955865d5c54ffe67c59b4a2d9d0c
     serializer = CommentSerializer(data=request.data)
     if serializer.is_valid(raise_exception = True):
         serializer.save(article=article)
