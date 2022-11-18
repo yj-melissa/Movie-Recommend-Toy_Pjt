@@ -42,9 +42,6 @@
           </div>
         </b-col>
       </b-row>
-      <b-row>
-        <button @click="view"> vue</button>
-      </b-row>
     </b-container>
     </div>
   </div>

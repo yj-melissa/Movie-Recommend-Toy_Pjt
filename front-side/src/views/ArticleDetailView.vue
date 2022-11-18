@@ -44,6 +44,7 @@ export default {
   data() {
     return {
       article: null,
+      newComment : null,
     }
   },
   computed: {
@@ -55,7 +56,7 @@ export default {
     getArticleData() {
       const articleId = this.$route.params.articleid
       // this.$store.dispatch('getArticleDetail', articleId)
-      const API_URL = `${process.env.VUE_APP_API_URL}`
+      const API_URL = process.env.VUE_APP_API_URL
       axios({
         method: "get",
         url: `${API_URL}/api/v1/community/${articleId}/`,

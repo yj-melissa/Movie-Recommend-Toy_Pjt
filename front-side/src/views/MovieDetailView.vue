@@ -13,7 +13,7 @@
         </b-col>
       </b-row>
       <b-row>
-        <youtube :video-id="videoId" :player-vars="playerVars" @playing="playing"></youtube>
+        <!-- <youtube :video-id="videoId" :player-vars="playerVars" @playing="playing"></youtube> -->
       </b-row>
       <b-row class="my-4">
         <b-col>
