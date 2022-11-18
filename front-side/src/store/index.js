@@ -15,9 +15,14 @@ export default new Vuex.Store({
   state: {
     Movies: [],
     DefaultMovies : [],
+    MovieDetail : null,
     token: null,
     userName: null,
     Articles : [],
+<<<<<<< HEAD
+=======
+    ReviewList : [],
+>>>>>>> e3adb2f24747955865d5c54ffe67c59b4a2d9d0c
   },
 
   getters: {
@@ -52,7 +57,10 @@ export default new Vuex.Store({
     LOGOUT(state) {
       state.token = null
       state.userName = null
+<<<<<<< HEAD
       this.$router.push({ name: 'HomeView' })
+=======
+>>>>>>> e3adb2f24747955865d5c54ffe67c59b4a2d9d0c
     },
 
     GET_ARTICLES(state, Articels){
@@ -62,6 +70,17 @@ export default new Vuex.Store({
     CREATE_ARTICLES(state, Articels){
       state.Articles = Articels
     },
+<<<<<<< HEAD
+=======
+
+    GET_DETAIL(state,data){
+      state.MovieDetail = data
+    },
+
+    GET_REVIEW(state, data){
+      state.ReviewList = data
+    }
+>>>>>>> e3adb2f24747955865d5c54ffe67c59b4a2d9d0c
   }, 
 
   actions: {
@@ -73,6 +92,9 @@ export default new Vuex.Store({
         .then((res)=>{
           // console.log(res.data)
           const Movies =res.data
+          Movies.sort(function(a,b){
+            return b.popularity - a.popularity
+          })
           context.commit('GET_MOVIE',Movies)
         })
         .catch((error)=> {
@@ -174,17 +196,26 @@ export default new Vuex.Store({
         })
     },
     createComment(context, data){
-      const Article = data.Article
+      const article = data.Article
       // const User = data.User
-      const Content = data.Content
+      const content = data.Content
       axios({
         method : 'post',
+<<<<<<< HEAD
         url : `${API_URL}/api/v1/community/${Article.id}/createcomment/`,
         data : {
           // Article,
           // User,
           content: Content
         },
+=======
+        url : `${API_URL}/api/v1/community/${article.id}/createcomment/`,
+        data : {
+          // article,
+          // User,
+          content : content
+        }
+>>>>>>> e3adb2f24747955865d5c54ffe67c59b4a2d9d0c
       })
         .then((res)=> {
           const data = res.data
@@ -201,13 +232,49 @@ export default new Vuex.Store({
         url : `https://api.themoviedb.org/3/movie/${movieid}?api_key=${process.env.VUE_APP_APIKEY}&language=ko-KR`
       })
         .then((res)=> {
-          console.log(res.data)
+          const data = res.data
+          context.commit('GET_DETAIL',data)
         })
         .catch((err)=>{
           console.log(err)
-          console.log(context)
         })
     },
+<<<<<<< HEAD
+=======
+    createMovieReview(context, data){
+      console.log(data)
+      const movieid = data.movie_id
+      // const User = data.User
+      const content = data.content
+      axios({
+        method : 'POST',
+        url : `${API_URL}/api/v1/server/${movieid}/createreview/`,
+        data : {
+          content : content
+        }
+      })
+        .then((res) => {
+          const data = res.data
+          context.commit('GET_REVIEW',data)
+        })
+        .catch((err)=> {
+          console.log(err)
+        })
+    },
+    getReview(context){
+      axios({
+        method : 'GET',
+        url : `${API_URL}/api/v1/server/getreview/`
+      })
+        .then((res)=>{
+          const data = res.data
+          context.commit('GET_REVIEW',data)
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+    },
+>>>>>>> e3adb2f24747955865d5c54ffe67c59b4a2d9d0c
   },
   modules: {
   }

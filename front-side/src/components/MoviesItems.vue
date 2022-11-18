@@ -42,6 +42,9 @@
           </div>
         </b-col>
       </b-row>
+      <b-row>
+        <button @click="view"> vue</button>
+      </b-row>
     </b-container>
     </div>
   </div>
@@ -85,6 +88,9 @@ export default {
           return b.popularity - a.popularity
         })
       }
+    },
+    view(){
+      console.log(this.$store.state.Movies)
     }
   },
   computed: {
@@ -96,7 +102,6 @@ export default {
     changeMovie(val) {
       this.getMovieData(val)
     }
-    
   }
 }
 </script>
