@@ -16,24 +16,13 @@ export default new Vuex.Store({
     Movies: [],
     DefaultMovies : [],
     MovieDetail : null,
-    token: null,
-    userName: null,
     Articles : [],
     ReviewList : [],
   },
 
   getters: {
-    isLogin(state) {
-      return state.token ? true : false
-    },
-    getToken(state) {
-      return state.token
-    },
     getMovies(state){
       return state.Movies
-    },
-    getUserName(state) {
-      return state.userName
     },
   },
 
@@ -42,21 +31,6 @@ export default new Vuex.Store({
       state.Movies = Movies
       state.DefaultMovies = Movies
     },
-
-    SAVE_USER_INFO(state, payload) {      
-      const userInfo = payload.config.data
-      const jsonUserInfo = JSON.parse(userInfo)
-      state.token = payload.data.key
-      state.userName = jsonUserInfo.username
-      // this.$router.push({ name: 'HomeView' })
-    },
-    
-    LOGOUT(state) {
-      state.token = null
-      state.userName = null
-      this.$router.push({ name: 'HomeView' })
-    },
-
     GET_ARTICLES(state, Articels){
       state.Articles = Articels
     },
@@ -94,28 +68,7 @@ export default new Vuex.Store({
           console.log(error)
         })
     },
-    login(context, payload) {
-      const username = payload.username
-      const password = payload.password
-      axios({
-        method: 'POST',
-        url: `${API_URL}/api/v1/accounts/login/`,
-        data: {
-          username, password
-        }
-      })
-        .then((res) => {
-          context.commit('SAVE_USER_INFO', res)
-        })
-        .catch((err) => {
-          // const errMessage = err.response.request.responseText 
-          const errMessage = err.response.request.response
-          const jsonErrMessage = JSON.parse(errMessage)
-          for (const [key, value] of Object.entries(jsonErrMessage)) {
-            alert(`${key}: ${value}`)
-          }
-        })
-    },
+
     logout(context) {
       const token = context.getters.getToken
       axios({
@@ -134,7 +87,6 @@ export default new Vuex.Store({
         })
     },
     signUp(context, payload) {
-      const username = payload.username
       const password1 = payload.password1
       const password2 = payload.password2
       const email = payload.email
@@ -144,20 +96,21 @@ export default new Vuex.Store({
         method: 'POST',
         url: `${API_URL}/api/v1/accounts/signup/`,
         data: {
-          username, password1, password2, email, nickname
+          email, password1, password2, nickname
         }
       })
         .then(res => {
-          console.log('res')
           console.log(res)
-          context.commit('SAVE_USER_INFO', res)
+          localStorage.setItem('jwt', res.data.token)
+          // this.$router.push({ name: 'HomeView' })
+          // context.commit('SAVE_USER_INFO', res)
         })
         .catch(err => {
           console.log('err:')
           console.log(err)
           const errMessage = err.response.request.response
-          const jsonErrMessage = JSON.parse(errMessage)
-          alert(jsonErrMessage)
+          // const jsonErrMessage = JSON.parse(errMessage)
+          alert(errMessage)
           // for (const [key, value] of Object.entries(jsonErrMessage)) {
           //   alert(`${key}: ${value}`)
           // }

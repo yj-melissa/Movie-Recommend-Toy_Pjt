@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,19 +36,24 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'servers',
     'accounts',
-    'corsheaders',
     'community',
 
-    # accounts 관련
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+
+    # dj-rest-auth
     'dj_rest_auth',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
+
+    # simplejwt
     'rest_framework_simplejwt',
+
+    'django_extensions',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -55,24 +62,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-
-SITE_ID = 1
-
-REST_FRAMEWORK = {
-    # authentication
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-
-    ],
-    # permission
-    'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.AllowAny',
-
-    ],
-}
-
 
 MIDDLEWARE = [
     
@@ -169,23 +158,39 @@ CORS_ALLOWED_ORIGINS = [
 
 AUTH_USER_MODEL = 'accounts.User'
 
-
 # dj-rest-auth 관련 설정
-
-ACCOUNT_CONFIRM_EMAIL_ON_GET = True # E-mail address is automatically confirmed by a GET request
-ACCOUNT_EMAIL_VERIFICATION = 'none' # Allow logins with an unverified e-mail address
-
-ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
-
-REST_AUTH_REGISTER_SERIALIZERS = {
-    'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer'
+SITE_ID = 1
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
-
-DEFAULT_AUTENTICATION_CLASSES = [
-    'TokenAuthentication'
-]
-
-# JWT 관련 설정
 REST_USE_JWT = True
 JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
+
+# dj-rest-auth ID -> 이메일 대체
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None 
+ACCOUNT_EMAIL_REQUIRED = True            
+ACCOUNT_USERNAME_REQUIRED = False        
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+ACCOUNT_EMAIL_VERIFICATION = 'none' # 회원가입 과정에서 이메일 인증 사용 X
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'accounts.serializers.UserSerializer'
+}
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+}
+
+ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
+
+
+# simplejwt 관련 설정
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}

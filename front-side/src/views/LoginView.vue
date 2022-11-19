@@ -3,8 +3,8 @@
     <h1>LOGIN</h1>
     <form @submit.prevent="login">
       <div class="mb-3">
-        <label for="username" class="form-label">USERNAME</label><br>
-        <input type="text" id="username" v-model.trim="username">
+        <label for="email" class="form-label">이메일: </label><br>
+        <input type="text" id="email" v-model.trim="email">
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">PASSWORD</label><br>
@@ -17,27 +17,42 @@
 </template>
 
 <script>
-
+import axios from 'axios'
 // @ is an alias to /src
 export default {
   name: 'LoginView',
   data() {
     return {
-      username: null,
+      email: null,
       password: null,
     }
   },
   methods: {
     login() {
-      const username = this.username
+      const API_URL = 'http://127.0.0.1:8000'
+      const email = this.email
       const password = this.password
-      
-      const payload = {
-        username, password,
-      }
-
-      this.$store.dispatch('login', payload)
+      axios({
+        method: 'POST',
+        url: `${API_URL}/api/v1/accounts/login/`,
+        data: {
+          email, password
+        }
+      })
+        .then((res) => {
+          const data = res.data
+          localStorage.setItem('access_token', data.access_token)
+          localStorage.setItem('refresh_token', data.refresh_token)
+        })
+        .catch((err) => {
+          const errMessage = err.response.request.response
+          alert(errMessage)
+          // const jsonErrMessage = JSON.parse(errMessage)
+          // for (const [key, value] of Object.entries(jsonErrMessage)) {
+          //   alert(`${key}: ${value}`)
+          // }
+        })
     },
-  },
+  }
 }
 </script>
