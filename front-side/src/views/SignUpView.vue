@@ -51,6 +51,7 @@ export default {
         username, password1, password2, email, nickname
       }
 
+      console.log(payload)
       this.$store.dispatch('signUp', payload)
     }
   },

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
+    'rest_framework_simplejwt',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -61,6 +62,8 @@ REST_FRAMEWORK = {
     # authentication
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+
     ],
     # permission
     'DEFAULT_PERMISSION_CLASSES': [
@@ -181,3 +184,8 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 DEFAULT_AUTENTICATION_CLASSES = [
     'TokenAuthentication'
 ]
+
+# JWT 관련 설정
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'my-app-auth'
+JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
