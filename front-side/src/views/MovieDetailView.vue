@@ -23,6 +23,19 @@
           </div>
         </b-col>
       </b-row>
+      <b-row class="text-center">
+        <b-col cols='8'></b-col>
+        <b-col cols='1' id="score">
+          <span> 평점 : </span>
+        </b-col>
+        <b-col class="star"
+            v-for="index in 5"
+            :key="index"
+            @click="check(index)">
+          <span v-if="index < score">🌕</span>
+          <span v-if="index >= score">🌑</span>
+        </b-col>
+      </b-row>
       <b-row class="my-4">
         <b-col>
           <b-form-textarea
@@ -38,8 +51,11 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-list-group class="w-100 text-left px-4 mb-5">
-          <b-list-group-item v-for="review in this.ReviewList" :key="review.number" :review="review">{{review.content}}</b-list-group-item>
+        <b-list-group class="w-100 text-left px-4 mb-5 ">
+          <b-list-group-item v-for="review in this.ReviewList" :key="review.number" :review="review">
+              <span>{{review.content}}</span>
+              <span>{{review.score}}</span> 
+          </b-list-group-item>
         </b-list-group>
       </b-row>
   </b-container>
@@ -57,9 +73,7 @@ export default {
       newComment : null,
       ReviewList : [],
       videoId : null,
-      playerVars: {
-        autoplay: 1
-      }
+      score: 0
     }
   },
   methods: {
@@ -73,7 +87,8 @@ export default {
     createComment(){
       const data = {
         movie_id : this.$route.params.movieid,
-        content : this.newComment
+        content : this.newComment,
+        score : this.score
       }
       this.$store.dispatch('createMovieReview',data)
       this.newComment = null
@@ -101,7 +116,10 @@ export default {
         .catch((err)=> {
           console.log(err)
         })
-    }
+    },
+    check(index) {
+      this.score = index + 1;
+    },
   },
   created() {
     this.getReviewList()
@@ -130,6 +148,9 @@ export default {
 </script>
 <style>
 #box{
+  color: lightgray;
+}
+#score{
   color: lightgray;
 }
 </style>
