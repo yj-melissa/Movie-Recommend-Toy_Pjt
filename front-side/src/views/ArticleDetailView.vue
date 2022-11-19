@@ -1,34 +1,36 @@
 <template>
-  <div>
-    <b-container class="bv-example-row my-4">
-      <b-row class="text-left">
-        <b-col cols="12">
-          <b-card :header="article?.title" style="height: 600px">
-            <b-card-text>
-              {{ article?.content }}
-            </b-card-text>
-            <ArticleDetailComments
-              v-for="comment in article?.comment_set"
-              :key="comment.id"
-              :comment="comment"
-              class="bg-secondary"
-            />
-            <template #footer>
-              <b-form-textarea
-                id="textarea-rows"
-                placeholder="댓글을 입력해주세요"
-                rows="4"
-                v-model="newComment"
-              >
-              </b-form-textarea>
-              <div class="text-right my-2">
-                <button @click="createComment">입력</button>
-              </div>
-            </template>
-          </b-card>
-        </b-col>
-      </b-row>
-    </b-container>
+  <div class="container row mt-3" style="margin:100 auto">
+    <div class="card col-8 p-0 row justify-content-center text-left" style="margin:0 auto">
+      <h4 class="card-header py-3">
+        {{ article?.title }}
+      </h4>
+      <div class="card-body">
+        <p class="card-text py-3">
+          {{ article?.content }}
+        </p>
+      </div>
+      <div class="card-footer container p-0 text-center">
+        <ul class="list-group list-group-flush p-0 m-0 text-left">
+          <ArticleDetailComments
+            v-for="comment in comments"
+            :key="comment.id"
+            :comment="comment"
+            class="list-group-item bg-transparent"
+          />
+        </ul>
+        <textarea 
+          id="textarea-rows"
+          placeholder="댓글을 입력해주세요"
+          rows="4"
+          v-model="newComment"
+          class="justify-content-center col-11 mt-3"
+        >
+        </textarea>
+        <div class="text-right my-2">
+          <button @click="createComment" class="btn btn-outline-secondary mr-4">입력</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -45,55 +47,77 @@ export default {
     return {
       article: null,
       newComment : null,
+      comments: [],
     }
   },
   computed: {
-    // getArticle(){
-    //     return this.$store.getters.getArticle
-    // }
   },
   methods: {
     getArticleData() {
       const articleId = this.$route.params.articleid
-      // this.$store.dispatch('getArticleDetail', articleId)
       const API_URL = process.env.VUE_APP_API_URL
       axios({
-        method: "get",
+        method: 'get',
         url: `${API_URL}/api/v1/community/${articleId}/`,
       })
         .then((res) => {
-          const data = res.request.response
-          const jsonData = JSON.parse(data)
-          this.article = jsonData
+          console.log(res.data)
+          this.article = res.data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    getCommentData() {
+      const articleId = this.$route.params.articleid
+      const API_URL = process.env.VUE_APP_API_URL
+      axios({
+        method: 'get',
+        url: `${API_URL}/api/v1/community/${articleId}/comments/`,
+      })
+        .then((res) => {
+          // console.log(res.data)
+          this.comments = res.data
         })
         .catch((err) => {
           console.log(err)
         })
     },
     createComment() {
-      const Article = this.article
+      const article = this.article
       // User = 'admin',
-      const Content = this.newComment
-      if (!Content) {
+      const content = this.newComment
+      if (!content) {
         alert("댓글을 입력해주세요")
         return
       } else {
-        const data = {
-          Article: Article,
-          // User : 'admin',
-          Content: Content,
-        }
-        this.article = this.$store.dispatch("createComment", data)
-        this.getArticleData()
-        this.newComment=null
+        axios({
+          method : 'post',
+          url : `${process.env.VUE_APP_API_URL}/api/v1/community/${article.id}/createcomment/`,
+          data : {
+            content : content
+          }
+        })
+          .then((res)=> {
+            const data = res.data
+            console.log(data)
+            this.getCommentData()
+            this.newComment=null
+          })
+          .catch((err)=> {
+            console.log(err)
+          })
+        // this.article = this.$store.dispatch("createComment", data)
       }
     },
   },
   created() {
     this.getArticleData()
+    this.getCommentData()
   },
 }
 </script>
 
 <style>
+
 </style>

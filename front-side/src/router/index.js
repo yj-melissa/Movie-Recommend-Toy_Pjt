@@ -51,7 +51,6 @@ const routes = [
     name: 'ArticleDetailView',
     component: ArticleDetailView
   },  
-
 ]
 
 const router = new VueRouter({

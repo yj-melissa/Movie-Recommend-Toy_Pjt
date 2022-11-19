@@ -96,7 +96,7 @@ export default {
     getReviewList(){
       const List = []
       const ReviewList = this.$store.state.ReviewList
-      for(const review of ReviewList ){
+      for(const review of ReviewList){
         if(review.movie == this.$route.params.movieid){
           List.push(review)
         }
