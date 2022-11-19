@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home m-0">
     <div>
       <label for="fiterselect">정렬하기</label>
       <select name="fiterselect" id="fiterselect" @change="selectOption">
