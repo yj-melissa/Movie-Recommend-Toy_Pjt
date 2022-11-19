@@ -33,6 +33,9 @@ export default new Vuex.Store({
     isLogin(state) {
       return state.accessToken ? true : false
     },
+    getToken(state) {
+      return state.accessToken
+    },
   },
 
   mutations: {
@@ -60,7 +63,15 @@ export default new Vuex.Store({
       state.accessToken = data.accessToken
       state.refreshToken = data.refreshToken
       state.user = data.user
-    }
+    },
+
+    LOGOUT(state) {
+      state.accessToken = null, 
+      state.refreshToken = null, 
+      state.user = []
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
+    },
 
   }, 
 
@@ -86,16 +97,17 @@ export default new Vuex.Store({
 
     logout(context) {
       const token = context.getters.getToken
+      // console.log(token)
       axios({
         method: 'POST',
         url: `${API_URL}/api/v1/accounts/logout/`,
-        data: {
-          key: token,
+        headers: {
+          Authorization: `Bearer ${token}`,
         }
       })
         .then((res) => {
           console.log(res)
-          context.commit('LOGOUT', res)
+          context.commit('LOGOUT')
         })
         .catch((err) => {
           console.log(err)
