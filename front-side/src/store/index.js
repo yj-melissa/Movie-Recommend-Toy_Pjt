@@ -20,7 +20,6 @@ export default new Vuex.Store({
     userName: null,
     Articles : [],
     ReviewList : [],
-    article : [],
   },
 
   getters: {
@@ -36,9 +35,6 @@ export default new Vuex.Store({
     getUserName(state) {
       return state.userName
     },
-    getArticle(state) {
-      return state.article
-    }
   },
 
   mutations: {
@@ -52,7 +48,7 @@ export default new Vuex.Store({
       const jsonUserInfo = JSON.parse(userInfo)
       state.token = payload.data.key
       state.userName = jsonUserInfo.username
-      this.$router.push({ name: 'HomeView' })
+      // this.$router.push({ name: 'HomeView' })
     },
     
     LOGOUT(state) {
@@ -77,9 +73,6 @@ export default new Vuex.Store({
       state.ReviewList = data
     },
 
-    GET_ARTICLE_DATA(state, data) {
-      state.article = data
-    }
   }, 
 
   actions: {
@@ -155,14 +148,19 @@ export default new Vuex.Store({
         }
       })
         .then(res => {
+          console.log('res')
+          console.log(res)
           context.commit('SAVE_USER_INFO', res)
         })
         .catch(err => {
+          console.log('err:')
+          console.log(err)
           const errMessage = err.response.request.response
           const jsonErrMessage = JSON.parse(errMessage)
-          for (const [key, value] of Object.entries(jsonErrMessage)) {
-            alert(`${key}: ${value}`)
-          }
+          alert(jsonErrMessage)
+          // for (const [key, value] of Object.entries(jsonErrMessage)) {
+          //   alert(`${key}: ${value}`)
+          // }
         })
     },
     getArticles(context){
