@@ -227,11 +227,13 @@ export default new Vuex.Store({
       const movieid = data.movie_id
       // const User = data.User
       const content = data.content
+      const score = data.score
       axios({
         method : 'POST',
         url : `${API_URL}/api/v1/server/${movieid}/createreview/`,
         data : {
-          content : content
+          content : content,
+          score : score
         }
       })
         .then((res) => {
