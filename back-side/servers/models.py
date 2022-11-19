@@ -7,12 +7,13 @@ class Movie(models.Model):
     id = models.IntegerField(primary_key=True)
     genre_ids = models.JSONField()
     adult = models.BooleanField()
-    backdrop_path = models.TextField()
+    backdrop_path = models.TextField(null=True)
     original_language = models.TextField()
     popularity = models.IntegerField()
-    poster_path = models.TextField()
+    poster_path = models.TextField(null=True)
     release_date = models.DateField()
     vote_average = models.FloatField()
+    actors = models.JSONField(default=False)
 
 
 class Review(models.Model):

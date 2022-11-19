@@ -11,6 +11,7 @@
           <p class="white-text" > 평점 : {{ changeMovie.vote_average}}</p>
           <p class="white-text"> 개봉일자 : {{ changeMovie.release_date}}</p>
           <p class="white-text"> 상영시간 : {{ changeMovie.runtime}} 분 </p>
+          <p class="white-text"> <span>장르 : </span><span v-for="genre of changeMovie.genres" :key="genre.id" :genre="genre.name"> {{genre.name}} </span></p>
         </b-col>
       </b-row>
       <b-row>
@@ -23,17 +24,24 @@
           </div>
         </b-col>
       </b-row>
-      <b-row class="text-center">
+      <b-row class="text-center" align-v="center">
         <b-col cols='8'></b-col>
         <b-col cols='1' id="score">
           <span> 평점 : </span>
         </b-col>
-        <b-col class="star"
+        <!-- <b-col class="star"
             v-for="index in 5"
             :key="index"
             @click="check(index)">
           <span v-if="index < score">🌕</span>
           <span v-if="index >= score">🌑</span>
+        </b-col> -->
+        <b-col>
+          <b-form-rating v-model="score" variant="warning" class="mb-2"
+            show-value
+            show-value-max
+            precision="0"
+            size="lg"></b-form-rating>
         </b-col>
       </b-row>
       <b-row class="my-4">
@@ -53,8 +61,23 @@
       <b-row>
         <b-list-group class="w-100 text-left px-4 mb-5 ">
           <b-list-group-item v-for="review in this.ReviewList" :key="review.number" :review="review">
-              <span>{{review.content}}</span>
-              <span>{{review.score}}</span> 
+            <b-container>
+              <b-row align-v="center">
+                <b-col cols='10' class="px-4">
+                  {{review.content}}
+                </b-col>
+                <b-col cols='2' class="py-2 px-0">
+                  <span> 평점 : </span>
+                  <span
+                  v-for="index in 5"
+                  :key="index"
+                  class="text-right">
+                    <span class="m-0 p-0" v-if="index < review.score">🌕</span>
+                    <span class="m-0 p-0" v-if="index >= review.score">🌑</span>
+                  </span>
+                </b-col>
+              </b-row>
+            </b-container>
           </b-list-group-item>
         </b-list-group>
       </b-row>
@@ -73,7 +96,7 @@ export default {
       newComment : null,
       ReviewList : [],
       videoId : null,
-      score: 0
+      score: 3
     }
   },
   methods: {
@@ -88,7 +111,7 @@ export default {
       const data = {
         movie_id : this.$route.params.movieid,
         content : this.newComment,
-        score : this.score
+        score : this.score+1
       }
       this.$store.dispatch('createMovieReview',data)
       this.newComment = null
@@ -106,6 +129,7 @@ export default {
       console.log(this.Moviedata)
     },
     getVedio(){
+      // console.log(`https://www.googleapis.com/youtube/v3/search?key=${process.env.VUE_APP_YOUTUBE_APIKEY}&part=snippet&type=video&q=${this.$store.state.MovieDetail.title}공식예고편`)
       axios({
         method : 'get',
         url : `https://www.googleapis.com/youtube/v3/search?key=${process.env.VUE_APP_YOUTUBE_APIKEY}&part=snippet&type=video&q=${this.$store.state.MovieDetail.title}공식예고편`

@@ -86,9 +86,6 @@ export default {
         })
       }
     },
-    view(){
-      console.log(this.$store.state.Movies)
-    }
   },
   computed: {
     changeMovie(){
