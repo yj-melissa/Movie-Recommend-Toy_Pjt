@@ -4,23 +4,24 @@ from dj_rest_auth.serializers import UserDetailsSerializer
 from .models import UserProfile
 
 class CustomRegisterSerializer(RegisterSerializer):
-    nickname = serializers.CharField(max_length=50)
+    nickname = serializers.CharField(max_length=10)
 
     def get_cleaned_data(self):
         data = super().get_cleaned_data()
+        data['nickname'] = self.validated_data.get('nickname')
         return data
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ('nickname',)
+        fields = ()
 
 class UserSerializer(UserDetailsSerializer):
 
     profile = UserProfileSerializer(source="userprofile")
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('profile',)
+        fields = UserDetailsSerializer.Meta.fields + ('profile', 'nickname')
 
     def update(self, instance, validated_data):
         userprofile_serializer = self.fields['profile']
@@ -29,7 +30,6 @@ class UserSerializer(UserDetailsSerializer):
 
         # to access the 'nickname' field in here
         # nickname = userprofile_data.get('nickname')
-        nickname = userprofile_data.get('nickname')
 
         # update the userprofile fields
         userprofile_serializer.update(userprofile_instance, userprofile_data)

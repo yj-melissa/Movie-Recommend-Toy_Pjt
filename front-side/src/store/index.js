@@ -18,11 +18,20 @@ export default new Vuex.Store({
     MovieDetail : null,
     Articles : [],
     ReviewList : [],
+    accessToken : null,
+    refreshToken: null,
+    user: [],
   },
 
   getters: {
     getMovies(state){
       return state.Movies
+    },
+    getUser(state) {
+      return state.user
+    },
+    isLogin(state) {
+      return state.accessToken ? true : false
     },
   },
 
@@ -46,6 +55,12 @@ export default new Vuex.Store({
     GET_REVIEW(state, data){
       state.ReviewList = data
     },
+
+    SAVE_USER_INFO(state, data) {
+      state.accessToken = data.accessToken
+      state.refreshToken = data.refreshToken
+      state.user = data.user
+    }
 
   }, 
 
@@ -86,35 +101,9 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
-    signUp(context, payload) {
-      const password1 = payload.password1
-      const password2 = payload.password2
-      const email = payload.email
-      const nickname = payload.nickname
-
-      axios({
-        method: 'POST',
-        url: `${API_URL}/api/v1/accounts/signup/`,
-        data: {
-          email, password1, password2, nickname
-        }
-      })
-        .then(res => {
-          console.log(res)
-          localStorage.setItem('jwt', res.data.token)
-          // this.$router.push({ name: 'HomeView' })
-          // context.commit('SAVE_USER_INFO', res)
-        })
-        .catch(err => {
-          console.log('err:')
-          console.log(err)
-          const errMessage = err.response.request.response
-          // const jsonErrMessage = JSON.parse(errMessage)
-          alert(errMessage)
-          // for (const [key, value] of Object.entries(jsonErrMessage)) {
-          //   alert(`${key}: ${value}`)
-          // }
-        })
+    saveUserInfo(context, data) {
+      console.log(data)
+      context.commit('SAVE_USER_INFO', data)
     },
     getArticles(context){
       axios({

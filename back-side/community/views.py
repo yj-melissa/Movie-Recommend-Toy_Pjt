@@ -16,6 +16,8 @@ def getarticles(request):
     elif request.method == 'POST':
         serializer = ArticleSerializer(data = request.data)
         if serializer.is_valid(raise_exception=True):
+            # serializer = serializer.save(commit=False)
+            # serializer.user = request.user
             serializer.save()
         articles = Article.objects.all()
         serializer = ArticleListSerializer(articles, many=True)

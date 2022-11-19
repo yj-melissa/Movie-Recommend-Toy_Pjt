@@ -54,10 +54,13 @@ export default {
           const data = res.data
           localStorage.setItem('access_token', data.access_token)
           localStorage.setItem('refresh_token', data.refresh_token)
-          alert('가입 성공')
+          this.$store.dispatch('saveUserInfo', data.user)
+          alert(`${data.user.nickname}님을 환영합니다!`)
+          this.$router.push({ name: 'LoginView' })
         })
         .catch((err) => {
           const errMessage = err.response.request.response
+          // console.log(errMessage)
           alert(errMessage)
           // const jsonErrMessage = JSON.parse(errMessage)
           // for (const [key, value] of Object.entries(jsonErrMessage)) {

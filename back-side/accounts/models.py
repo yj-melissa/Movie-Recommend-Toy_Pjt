@@ -31,6 +31,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
 
     email = models.EmailField(max_length=30, unique=True, null=False, blank=False)
+    nickname = models.CharField(max_length=10)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -46,5 +47,5 @@ class User(AbstractBaseUser):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='userprofile', on_delete = models.CASCADE)
     # custom fields for user
-    nickname = models.CharField(max_length=10)
+    # nickname = models.CharField(max_length=10)
 
