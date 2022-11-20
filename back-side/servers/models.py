@@ -11,7 +11,7 @@ class Movie(models.Model):
     original_language = models.TextField()
     popularity = models.IntegerField()
     poster_path = models.TextField(null=True)
-    release_date = models.DateField()
+    release_date = models.TextField()
     vote_average = models.FloatField()
     actors = models.JSONField(default=False)
 
@@ -23,4 +23,12 @@ class Review(models.Model):
     # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add= True)
     updated_at = models.DateTimeField(auto_now = True)
-    
+
+
+class SortedMovie(models.Model):
+    title = models.CharField(max_length=200)
+    id = models.IntegerField(primary_key=True)
+    genre_ids = models.JSONField()
+    poster_path = models.TextField(null=True)
+    release_date = models.TextField()
+    actors = models.JSONField(default=False)

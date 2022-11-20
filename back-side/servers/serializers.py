@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movie,Review
+from .models import Movie,Review,SortedMovie
 
 class MovieListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,4 +19,7 @@ class MovieSerializer(serializers.ModelSerializer):
         model = Movie
         fields = '__all__'
 
-
+class SortedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SortedMovie
+        fields = '__all__'

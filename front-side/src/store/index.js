@@ -14,14 +14,12 @@ export default new Vuex.Store({
 
   state: {
     Movies: [],
-    DefaultMovies : [],
     MovieDetail : null,
     token: null,
     userName: null,
     Articles : [],
     ReviewList : [],
     article : [],
-    AlgoMovieList : []
   },
 
   getters: {
@@ -82,10 +80,6 @@ export default new Vuex.Store({
     GET_ARTICLE_DATA(state, data) {
       state.article = data
     },
-
-    ALGO(state,data){
-      state.AlgoMovieList = data
-    }
   }, 
 
   actions: {
@@ -97,9 +91,11 @@ export default new Vuex.Store({
       })
         .then((res)=>{
           // console.log(res.data)
-          const Movies =res.data
+          const Movies =res.data.slice(0,30)
           Movies.sort(function(a,b){
-            return b.popularity - a.popularity
+            let a_num = Number(a.release_date.replace(/-/g,''))
+            let b_num = Number(b.release_date.replace(/-/g,''))
+            return b_num - a_num
           })
           context.commit('GET_MOVIE',Movies)
         })
@@ -264,101 +260,6 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
-
-
-
-
-
-    algo(context, data){
-      const MovieList = data.MovieList
-      const QuestionNumber = data.QuestionNumber
-      const Select = data.select
-      if(QuestionNumber == 0){
-        if(Select==1){
-          const Actor = data.Actor
-          const NewList = []
-          for(const Movie of MovieList){
-            for(const MovieActorList of Movie.actors){
-              if(Actor == MovieActorList.name){
-                NewList.push(Movie)
-              } 
-            }
-          }
-          context.commit('ALGO',NewList)
-        }else if(Select==2){
-          const Actor = data.Actor
-          const NewList = []
-          for(const Movie of MovieList){
-            let flag = 0
-            for(const MovieActorList of Movie.actors){
-              if(Actor == MovieActorList.name){
-                flag = 1
-              } 
-            }
-            if(flag == 0){
-              NewList.push(Movie)
-            }
-          }
-          context.commit('ALGO',NewList)
-        }
-
-      }else if(QuestionNumber==1){
-        if(Select==1){
-          const Genre = data.Genre
-          const NewList = []
-          for(const Movie of MovieList){
-            let flag = 0
-            for(const genre of Movie.genre_ids){
-              if(genre == Genre){
-                flag = 1
-              } 
-            }
-            if(flag==1){
-              NewList.push(Movie)
-            }
-          }
-          context.commit('ALGO',NewList)
-
-        }else if(Select==2){
-          const Genre = data.Genre
-          const NewList = []
-          for(const Movie of MovieList){
-            let flag = 0
-            for(const genre of Movie.genre_ids){
-              if(genre == Genre){
-                flag = 1
-              } 
-            }
-            if(flag!=1){
-              NewList.push(Movie)
-            }
-          }
-          context.commit('ALGO',NewList)
-        }
-      }else if(QuestionNumber==2){
-        if(Select==1){
-          const Release_date = data.release_date
-          const NewList = []
-          console.log(Release_date)
-          for(const Movie of MovieList){
-            if(Movie.release_date.split('-',1) == Release_date){
-              NewList.push(Movie)
-            }
-          }
-          context.commit('ALGO',NewList)
-        }else if(Select==2){
-          const Release_date = data.release_date
-          const NewList = []
-          console.log(Release_date)
-          for(const Movie of MovieList){
-            if(Movie.release_date.split('-',1) != Release_date){
-              NewList.push(Movie)
-            }
-          }
-        }
-      }
-    },
-
 
 
     

@@ -20,7 +20,7 @@
               </b-list-group>
             </b-card-text>
           </b-card>
-          <b-card v-else-if="this.QuestionCount < 10" border-variant="dark" :header="this.QuestonList[getNumber].Question" align="center">
+          <b-card v-else-if="this.QuestionCount < 11" border-variant="dark" :header="this.QuestonList[getNumber].Question" align="center">
             <b-card-text>
               <div v-if="this.QuestonList[getNumber].ImgUrl" class="my-2">
                 <img :src="this.QuestonList[getNumber].ImgUrl" alt="">
@@ -66,27 +66,28 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
       text: '좋아하는 영화를 하나 생각하세요',
       text2: '생각하셨나요?',
-      MovieDataList : this.$store.state.AlgoMovieList,
-      FirstMovie : this.$store.state.AlgoMovieList[0],
+      RecommendList : null,
+      FirstMovie : this.$store.state.Movies[0],
       QuestionCount : 0,
       QuestionNumber : 0,
       QuestonList : [
         {
           ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.$store.state.AlgoMovieList[0].actors[0].profile_path}`,
-          Question : `'${this.$store.state.AlgoMovieList[0].actors[0].name}'이(가) 출연한 영화인가요?`
+          Question : `'${this.$store.state.Movies[0].actors[0].name}'이(가) 출연한 영화인가요?`
         },
         {
           ImgUrl : null,
-          Question : `'${this.$store.state.AlgoMovieList[0].genre_ids[0]}' 장르의 영화인가요?`
+          Question : `'${this.$store.state.Movies[0].genre_ids[0]}' 장르의 영화인가요?`
         },
         {
           ImgUrl : null,
-          Question : `'${this.$store.state.AlgoMovieList[0].release_date.split('-',1)}'년에 개봉한 영화인가요?`
+          Question : `'${this.$store.state.Movies[0].release_date.split('-',1)}'년에 개봉한 영화인가요?`
         }
       ]
     }
@@ -95,49 +96,6 @@ export default {
   methods : {
     getRandomNumber(){
       this.QuestionNumber = Math.floor(Math.random()*3)
-      console.log(this.QuestionNumber)
-    },
-    select1(){
-      const QuestionNumber = this.QuestionNumber
-      const select = 1
-      const MovieList = this.MovieDataList
-      const Actor = this.FirstMovie.actors[0].name
-      const Genre = this.FirstMovie.genre_ids[0]
-      const release_date = this.FirstMovie.release_date.split('-',1)
-      const data = {
-        QuestionNumber,
-        select,
-        MovieList,
-        Actor,
-        Genre,
-        release_date
-      } 
-      this.$store.dispatch('algo',data)
-      this.QuestionCount += 1
-      console.log(this.QuestionCount)
-    },
-    select2(){
-      this.QuestionCount += 1
-      console.log(this.QuestionCount)
-    },
-    select3(){
-      const QuestionNumber = this.QuestionNumber
-      const select = 2
-      const MovieList = this.MovieDataList
-      const Actor = this.FirstMovie.actors[0].name
-      const Genre = this.FirstMovie.genre_ids[0]
-      const release_date = this.FirstMovie.release_date.split('-',1)
-      const data = {
-        QuestionNumber,
-        select,
-        MovieList,
-        Actor,
-        Genre,
-        release_date
-      } 
-      this.$store.dispatch('algo',data)
-      this.QuestionCount += 1
-      console.log(this.QuestionCount)
     },
 
     reset(){
@@ -145,34 +103,179 @@ export default {
       this.MovieDataList = this.$store.state.Movies
     },
 
-    getMovieList(){
-      this.MovieDataList = this.$store.state.AlgoMovieList,
-      this.FirstMovie = this.$store.state.AlgoMovieList[0],
+    changeQuestion(){
       this.QuestonList = [
         {
-          ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.$store.state.AlgoMovieList[0].actors[0].profile_path}`,
-          Question : `'${this.$store.state.AlgoMovieList[0].actors[0].name}'이(가) 출연한 영화인가요?`
+          ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.FirstMovie.actors[0].profile_path}`,
+          Question : `'${this.FirstMovie.actors[0].name}'이(가) 출연한 영화인가요?`
         },
         {
           ImgUrl : null,
-          Question : `'${this.$store.state.AlgoMovieList[0].genre_ids[0]}' 장르의 영화인가요?`
+          Question : `'${this.FirstMovie.genre_ids[0]}' 장르의 영화인가요?`
         },
         {
           ImgUrl : null,
-          Question : `'${this.$store.state.AlgoMovieList[0].release_date.split('-',1)}'년에 개봉한 영화인가요?`
+          Question : `'${this.FirstMovie.release_date.split('-',1)}'년에 개봉한 영화인가요?`
         }
       ]
-      console.log(this.FirstMovie)
     },
+
+    select1(){
+      const movieId = this.FirstMovie.id
+      const API_URL = process.env.VUE_APP_API_URL
+      if(!this.RecommendList){
+        axios({
+          method: 'get',
+          url: `${API_URL}/api/v1/server/${movieId}/${this.QuestionNumber}/1/sortmovie/`,
+        })
+          .then((res) => {
+            this.RecommendList = res.data
+            this.FirstMovie = res.data[0]
+            this.QuestionCount += 1
+            console.log(this.RecommendList)
+            console.log(this.FirstMovie)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      } else{
+        
+        const MovieList = this.RecommendList
+        
+        if(this.QuestionNumber == 0){
+          const Actor = this.FirstMovie.actors[0].name
+          const NewList = []
+          for(const Movie of MovieList){
+            for(const MovieActorList of Movie.actors){
+              if(Actor == MovieActorList.name){
+                NewList.push(Movie)
+              } 
+            }
+          }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          this.QuestionCount += 1
+
+        }else if(this.QuestionNumber==1){
+          const Genre = this.FirstMovie.genre_ids[0]
+          const NewList = []
+          for(const Movie of MovieList){
+            let flag = 0
+            for(const genre of Movie.genre_ids){
+              if(genre == Genre){
+                flag = 1
+              } 
+            }
+            if(flag==1){
+              NewList.push(Movie)
+            }
+          }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          this.QuestionCount += 1
+
+        }else if(this.QuestionNumber==2){
+            const Release_date = Number(this.FirstMovie.release_date.split('-',1))
+            const NewList = []
+            for(const Movie of MovieList){
+              if(Number(Movie.release_date.split('-',1)) == Release_date){
+                NewList.push(Movie)
+              }
+            }
+            this.RecommendList = NewList
+            this.FirstMovie = NewList[0]
+            console.log(this.FirstMovie)
+            this.QuestionCount += 1
+          }
+        }
+    },
+    select2(){
+      this.QuestionCount += 1
+      console.log(this.QuestionCount)
+    },
+    select3(){
+      const movieId = this.FirstMovie.id
+      const API_URL = process.env.VUE_APP_API_URL
+      if(!this.RecommendList){
+        axios({
+          method: 'GET',
+          url: `${API_URL}/api/v1/server/${movieId}/${this.QuestionNumber}/2/sortmovie/`,
+        })
+          .then((res) => {
+            this.RecommendList = res.data
+            this.FirstMovie = res.data[0]
+            this.QuestionCount += 1
+            console.log(this.FirstMovie)
+            console.log(this.RecommendList)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+  
+      } else{
+        const MovieList = this.RecommendList
+        if(this.QuestionNumber == 0){
+          const Actor = this.FirstMovie.actors[0].name
+          const NewList = []
+          for(const Movie of MovieList){
+            let flag = 0
+            for(const MovieActorList of Movie.actors){
+              if(Actor == MovieActorList.name){
+                flag = 1
+              } 
+            }
+            if(flag == 0){
+              NewList.push(Movie)
+            }
+          }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          console.log(this.FirstMovie)
+          this.QuestionCount += 1
+
+        }else if(this.QuestionNumber==1){
+          const Genre = this.FirstMovie.genre_ids[0]
+          const NewList = []
+          for(const Movie of MovieList){
+            let flag = 0
+            for(const genre of Movie.genre_ids){
+              if(genre == Genre){
+                flag = 1
+              } 
+            }
+            if(flag==0){
+              NewList.push(Movie)
+            }
+          }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          console.log(this.FirstMovie)
+          this.QuestionCount += 1
+
+        }else if(this.QuestionNumber==2){
+            const Release_date = Number(this.FirstMovie.release_date.split('-',1))
+            const NewList = []
+            for(const Movie of MovieList){
+              if(Number(Movie.release_date.split('-',1)) != Release_date){
+                NewList.push(Movie)
+              }
+            }
+            this.RecommendList = NewList
+            this.FirstMovie = NewList[0]
+            console.log(this.FirstMovie)
+            console.log(this.RecommendList)
+            this.QuestionCount += 1
+          }
+        }
+    },
+
+    
   },
   created(){
     this.getRandomNumber()
-    this.getMovieList()
+    this.changeQuestion()
   },
   computed: {
-    changeMovie(){
-      return this.$store.state.AlgoMovieList
-    },
     changeCount(){
       return this.QuestionCount
     },
@@ -183,10 +286,11 @@ export default {
   watch : {
     changeCount(){
       this.getRandomNumber()
-      this.getMovieList()
+      this.changeQuestion()
     }
   }
 }
+
 </script>
 
 <style scoped>

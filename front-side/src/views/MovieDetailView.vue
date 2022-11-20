@@ -126,7 +126,6 @@ export default {
       }
       this.ReviewList = List
       this.Moviedata = this.$store.state.MovieDetail
-      console.log(this.Moviedata)
     },
     getVedio(){
       // console.log(`https://www.googleapis.com/youtube/v3/search?key=${process.env.VUE_APP_YOUTUBE_APIKEY}&part=snippet&type=video&q=${this.$store.state.MovieDetail.title}공식예고편`)
@@ -165,6 +164,7 @@ export default {
       this.getReviewList()
     },
     changeMovie(){
+      console.log(this.$store.state.MovieDetail)
       this.getVedio()
     }
   }

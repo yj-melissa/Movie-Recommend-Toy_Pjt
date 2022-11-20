@@ -87,7 +87,7 @@ def get_movie_datas():
 
     count = 1
     # 1페이지부터 500페이지까지 (페이지당 20개, 총 10,000개)
-    for i in range(1, 5):
+    for i in range(1, 100):
         request_url = f"https://api.themoviedb.org/3/movie/popular?api_key={TMDB_API_KEY}&language=ko-KR&page={i}"
         movies = requests.get(request_url).json()
 
@@ -95,44 +95,42 @@ def get_movie_datas():
             actor_request_url = f"https://api.themoviedb.org/3/movie/{movie['id']}/credits?api_key={TMDB_API_KEY}&language=ko-KR"
             actors = requests.get(actor_request_url).json()
 
-            genre_list = []
-            for i in movie.get('genre_ids'):
-                for j in genres:
-                    if j['id'] == i:
-                        genre_list.append(j['name'])
-            if movie.get('title') == False:
-                break
-            elif movie.get('overview') == False:
-                break
-            elif movie.get('backdrop_paht') == False:
-                break
-            elif movie.get('poster_path') == False:
-                break
-                
+            if movie.get('adult') == True:
+                pass
+            
+            else:
+                if movie.get('release_date'):
+                    if int(movie.get('release_date')[0:4]) > 2023:
+                        pass
+                    else:
+                        genre_list = []
+                        for i in movie.get('genre_ids'):
+                            for j in genres:
+                                if j['id'] == i:
+                                    genre_list.append(j['name'])
 
-            if movie.get('release_date', ''):
-                movie_dict = {
-                    "model" : "servers.movie",
-                    "pk": count,
-                    'fields' : {
-                    'title': movie.get('title'),
-                    'overview': movie['overview'],
-                    'id' : movie.get('id'),
-                    'genre_ids': genre_list,
-                    'adult' : movie.get('adult'),
-                    'backdrop_path' : movie.get('backdrop_path'),
-                    'original_language': movie.get('original_language'),
-                    'popularity' :  movie.get('popularity'),
-                    'poster_path' : movie.get('poster_path'),
-                    'release_date' : movie.get('release_date'),
-                    'vote_average' : movie.get('vote_average'),
-                    'actors' : actors['cast'] 
-                    }
-                }
+                        movie_dict = {
+                            "model" : "servers.movie",
+                            "pk": count,
+                            'fields' : {
+                            'title': movie.get('title'),
+                            'overview': movie['overview'],
+                            'id' : movie.get('id'),
+                            'genre_ids': genre_list,
+                            'adult' : movie.get('adult'),
+                            'backdrop_path' : movie.get('backdrop_path'),
+                            'original_language': movie.get('original_language'),
+                            'popularity' :  movie.get('popularity'),
+                            'poster_path' : movie.get('poster_path'),
+                            'release_date' : movie.get('release_date'),
+                            'vote_average' : movie.get('vote_average'),
+                            'actors' : actors['cast'] 
+                            }
+                        }
 
-                count+=1
-                
-                total_data.append(movie_dict)
+                        count+=1
+                            
+                        total_data.append(movie_dict)            
 
     with open("back-side/servers/fixtures/movie_data.json", "w", encoding="utf-8") as make_file:
         json.dump(total_data, make_file, indent="\t", ensure_ascii=False)
