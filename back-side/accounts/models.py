@@ -44,8 +44,8 @@ class User(AbstractBaseUser):
     def __str__(self):
         return self.email
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, related_name='userprofile', on_delete = models.CASCADE)
-    # custom fields for user
-    # nickname = models.CharField(max_length=10)
+# class UserProfile(models.Model):
+#     user = models.OneToOneField(User, related_name='userprofile', on_delete = models.CASCADE)
+#     # custom fields for user
+#     # nickname = models.CharField(max_length=10)
 

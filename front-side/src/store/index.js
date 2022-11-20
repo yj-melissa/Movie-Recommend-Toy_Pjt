@@ -16,7 +16,6 @@ export default new Vuex.Store({
     Movies: [],
     DefaultMovies : [],
     MovieDetail : null,
-    Articles : [],
     ReviewList : [],
     accessToken : null,
     refreshToken: null,
@@ -43,13 +42,6 @@ export default new Vuex.Store({
       state.Movies = Movies
       state.DefaultMovies = Movies
     },
-    GET_ARTICLES(state, Articels){
-      state.Articles = Articels
-    },
-
-    CREATE_ARTICLES(state, Articels){
-      state.Articles = Articels
-    },
 
     GET_DETAIL(state,data){
       state.MovieDetail = data
@@ -69,8 +61,6 @@ export default new Vuex.Store({
       state.accessToken = null, 
       state.refreshToken = null, 
       state.user = []
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('refresh_token')
     },
 
   }, 
@@ -80,7 +70,10 @@ export default new Vuex.Store({
       console.log(`${API_URL}/api/v1/server/getmovie/`)
       axios({
         method : 'get',
-        url : `${API_URL}/api/v1/server/getmovie/`
+        url : `${API_URL}/api/v1/server/getmovie/`,
+        headers: {
+          Authorization: `Bearer ${context.getters.getToken}`
+        }
       })
         .then((res)=>{
           // console.log(res.data)
@@ -105,63 +98,16 @@ export default new Vuex.Store({
           Authorization: `Bearer ${token}`,
         }
       })
-        .then((res) => {
-          console.log(res)
-          context.commit('LOGOUT')
+        .then(() => {
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
         })
+        context.commit('LOGOUT')
     },
     saveUserInfo(context, data) {
       console.log(data)
       context.commit('SAVE_USER_INFO', data)
     },
-    getArticles(context){
-      axios({
-        method : 'get',
-        url: `${API_URL}/api/v1/community/getarticles/`
-      })
-        .then((res) => {
-          context.commit('GET_ARTICLES', res.data)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    },
-    createArticle(context,payload){
-      const title = payload.title
-      const content = payload.content
-      axios({
-        method : 'post',
-        url: `${API_URL}/api/v1/community/getarticles/`,
-        data :{
-          title, content
-        }
-      })
-        .then((res)=> {
-          const data = res.data
-          context.commit('CREATE_ARTICLES', data)
-        })
-        .catch((err)=>{
-          console.log(err)
-        })
-    },
-    getArticleData(context, articleId) {
-      axios({
-        method: "get",
-        url: `${API_URL}/api/v1/community/${articleId}/`,
-      })
-        .then((res) => {
-          const data = res.request.response
-          const jsonData = JSON.parse(data)
-          // console.log(jsonData)
-          context.commit('GET_ARTICLE_DATA', jsonData)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-      },
     getDetail(context,movieid){
       axios({
         method: 'GET',
@@ -187,6 +133,9 @@ export default new Vuex.Store({
         data : {
           content : content,
           score : score
+        },
+        headers: {
+          Authorization: `Bearer ${context.getters.getToken}`
         }
       })
         .then((res) => {
@@ -200,7 +149,10 @@ export default new Vuex.Store({
     getReview(context){
       axios({
         method : 'GET',
-        url : `${API_URL}/api/v1/server/getreview/`
+        url : `${API_URL}/api/v1/server/getreview/`,
+        headers: {
+          Authorization: `Bearer ${context.getters.getToken}`
+        }
       })
         .then((res)=>{
           const data = res.data

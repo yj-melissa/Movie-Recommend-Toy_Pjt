@@ -19,12 +19,14 @@
   <b-row class="mt-4 text-right">
     <b-col></b-col>
     <b-col></b-col>
-    <b-col><router-link :to="{name : 'CommunityView'} "><button @click="createArticle" >작성하기</button></router-link> </b-col>
+    <b-col><button @click="createArticle">작성하기</button></b-col>
   </b-row>
 </b-container>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name : 'ArticleCreateView',
   data(){
@@ -37,21 +39,33 @@ export default {
     createArticle(){
       const title = this.title
       const content = this.content
-      if (!title){
+      const API_URL = process.env.VUE_APP_API_URL
+      if (!title) {
         alert('제목을 입력해주세요')
         return
-      } else if(!content){
+      } else if(!content) {
         alert('내용을 입력해주세요')
         return
-      } else{
-        const data = {
-          title : title,
-          content : content
-        }
-        this.$store.dispatch('createArticle',data)
+      } else {
+        axios({
+          method : 'post',
+          url: `${API_URL}/api/v1/community/getarticles/`,
+          headers : {
+            Authorization : `Bearer ${this.$store.getters.getToken}`
+          },
+          data :{
+            title, content
+          },
+        })
+          .then(()=> {
+            alert(`글 등록 성공`)
+            this.$router.push({ name: 'CommunityView' }) 
+          })
+          .catch((err)=>{
+            console.log(err)
+          })
       }
-      
-    }
+    },
   },
 
 }

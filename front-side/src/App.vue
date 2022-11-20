@@ -5,7 +5,8 @@
       <router-link :to="{name : 'RecommendView'} ">Recommend</router-link> |
       <router-link :to="{name : 'CommunityView'}">Community</router-link> | 
       <span v-if="isLogin">
-        <a @click="logout">Logout</a>
+        <router-link :to="{name : 'ProfileView' }">Profile</router-link> |
+        <a src="" @click="logout">Logout</a>
       </span>
       <span v-else>
         <router-link :to="{name : 'LoginView'}">Login</router-link>
@@ -24,7 +25,9 @@ export default ({
     }
   },
   methods: {
-    logout() {
+    logout() {      
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
       this.$store.dispatch('logout')
     },
   },
