@@ -39,8 +39,6 @@ export default new Vuex.Store({
   mutations: {
     GET_MOVIE(state, Movies) {
       state.Movies = Movies
-      state.DefaultMovies = Movies
-      state.AlgoMovieList = Movies
     },
 
     GET_DETAIL(state,data){

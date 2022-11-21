@@ -48,7 +48,7 @@
         <b-col align-self="center"><img src="https://cdn0.iconfinder.com/data/icons/streamline-emoji-1/48/178-man-astronaut-2-512.png" alt=""></b-col>
       </b-row>
       <b-row>
-        <b-col>
+        <b-col v-if="this.QuestionCount==0" >
           <p
             v-for="(t, index) in text2"
             :key="index"
@@ -60,6 +60,40 @@
         <b-col>
 
         </b-col>
+      </b-row>
+      <b-row v-if="this.QuestionCount==11">
+        <div v-for="movie of this.AnoterMovie" :key="movie.index">
+          <span></span>
+        </div>
+        <div>
+        <b-carousel
+          id="carousel-1"
+          v-model="slide"
+          :interval="4000"
+          controls
+          indicators
+          background="#ababab"
+          img-width="1024"
+          img-height="480"
+          style="text-shadow: 1px 1px 2px #333;"
+          @sliding-start="onSlideStart"
+          @sliding-end="onSlideEnd"
+        >
+          <!-- Text slides with image -->
+          <b-carousel-slide>
+          <b-card-group>
+            <b-card :img-src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+movie.poster_path" img-alt="Image" img-top v-for="movie of this.AnoterMovie" :key="movie.index">
+            </b-card>
+          </b-card-group>
+
+          </b-carousel-slide>
+        </b-carousel>
+
+        <p class="mt-4">
+          Slide #: {{ slide }}<br>
+          Sliding: {{ sliding }}
+        </p>
+      </div>
       </b-row>
     </b-container>
     
@@ -78,6 +112,7 @@ export default {
       FirstMovie : this.$store.state.Movies[0],
       QuestionCount : 0,
       QuestionNumber : 0,
+      AnoterMovie : null,
       QuestonList : [
         {
           ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.$store.state.AlgoMovieList[0].actors[0].profile_path}`,
@@ -271,6 +306,26 @@ export default {
         }
     },
 
+    getAnoterMovie(){
+      const movieId = this.FirstMovie.id
+      const API_URL = process.env.VUE_APP_API_URL
+      console.log('또다른 영화는')
+      axios({
+          method: 'get',
+          url: `${API_URL}/api/v1/server/${movieId}/anothermovie/`,
+        })
+          .then((res) => {
+            const AnotherMovied = res.data
+            AnotherMovied.sort(function(a,b){
+              return b.popularity - a.popularity
+            })
+            this.AnoterMovie = AnotherMovied.slice(0,5)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+    }
+
     
   },
   created(){
@@ -286,10 +341,17 @@ export default {
     }
   },
   watch : {
+    QuestionCount: function(newValue){
+      if(newValue == 11){
+        this.getAnoterMovie()
+      }
+    },
     changeCount(){
       this.getRandomNumber()
       this.changeQuestion()
-    }
+    },
+    
+    
   }
 }
 

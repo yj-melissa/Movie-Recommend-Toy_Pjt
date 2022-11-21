@@ -97,18 +97,19 @@ export default {
     },
     getReview(){
       this.$store.dispatch('getReview')
+    },
+    getFirstMovie(){
+      this.$store.pispatch('getMovie')
     }
   },
   created(){
     this.getReview() 
-    return this.getMovie()
+    this.getMovie()
+    this.getFirstMovie()
   },
   computed: {
     getMovieData(){
       return this.Movies_data
-    },
-    getDefaultMovies(){
-      return this.$store.state.DefaultMovies
     },
   }
 }
