@@ -8,7 +8,7 @@ import store from './store'
 import router from './router'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueYoutube from 'vue-youtube'
-
+import Carousel3d from 'vue-carousel-3d'
 
 
 
@@ -23,6 +23,8 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueYoutube)
 Vue.config.productionTip = false
+
+Vue.use(Carousel3d)
 
 new Vue({
   store,

@@ -1,29 +1,38 @@
 <template>
   <b-container class="bv-example-row animate__animated animate__fadeInRight" >
-    <b-row class="text-center my-4">
-      <b-col id='board'> 자유게시판 </b-col>
-    </b-row>
-    <b-row class="text-right">
-      <b-col></b-col>
-      <b-col cols="10">
-        <button> <router-link :to="{name : 'ArticleCreateView'} ">글 쓰기</router-link> </button>
-      </b-col>
-      <b-col></b-col>
-    </b-row>
-    <b-row class="text-left">
-      <b-col></b-col>
-      <b-col cols="10">
-        <b-list-group v-for="article in articles" :key="article.x" :articles="article">
-            <router-link :to="{name : 'ArticleDetailView', params:{articleid : article.id} }">
-              <b-list-group-item>
-                제목 : <span>{{ article.title }}</span> 
-              </b-list-group-item>         
-            </router-link>
-          
-        </b-list-group>
-      </b-col>
-      <b-col></b-col>
-    </b-row>
+    <div id="board" class="card">
+      <div class="card-header text-center"> 
+       <b-row align-v="center"> 
+        <b-col></b-col>
+        <b-col class="" cols="8"> <h2 class="p-2 mb-0">자유게시판</h2></b-col>
+        <b-col class="text-right" ><router-link :to="{name : 'ArticleCreateView'} "><b-button pill variant="outline-secondary">글 쓰기</b-button></router-link></b-col>
+       </b-row>
+      </div>
+      <div class="card-body">
+        <b-row>
+          <b-col cols="12">
+          <b-list-group class="text-left">
+            <b-list-group-item>
+              <b-row>
+                <b-col class="text-center" cols="10"> 제 목 </b-col>
+                <b-col class="text-right" cols="2">작성자</b-col>
+              </b-row>
+            </b-list-group-item>
+            <b-list-group-item v-for="article in articles" :key="article.x" :articles="article">
+              <b-row>
+              <b-col cols="8">
+              <router-link :to="{name : 'ArticleDetailView', params:{articleid : article.id} }">
+                {{ article.title }} 
+              </router-link>
+              </b-col>
+              <b-col class="text-right" cols="4"> {{ article.user.nickname }} </b-col>
+              </b-row>
+            </b-list-group-item>         
+          </b-list-group>
+          </b-col>
+        </b-row>
+      </div>
+    </div>
   </b-container>
 </template>
 <script>
@@ -61,8 +70,7 @@ export default {
 </script>
 <style scoped>
 #board{
-  color: whitesmoke;
-  font-size: 2rem;
+  min-height: 600px;
 }
 .animate__animated.animate__fadeInRight {
   --animate-duration: 0.8s;
