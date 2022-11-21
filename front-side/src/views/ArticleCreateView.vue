@@ -61,8 +61,9 @@ export default {
             alert(`글 등록 성공`)
             this.$router.push({ name: 'CommunityView' }) 
           })
-          .catch((err)=>{
-            console.log(err)
+          .catch(()=>{
+            alert('로그인해주세요')
+            return
           })
       }
     },

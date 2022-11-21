@@ -1,6 +1,6 @@
 <template>
-  <div class="container row mt-3" style="margin:100 auto">
-    <div class="card col-8 p-0 row justify-content-center text-left" style="margin:0 auto">
+  <div class="container row mt-3" style="margin:0 auto">
+    <div class="card col-12 p-0 row justify-content-center text-left" style="margin:0 auto">
       <h4 class="card-header py-3">
         {{ article?.title }}
       </h4>

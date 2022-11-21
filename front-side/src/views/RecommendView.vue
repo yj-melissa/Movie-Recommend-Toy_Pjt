@@ -29,6 +29,8 @@
                 <b-list-group-item @click="select1" > 네 </b-list-group-item>
                 <b-list-group-item @click="select2" > 모르겠습니다 </b-list-group-item>
                 <b-list-group-item @click="select3" > 아니오 </b-list-group-item>
+                <b-progress :value="this.QuestionCount/10*100" variant="danger" :animated="true" class="mt-3"></b-progress>
+                <p> {{this.QuestionCount}} / 10</p>
               </b-list-group>
             </b-card-text>
           </b-card>
@@ -43,7 +45,7 @@
             </b-card-text>
           </b-card>
         </b-col>
-        <b-col><img src="https://cdn0.iconfinder.com/data/icons/streamline-emoji-1/48/178-man-astronaut-2-512.png" alt=""></b-col>
+        <b-col align-self="center"><img src="https://cdn0.iconfinder.com/data/icons/streamline-emoji-1/48/178-man-astronaut-2-512.png" alt=""></b-col>
       </b-row>
       <b-row>
         <b-col>

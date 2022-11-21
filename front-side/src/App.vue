@@ -42,10 +42,15 @@ export default ({
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  
   background-image: url('https://th.bing.com/th/id/R.206d1860d16a9508f78744907f334f07?rik=BZbNqlbckMZm5A&riu=http%3a%2f%2fblogfiles.naver.net%2f20150205_285%2fminsoozoa_1423097179566qIcyl_JPEG%2f51.jpg&ehk=%2fTX9t9GBIhdLmN1eug268CvxKAdnzxgolzPw9XEaSMA%3d&risl=&pid=ImgRaw&r=0');
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center center;
+  min-height: 1000px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size : cover;
 }
 
 nav {

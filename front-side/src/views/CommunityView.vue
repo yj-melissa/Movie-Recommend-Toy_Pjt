@@ -1,5 +1,8 @@
 <template>
-  <b-container class="bv-example-row">
+  <b-container class="bv-example-row" >
+    <b-row class="text-center my-4">
+      <b-col id='board'> 자유게시판 </b-col>
+    </b-row>
     <b-row class="text-right">
       <b-col></b-col>
       <b-col cols="10">
@@ -11,9 +14,12 @@
       <b-col></b-col>
       <b-col cols="10">
         <b-list-group v-for="article in articles" :key="article.x" :articles="article">
-          <router-link :to="{name : 'ArticleDetailView', params:{articleid : article.id} }">
-            <b-list-group-item>제목 : {{ article.title }}</b-list-group-item>
-          </router-link>
+            <router-link :to="{name : 'ArticleDetailView', params:{articleid : article.id} }">
+              <b-list-group-item>
+                제목 : <span>{{ article.title }}</span> 
+              </b-list-group-item>         
+            </router-link>
+          
         </b-list-group>
       </b-col>
       <b-col></b-col>
@@ -53,3 +59,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+#board{
+  color: whitesmoke;
+  font-size: 2rem;
+}
+</style>

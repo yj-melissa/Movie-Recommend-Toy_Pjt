@@ -148,6 +148,7 @@ export default new Vuex.Store({
           context.commit('GET_REVIEW',data)
         })
         .catch((err)=> {
+          alert('로그인해주세요')
           console.log(err)
         })
     },
