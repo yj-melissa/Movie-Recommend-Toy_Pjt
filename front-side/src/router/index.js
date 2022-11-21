@@ -53,6 +53,11 @@ const routes = [
     component: ArticleCreateView
   },  
   {
+    path: '/articleedit/:articleid',
+    name: 'ArticleEditView',
+    component: ArticleCreateView
+  },
+  {
     path: '/articledetail/:articleid',
     name: 'ArticleDetailView',
     component: ArticleDetailView

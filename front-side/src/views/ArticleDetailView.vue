@@ -9,6 +9,8 @@
         <p class="card-text py-3">
           {{ article?.content }}
         </p>
+        <button> <router-link :to="{name : 'ArticleCreateView', params: { articleid:article?.id } } ">수정</router-link></button>
+        <button @click="articleDelete">삭제</button>
       </div>
       <div class="card-footer container p-0 text-center">
         <ul class="list-group list-group-flush p-0 m-0 text-left">
@@ -16,6 +18,7 @@
             v-for="comment in comments"
             :key="comment.id"
             :comment="comment"
+            @comment-update="getCommentData"
             class="list-group-item bg-transparent"
           />
         </ul>
@@ -63,7 +66,6 @@ export default {
         }
       })
         .then((res) => {
-          // console.log(res.data)
           this.article = res.data
         })
         .catch((err) => {
@@ -81,7 +83,6 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res.data)
           this.comments = res.data
         })
         .catch((err) => {
@@ -89,8 +90,8 @@ export default {
         })
     },
     createComment() {
-      const article = this.article
       // User = 'admin',
+      const articleId = this.$route.params.articleid
       const content = this.newComment
       if (!content) {
         alert("댓글을 입력해주세요")
@@ -98,7 +99,7 @@ export default {
       } else {
         axios({
           method : 'post',
-          url : `${process.env.VUE_APP_API_URL}/api/v1/community/${article.id}/createcomment/`,
+          url : `${process.env.VUE_APP_API_URL}/api/v1/community/${articleId}/createcomment/`,
           headers : {
             Authorization : `Bearer ${this.$store.getters.getToken}`
           },
@@ -117,6 +118,23 @@ export default {
           })
       }
     },
+    articleDelete() {
+      const articleId = this.$route.params.articleid
+      axios({
+        method : 'delete',
+        url : `${process.env.VUE_APP_API_URL}/api/v1/community/${articleId}/`,
+        headers : {
+            Authorization : `Bearer ${this.$store.getters.getToken}`
+          },
+      })
+        .then((res) => {
+          console.log(res)
+          this.$router.push({ name: 'CommunityView'})
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   },
   created() {
     this.getArticleData()

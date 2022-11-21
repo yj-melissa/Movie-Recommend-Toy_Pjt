@@ -51,16 +51,24 @@ export default {
         }
       })
         .then((res) => {
-          const data = res.data
-          localStorage.setItem('access_token', data.access_token)
-          localStorage.setItem('refresh_token', data.refresh_token)
-          this.$store.dispatch('saveUserInfo', data.user)
+          const data = {
+            accessToken: res.data.access_token,
+            refreshToken: res.data.refresh_token,
+            user: {
+              pk: res.data.user.pk,
+              nickname: res.data.user.nickname
+            }
+          }
+          localStorage.setItem('access_token', res.data.access_token)
+          localStorage.setItem('refresh_token', res.data.refresh_token)
+          this.$store.dispatch('saveUserInfo', data)
+          console.log(data)
           alert(`${data.user.nickname}님을 환영합니다!`)
-          this.$router.push({ name: 'LoginView' })
+          this.$router.push({ name: 'HomeView' })
         })
         .catch((err) => {
           const errMessage = err.response.request.response
-          // console.log(errMessage)
+          console.log(errMessage)
           alert(errMessage)
           // const jsonErrMessage = JSON.parse(errMessage)
           // for (const [key, value] of Object.entries(jsonErrMessage)) {
