@@ -1,15 +1,17 @@
 <template>
   <div>
     <p class="m-0">{{ comment.user.nickname }}</p>
-    <span v-if="isEdit">
-      <textarea rows="1" v-model.trim="content"></textarea>
-      <button @click="saveEdit">등록</button>
+    <span v-if="!isEdit">
+        <p class="m-0" >{{ comment.content }}</p>
     </span>
-    <span v-else>
-      <p class="m-0" >{{ comment.content }}</p>
+    <div v-show="isAuthor">
+      <span v-if="isEdit">
+        <textarea rows="1" v-model.trim="content"></textarea>
+        <button @click="saveEdit">등록</button>
+      </span>
       <button @click="editComment" id="editBtn">수정</button>
-    </span>
-    <button @click="deleteComment">X</button>
+      <button @click="deleteComment">X</button>
+    </div>
   </div>
 </template>
 
@@ -25,6 +27,7 @@ export default {
     return {
       isEdit: false,
       content: null,
+      isAuthor: false,
     }
   },
   methods: {
@@ -73,8 +76,19 @@ export default {
         .catch((err) => {
           console.log(err)
         })
-    }
+    },
+    checkAuthor() {
+      const user = this.$store.getters.getUser.pk
+      const author = this.comment.user.id
+      if (user == author) {
+        this.isAuthor = true
+      }
+      console.log(this.isAuthor)
+    },
   },
+  created() {
+    this.checkAuthor()
+  }
 }
 </script>
 

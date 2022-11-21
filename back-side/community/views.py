@@ -14,7 +14,7 @@ def getarticles(request):
         articles = Article.objects.all()
         serializer = ArticleListSerializer(articles, many = True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
+    
     elif request.method == 'POST':
         serializer = ArticleSerializer(data = request.data)
         if serializer.is_valid(raise_exception=True):

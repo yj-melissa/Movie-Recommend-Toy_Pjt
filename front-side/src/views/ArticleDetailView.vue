@@ -9,8 +9,10 @@
         <p class="card-text py-3">
           {{ article?.content }}
         </p>
-        <button> <router-link :to="{name : 'ArticleCreateView', params: { articleid:article?.id } } ">수정</router-link></button>
-        <button @click="articleDelete">삭제</button>
+        <div v-show="isAuthor">
+          <button> <router-link :to="{name : 'ArticleCreateView', params: { articleid:article?.id } } ">수정</router-link></button>
+          <button @click="articleDelete">삭제</button>
+        </div>
       </div>
       <div class="card-footer container p-0 text-center">
         <ul class="list-group list-group-flush p-0 m-0 text-left">
@@ -52,6 +54,7 @@ export default {
       article: null,
       newComment : null,
       comments: [],
+      isAuthor: false,
     }
   },
   methods: {
@@ -66,7 +69,9 @@ export default {
         }
       })
         .then((res) => {
+          console.log(res.data)
           this.article = res.data
+          this.checkAuthor()
         })
         .catch((err) => {
           console.log(err)
@@ -88,6 +93,13 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    },
+    checkAuthor() {
+      const user = this.$store.getters.getUser.pk
+      const author = this.article.user.id
+      if (user == author) {
+        this.isAuthor = true
+      }
     },
     createComment() {
       // User = 'admin',
