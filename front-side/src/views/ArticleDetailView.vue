@@ -5,6 +5,7 @@
         {{ article?.title }}
       </h4>
       <div class="card-body">
+        <p>작성자 : {{ article?.user.nickname }}</p>
         <p class="card-text py-3">
           {{ article?.content }}
         </p>
@@ -50,8 +51,6 @@ export default {
       comments: [],
     }
   },
-  computed: {
-  },
   methods: {
     getArticleData() {
       const articleId = this.$route.params.articleid
@@ -59,9 +58,12 @@ export default {
       axios({
         method: 'get',
         url: `${API_URL}/api/v1/community/${articleId}/`,
+        headers: {
+          Authorization: `Bearer ${this.$store.getters.getToken}`
+        }
       })
         .then((res) => {
-          console.log(res.data)
+          // console.log(res.data)
           this.article = res.data
         })
         .catch((err) => {
@@ -74,9 +76,12 @@ export default {
       axios({
         method: 'get',
         url: `${API_URL}/api/v1/community/${articleId}/comments/`,
+        headers: {
+          Authorization: `Bearer ${this.$store.getters.getToken}`
+        }
       })
         .then((res) => {
-          // console.log(res.data)
+          console.log(res.data)
           this.comments = res.data
         })
         .catch((err) => {
@@ -94,6 +99,9 @@ export default {
         axios({
           method : 'post',
           url : `${process.env.VUE_APP_API_URL}/api/v1/community/${article.id}/createcomment/`,
+          headers : {
+            Authorization : `Bearer ${this.$store.getters.getToken}`
+          },
           data : {
             content : content
           }
@@ -107,7 +115,6 @@ export default {
           .catch((err)=> {
             console.log(err)
           })
-        // this.article = this.$store.dispatch("createComment", data)
       }
     },
   },

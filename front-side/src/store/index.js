@@ -15,29 +15,25 @@ export default new Vuex.Store({
   state: {
     Movies: [],
     MovieDetail : null,
-    token: null,
-    userName: null,
-    Articles : [],
     ReviewList : [],
-    article : [],
+    accessToken : null,
+    refreshToken: null,
+    user: [],
   },
 
   getters: {
-    isLogin(state) {
-      return state.token ? true : false
-    },
-    getToken(state) {
-      return state.token
-    },
     getMovies(state){
       return state.Movies
     },
-    getUserName(state) {
-      return state.userName
+    getUser(state) {
+      return state.user
     },
-    getArticle(state) {
-      return state.article
-    }
+    isLogin(state) {
+      return state.accessToken ? true : false
+    },
+    getToken(state) {
+      return state.accessToken
+    },
   },
 
   mutations: {
@@ -47,34 +43,24 @@ export default new Vuex.Store({
       state.AlgoMovieList = Movies
     },
 
-    SAVE_USER_INFO(state, payload) {      
-      const userInfo = payload.config.data
-      const jsonUserInfo = JSON.parse(userInfo)
-      state.token = payload.data.key
-      state.userName = jsonUserInfo.username
-      this.$router.push({ name: 'HomeView' })
-    },
-    
-    LOGOUT(state) {
-      state.token = null
-      state.userName = null
-      this.$router.push({ name: 'HomeView' })
-    },
-
-    GET_ARTICLES(state, Articels){
-      state.Articles = Articels
-    },
-
-    CREATE_ARTICLES(state, Articels){
-      state.Articles = Articels
-    },
-
     GET_DETAIL(state,data){
       state.MovieDetail = data
     },
 
     GET_REVIEW(state, data){
       state.ReviewList = data
+    },
+
+    SAVE_USER_INFO(state, data) {
+      state.accessToken = data.accessToken
+      state.refreshToken = data.refreshToken
+      state.user = data.user
+    },
+
+    LOGOUT(state) {
+      state.accessToken = null, 
+      state.refreshToken = null, 
+      state.user = []
     },
 
     GET_ARTICLE_DATA(state, data) {
@@ -87,7 +73,10 @@ export default new Vuex.Store({
       console.log(`${API_URL}/api/v1/server/getmovie/`)
       axios({
         method : 'get',
-        url : `${API_URL}/api/v1/server/getmovie/`
+        url : `${API_URL}/api/v1/server/getmovie/`,
+        headers: {
+          Authorization: `Bearer ${context.getters.getToken}`
+        }
       })
         .then((res)=>{
           // console.log(res.data)
@@ -103,115 +92,27 @@ export default new Vuex.Store({
           console.log(error)
         })
     },
-    login(context, payload) {
-      const username = payload.username
-      const password = payload.password
-      axios({
-        method: 'POST',
-        url: `${API_URL}/api/v1/accounts/login/`,
-        data: {
-          username, password
-        }
-      })
-        .then((res) => {
-          context.commit('SAVE_USER_INFO', res)
-        })
-        .catch((err) => {
-          // const errMessage = err.response.request.responseText 
-          const errMessage = err.response.request.response
-          const jsonErrMessage = JSON.parse(errMessage)
-          for (const [key, value] of Object.entries(jsonErrMessage)) {
-            alert(`${key}: ${value}`)
-          }
-        })
-    },
+
     logout(context) {
       const token = context.getters.getToken
+      // console.log(token)
       axios({
         method: 'POST',
         url: `${API_URL}/api/v1/accounts/logout/`,
-        data: {
-          key: token,
+        headers: {
+          Authorization: `Bearer ${token}`,
         }
       })
-        .then((res) => {
-          console.log(res)
-          context.commit('LOGOUT', res)
+        .then(() => {
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
         })
+        context.commit('LOGOUT')
     },
-    signUp(context, payload) {
-      const username = payload.username
-      const password1 = payload.password1
-      const password2 = payload.password2
-      const email = payload.email
-      const nickname = payload.nickname
-
-      axios({
-        method: 'POST',
-        url: `${API_URL}/api/v1/accounts/signup/`,
-        data: {
-          username, password1, password2, email, nickname
-        }
-      })
-        .then(res => {
-          context.commit('SAVE_USER_INFO', res)
-        })
-        .catch(err => {
-          const errMessage = err.response.request.response
-          const jsonErrMessage = JSON.parse(errMessage)
-          for (const [key, value] of Object.entries(jsonErrMessage)) {
-            alert(`${key}: ${value}`)
-          }
-        })
+    saveUserInfo(context, data) {
+      console.log(data)
+      context.commit('SAVE_USER_INFO', data)
     },
-    getArticles(context){
-      axios({
-        method : 'get',
-        url: `${API_URL}/api/v1/community/getarticles/`
-      })
-        .then((res) => {
-          context.commit('GET_ARTICLES', res.data)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    },
-    createArticle(context,payload){
-      const title = payload.title
-      const content = payload.content
-      axios({
-        method : 'post',
-        url: `${API_URL}/api/v1/community/getarticles/`,
-        data :{
-          title, content
-        }
-      })
-        .then((res)=> {
-          const data = res.data
-          context.commit('CREATE_ARTICLES', data)
-        })
-        .catch((err)=>{
-          console.log(err)
-        })
-    },
-    getArticleData(context, articleId) {
-      axios({
-        method: "get",
-        url: `${API_URL}/api/v1/community/${articleId}/`,
-      })
-        .then((res) => {
-          const data = res.request.response
-          const jsonData = JSON.parse(data)
-          // console.log(jsonData)
-          context.commit('GET_ARTICLE_DATA', jsonData)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-      },
     getDetail(context,movieid){
       axios({
         method: 'GET',
@@ -237,6 +138,9 @@ export default new Vuex.Store({
         data : {
           content : content,
           score : score
+        },
+        headers: {
+          Authorization: `Bearer ${context.getters.getToken}`
         }
       })
         .then((res) => {
@@ -250,7 +154,10 @@ export default new Vuex.Store({
     getReview(context){
       axios({
         method : 'GET',
-        url : `${API_URL}/api/v1/server/getreview/`
+        url : `${API_URL}/api/v1/server/getreview/`,
+        headers: {
+          Authorization: `Bearer ${context.getters.getToken}`
+        }
       })
         .then((res)=>{
           const data = res.data

@@ -8,6 +8,7 @@ import MovieDetailView from '@/views/MovieDetailView.vue'
 import SignUpView from '@/views/SignUpView'
 import ArticleCreateView from '@/views/ArticleCreateView'
 import ArticleDetailView from '@/views/ArticleDetailView'
+import ProfileView from '@/views/ProfileView'
 Vue.use(VueRouter)
 
 const routes = [
@@ -30,6 +31,11 @@ const routes = [
     path: '/login',
     name: 'LoginView',
     component: LoginView
+  },  
+  {
+    path: '/profile',
+    name: 'ProfileView',
+    component: ProfileView
   },  
   {
     path: '/detail/:movieid',
