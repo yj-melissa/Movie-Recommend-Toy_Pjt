@@ -8,4 +8,5 @@ urlpatterns = [
     path('getmovie/', views.getmovie),
     path('getreview/', views.getreview),
     path('<int:movie_pk>/createreview/',views.review_create),
+    path('<int:movie_pk>/<int:question_number>/<int:select>/sortmovie/', views.sortmovie),
 ]

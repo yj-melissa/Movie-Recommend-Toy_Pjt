@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e99a58a6-cd08-4ce1-a83a-ad114f8c5151" name="Default Changelist" comment="" />
+    <list default="true" id="e99a58a6-cd08-4ce1-a83a-ad114f8c5151" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/servers/migrations/0004_movie_actors.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/servers/migrations/0005_alter_movie_backdrop_path.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/servers/migrations/0006_alter_movie_poster_path.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/servers/migrations/0007_auto_20221119_2208.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/servers/migrations/0008_auto_20221119_2209.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/servers/migrations/0009_alter_movie_release_date.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/servers/migrations/0010_sortedmovie.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../front-side/public/spaceship.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/fixtures/movie_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/servers/fixtures/movie_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/servers/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/servers/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/servers/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servers/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/servers/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front-side/src/components/MoviesItems.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../front-side/src/components/MoviesItems.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front-side/src/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../front-side/src/store/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front-side/src/views/HomeView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../front-side/src/views/HomeView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front-side/src/views/MovieDetailView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../front-side/src/views/MovieDetailView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front-side/src/views/RecommendView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../front-side/src/views/RecommendView.vue" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

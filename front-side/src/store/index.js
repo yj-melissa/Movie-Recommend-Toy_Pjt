@@ -14,7 +14,6 @@ export default new Vuex.Store({
 
   state: {
     Movies: [],
-    DefaultMovies : [],
     MovieDetail : null,
     ReviewList : [],
     accessToken : null,
@@ -41,6 +40,7 @@ export default new Vuex.Store({
     GET_MOVIE(state, Movies) {
       state.Movies = Movies
       state.DefaultMovies = Movies
+      state.AlgoMovieList = Movies
     },
 
     GET_DETAIL(state,data){
@@ -63,6 +63,9 @@ export default new Vuex.Store({
       state.user = []
     },
 
+    GET_ARTICLE_DATA(state, data) {
+      state.article = data
+    },
   }, 
 
   actions: {
@@ -77,9 +80,11 @@ export default new Vuex.Store({
       })
         .then((res)=>{
           // console.log(res.data)
-          const Movies =res.data
+          const Movies =res.data.slice(0,30)
           Movies.sort(function(a,b){
-            return b.popularity - a.popularity
+            let a_num = Number(a.release_date.replace(/-/g,''))
+            let b_num = Number(b.release_date.replace(/-/g,''))
+            return b_num - a_num
           })
           context.commit('GET_MOVIE',Movies)
         })
@@ -162,6 +167,9 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
+
+
+    
   },
   modules: {
   }

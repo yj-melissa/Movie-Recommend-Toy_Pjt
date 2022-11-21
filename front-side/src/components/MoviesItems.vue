@@ -58,7 +58,7 @@ export default {
   },
   data(){
     return {
-      MovieData : [],
+      MovieData : this.Movies,
     }
   },
   methods: {
@@ -86,19 +86,20 @@ export default {
         })
       }
     },
-    view(){
-      console.log(this.$store.state.Movies)
+    getMovies(){
+      console.log(this.Movies)
+      this.MovieData = this.Movies
     }
   },
   computed: {
     changeMovie(){
-      return this.$store.state.Movies
+      return this.Movies
     },
   },
   watch : {
     changeMovie(val) {
       this.getMovieData(val)
     }
-  }
+  },
 }
 </script>
