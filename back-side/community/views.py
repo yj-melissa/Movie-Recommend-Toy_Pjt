@@ -37,8 +37,8 @@ def article_detail(request, article_pk):
 def comment_list(request, article_pk):
     if request.method == 'GET':
         article = get_object_or_404(Article, pk=article_pk)
-        # comments = article.comment_set.all()
-        comments = get_list_or_404(article)
+        comments = article.comment_set.all()
+        # comments = get_list_or_404(Article, article=article)
         serializer = CommentSerializer(comments, many = True)
         return Response(serializer.data)        
 
