@@ -53,7 +53,7 @@ export default {
           localStorage.setItem('access_token', res.data.access_token)
           localStorage.setItem('refresh_token', res.data.refresh_token)
           this.$store.dispatch('saveUserInfo', data)
-          this.$router.push({ name: 'ProfileView' })
+          this.$router.push({ name: 'HomeView' })
         })
         .catch((err) => {
           const errMessage = err.response.request.response
