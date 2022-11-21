@@ -1,5 +1,5 @@
 <template>
-  <b-container class="bv-example-row" >
+  <b-container class="bv-example-row animate__animated animate__fadeInRight" >
     <b-row class="text-center my-4">
       <b-col id='board'> 자유게시판 </b-col>
     </b-row>
@@ -63,5 +63,8 @@ export default {
 #board{
   color: whitesmoke;
   font-size: 2rem;
+}
+.animate__animated.animate__fadeInRight {
+  --animate-duration: 0.8s;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <carousel :per-page="1" class="bannaer_list my-5"
+  <carousel :per-page="1" class="animate__animated animate__bounceInRight my-5"
     paginationActiveColor ='#e01a31'
     paginationColor ="#999"
     :paginatioinPadding=3
@@ -10,7 +10,7 @@
     >
     <slide v-for="movie of Movies.slice(0, 4)" :key="movie.seq" class="slide_item">
       <router-link :to="{name : 'MovieDetailView', params:{movieid : movie.id}}">
-      <img :src="'https://image.tmdb.org/t/p/w300_and_h450_bestv2/'+movie.poster_path" alt="">
+        <img :class="{'animate__animated animate__backOutUp': value == '1' }" @click="changevalue" :src="'https://image.tmdb.org/t/p/w300_and_h450_bestv2/'+movie.poster_path" alt="">
       </router-link>
     </slide>
   </carousel>
@@ -25,10 +25,18 @@ export default {
     Carousel,Slide
   },
   name: 'MovieCarousel',
+  data(){
+    return{
+      value : 0
+    }
+  },
   props : {
     Movies : Array,
   },
   methods:{
+    changevalue(){
+      this.value=1
+    }
   },
 }
 </script>

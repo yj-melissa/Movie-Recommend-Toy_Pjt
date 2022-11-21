@@ -1,5 +1,5 @@
 <template>
-  <b-container class="bv-example-row my-4" id="grid" :style="{ backgroundColor: '#000000'}" >
+  <b-container class="animate__animated animate__fadeInRight bv-example-row my-4" id="grid" :style="{ backgroundColor: '#000000'}" >
     <!-- :style="{ backgroundImage: 'url(https://www.themoviedb.org/t/p/w600_and_h900_bestv2/' + changeMovie.backdrop_path + ')' }" -->
       <b-row class="text-left">
         <b-col cols="6" class="px-0 text-center p-5" >
@@ -176,5 +176,8 @@ export default {
 }
 #score{
   color: lightgray;
+}
+.animate__animated.animate__fadeInRight {
+  --animate-duration: 0.5s;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="TextAnime1">
+  <div class="TextAnime1 animate__animated animate__fadeInRight">
     <b-container class="bv-example-row"  >
       <b-row>
         <b-col class="my-5">
@@ -34,7 +34,7 @@
               </b-list-group>
             </b-card-text>
           </b-card>
-          <b-card v-else border-variant="dark" header="혹시 이 영화인가요?" align="center">
+          <b-card v-else-if="this.QuestionCount == 11" border-variant="dark" header="혹시 이 영화인가요?" align="center">
             <b-card-text>
               <div>
                 <img :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+this.FirstMovie.poster_path" alt="">
@@ -62,38 +62,10 @@
         </b-col>
       </b-row>
       <b-row v-if="this.QuestionCount==11">
-        <div v-for="movie of this.AnoterMovie" :key="movie.index">
-          <span></span>
-        </div>
         <div>
-        <b-carousel
-          id="carousel-1"
-          v-model="slide"
-          :interval="4000"
-          controls
-          indicators
-          background="#ababab"
-          img-width="1024"
-          img-height="480"
-          style="text-shadow: 1px 1px 2px #333;"
-          @sliding-start="onSlideStart"
-          @sliding-end="onSlideEnd"
-        >
-          <!-- Text slides with image -->
-          <b-carousel-slide>
-          <b-card-group>
-            <b-card :img-src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+movie.poster_path" img-alt="Image" img-top v-for="movie of this.AnoterMovie" :key="movie.index">
-            </b-card>
-          </b-card-group>
-
-          </b-carousel-slide>
-        </b-carousel>
-
-        <p class="mt-4">
-          Slide #: {{ slide }}<br>
-          Sliding: {{ sliding }}
-        </p>
-      </div>
+            <p v-for="movie of this.AnoterMovie" :key="movie.index"> <img :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+movie.poster_path" alt=""> </p>
+          
+        </div>
       </b-row>
     </b-container>
     
@@ -104,6 +76,7 @@
 <script>
 import axios from 'axios'
 export default {
+
   data() {
     return {
       text: '좋아하는 영화를 하나 생각하세요',
@@ -115,7 +88,7 @@ export default {
       AnoterMovie : null,
       QuestonList : [
         {
-          ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.$store.state.AlgoMovieList[0].actors[0].profile_path}`,
+          ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.$store.state.Movies[0].actors[0].profile_path}`,
           Question : `'${this.$store.state.Movies[0].actors[0].name}'이(가) 출연한 영화인가요?`
         },
         {
@@ -228,7 +201,6 @@ export default {
     },
     select2(){
       this.QuestionCount += 1
-      console.log(this.QuestionCount)
     },
     select3(){
       const movieId = this.FirstMovie.id
@@ -309,7 +281,7 @@ export default {
     getAnoterMovie(){
       const movieId = this.FirstMovie.id
       const API_URL = process.env.VUE_APP_API_URL
-      console.log('또다른 영화는')
+
       axios({
           method: 'get',
           url: `${API_URL}/api/v1/server/${movieId}/anothermovie/`,
@@ -319,18 +291,22 @@ export default {
             AnotherMovied.sort(function(a,b){
               return b.popularity - a.popularity
             })
-            this.AnoterMovie = AnotherMovied.slice(0,5)
+            this.AnoterMovie = AnotherMovied.slice(0,3)
           })
           .catch((err) => {
             console.log(err)
           })
-    }
+    },
 
+    test(){
+      console.log(this.QuestionCount)
+    }
     
   },
   created(){
     this.getRandomNumber()
     this.changeQuestion()
+    this.test()
   },
   computed: {
     changeCount(){
@@ -370,5 +346,8 @@ export default {
   font-size: 2rem;
   animation: text-in .8s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
   color: #FAF9D9;
+}
+.animate__animated.animate__fadeInRight {
+  --animate-duration: 1.5s;
 }
 </style>

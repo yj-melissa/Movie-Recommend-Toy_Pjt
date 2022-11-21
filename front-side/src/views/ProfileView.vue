@@ -1,5 +1,5 @@
 <template>
-  <div class="container row mt-3" style="margin:0 auto">
+  <div class="container row mt-3 animate__animated animate__fadeInRight" style="margin:0 auto">
     <div class="card col-12 p-0 row justify-content-center text-left" style="margin:0 auto">
       <h4 class="card-header py-3 text-center">
         {{ nickname }}님의 프로필 페이지
@@ -124,4 +124,7 @@ export default {
 </script>
 
 <style>
+.animate__animated.animate__fadeInRight {
+  --animate-duration: 1.5s;
+}
 </style>

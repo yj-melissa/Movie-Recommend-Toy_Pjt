@@ -3,10 +3,12 @@
     <b-container class="bv-example-row">
       <b-row class="p-5"></b-row>
       <b-row class="p-5"></b-row>
+      <b-row class="p-5"></b-row>
+      <b-row class="p-5"></b-row>
       <b-row>
         <b-col cols='4'></b-col>
         <b-col cols='2'>
-          <fade-images :delay="500" :width="200" :height="200"
+          <fade-images class="animate__animated animate__backOutUp"  :delay="5000" :width="200" :height="200"
             :images="images" />
         </b-col>
         <b-col></b-col>
@@ -48,6 +50,7 @@ import MovieCarousel from '@/components/MovieCarousel.vue'
 import MoviesItems from '@/components/MoviesItems.vue'
 import axios from 'axios'
 import FadeImages from 'vue-fade-images'
+
 
 export default {
   name: 'HomeView',
@@ -99,7 +102,7 @@ export default {
       this.$store.dispatch('getReview')
     },
     getFirstMovie(){
-      this.$store.pispatch('getMovie')
+      this.$store.dispatch('getMovie')
     }
   },
   created(){
@@ -138,5 +141,9 @@ export default {
   font-size: 2rem;
   animation: text-in .8s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
   color: #FAF9D9;
+}
+
+.animate__animated.animate__backOutUp {
+  --animate-duration: 3s;
 }
 </style>
