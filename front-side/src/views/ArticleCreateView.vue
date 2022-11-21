@@ -67,8 +67,9 @@ export default {
             const articleid = res.data.id
             this.$router.push({ name: 'ArticleDetailView', params: { articleid: articleid } }) 
           })
-          .catch((err)=>{
-            console.log(err)
+          .catch(()=>{
+            alert('로그인해주세요')
+            return
           })
       }
     },
