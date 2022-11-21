@@ -11,6 +11,8 @@ from .models import User
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_account(request, user_pk):
+    print(request)
+    print(user_pk)
     user = User.objects.get(pk=user_pk)
     user.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)

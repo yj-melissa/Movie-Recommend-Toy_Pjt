@@ -34,7 +34,7 @@
               </b-list-group>
             </b-card-text>
           </b-card>
-          <b-card v-else border-variant="dark" header="혹시 이 영화인가요?" align="center">
+          <b-card v-else-if="this.QuestionCount == 11" border-variant="dark" header="혹시 이 영화인가요?" align="center">
             <b-card-text>
               <div>
                 <img :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+this.FirstMovie.poster_path" alt="">
@@ -80,11 +80,8 @@
           @sliding-end="onSlideEnd"
         >
           <!-- Text slides with image -->
-          <b-carousel-slide>
-          <b-card-group>
-            <b-card :img-src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+movie.poster_path" img-alt="Image" img-top v-for="movie of this.AnoterMovie" :key="movie.index">
-            </b-card>
-          </b-card-group>
+          <b-carousel-slide v-for="movie of this.AnoterMovie" :key="movie.index">
+            <img src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+movie.poster_path" alt="">
 
           </b-carousel-slide>
         </b-carousel>
@@ -115,7 +112,7 @@ export default {
       AnoterMovie : null,
       QuestonList : [
         {
-          ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.$store.state.AlgoMovieList[0].actors[0].profile_path}`,
+          ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.$store.state.Movies[0].actors[0].profile_path}`,
           Question : `'${this.$store.state.Movies[0].actors[0].name}'이(가) 출연한 영화인가요?`
         },
         {
@@ -228,7 +225,6 @@ export default {
     },
     select2(){
       this.QuestionCount += 1
-      console.log(this.QuestionCount)
     },
     select3(){
       const movieId = this.FirstMovie.id
@@ -309,7 +305,7 @@ export default {
     getAnoterMovie(){
       const movieId = this.FirstMovie.id
       const API_URL = process.env.VUE_APP_API_URL
-      console.log('또다른 영화는')
+
       axios({
           method: 'get',
           url: `${API_URL}/api/v1/server/${movieId}/anothermovie/`,
@@ -324,13 +320,17 @@ export default {
           .catch((err) => {
             console.log(err)
           })
-    }
+    },
 
+    test(){
+      console.log(this.QuestionCount)
+    }
     
   },
   created(){
     this.getRandomNumber()
     this.changeQuestion()
+    this.test()
   },
   computed: {
     changeCount(){

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import UserDetailsSerializer
 from community.serializers import ArticleListSerializer, CommentSerializer
+from servers.serializers import ReviewSerializer
 
 class CustomRegisterSerializer(RegisterSerializer):
     nickname = serializers.CharField(max_length=10)
@@ -15,10 +16,10 @@ class UserSerializer(UserDetailsSerializer):
 
     article_set = ArticleListSerializer(many=True, read_only = True)
     comment_set = CommentSerializer(many = True, read_only = True)
-    
+    review_set = ReviewSerializer(many = True, read_only = True)
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('nickname', 'article_set', 'comment_set', )
+        fields = UserDetailsSerializer.Meta.fields + ('nickname', 'article_set', 'comment_set', 'review_set', )
 
     def update(self, instance, validated_data):
         # userprofile_serializer = self.fields['profile']

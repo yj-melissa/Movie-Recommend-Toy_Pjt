@@ -99,7 +99,7 @@ export default {
       this.$store.dispatch('getReview')
     },
     getFirstMovie(){
-      this.$store.pispatch('getMovie')
+      this.$store.dispatch('getMovie')
     }
   },
   created(){

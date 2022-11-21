@@ -30,8 +30,7 @@ def review_create(request, movie_pk):
     movie = get_object_or_404(Movie, id=movie_pk)
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid(raise_exception = True):
-        serializer.save(movie=movie)
-
+        serializer.save(movie=movie, user=request.user)
     comments = get_list_or_404(Review)
     serializer = ReviewSerializer(comments, many = True)
     return Response(serializer.data)  
