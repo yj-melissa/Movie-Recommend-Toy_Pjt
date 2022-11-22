@@ -25,7 +25,6 @@
             </b-col>
           </b-row>
         </div>
-
         <div class="card-footer container p-0 text-center">
           <b-row align-v="center">
             <b-col cols="11">

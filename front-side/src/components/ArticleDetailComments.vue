@@ -61,9 +61,7 @@ export default {
             content : content
           }
         })
-          .then((res)=> {
-            const data = res.data
-            console.log(data)
+          .then(()=> {
             this.isEdit = false
             this.$emit('comment-update')
           })
@@ -93,7 +91,6 @@ export default {
       if (user == author) {
         this.isAuthor = true
       }
-      console.log(this.isAuthor)
     },
   },
   created() {

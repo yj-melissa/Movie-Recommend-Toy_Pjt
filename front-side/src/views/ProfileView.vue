@@ -18,36 +18,43 @@
               </b-list-group>
             </b-col>
             <b-col>
-              <div v-if="this.value==0"> </div>
-              <div v-else-if="this.value==1">
-                <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 글</h4>
-                <b-list-group v-for="article in profile.article_set" :key="article.x">
-                  <b-list-group-item>
-                    <router-link :to="{ name: 'ArticleDetailView', params: { articleid : article.id } }">
-                    {{ article.title }}
-                  </router-link>
-                  </b-list-group-item>
-                </b-list-group>
-              </div>
-              <div v-else-if="this.value==2">
-                <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 댓글</h4>
-                <b-list-group v-for="comment in profile.comment_set" :key="comment.x">
-                  <b-list-group-item>
-                    <router-link :to="{ name: 'ArticleDetailView', params: { articleid : comment.article } }">
-                      {{ comment.content }}
+              <div> 
+                <div v-if="this.value==0"> </div>
+                <div v-else-if="this.value==1">
+                  <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 글</h4>
+                  <b-list-group v-for="article in profile.article_set" :key="article.x">
+                    <b-list-group-item>
+                      <router-link :to="{ name: 'ArticleDetailView', params: { articleid : article.id } }">
+                      {{ article.title }}
                     </router-link>
-                  </b-list-group-item>
-                </b-list-group>
-              </div>
-              <div v-else-if="this.value==3">
-                <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 리뷰</h4>
-                <b-list-group v-for="review in profile.review_set" :key="review.x">
-                  <b-list-group-item>
-                    <router-link :to="{ name: 'MovieDetailView', params: { movieid : review.movie } }">
-                      {{ review.content }}
-                    </router-link>
-                  </b-list-group-item>
-                </b-list-group>
+                    </b-list-group-item>
+                  </b-list-group>
+                </div>
+                <div v-else-if="this.value==2">
+                  <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 댓글</h4>
+                  <b-list-group v-for="comment in profile.comment_set" :key="comment.x">
+                    <b-list-group-item>
+                      <router-link :to="{ name: 'ArticleDetailView', params: { articleid : comment.article } }">
+                        {{ comment.content }}
+                      </router-link>
+                    </b-list-group-item>
+                  </b-list-group>
+                </div>
+                <div v-else-if="this.value==3">
+                  <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 리뷰</h4>
+                  <b-list-group v-for="review in profile.review_set" :key="review.x">
+                    <b-list-group-item>
+                      <router-link :to="{ name: 'MovieDetailView', params: { movieid : review.movie } }">
+                        {{ review.content }}
+                      </router-link>
+                    </b-list-group-item>
+                  </b-list-group>
+                </div>
+                <div v-else-if="this.value==4">
+                  <ProfileEditItem
+                    :current_nickname = nickname
+                  />  
+                </div>
               </div>
             </b-col>
           </b-row>
@@ -71,9 +78,13 @@
 
 <script>
 import axios from 'axios'
+import ProfileEditItem from '@/components/ProfileEditItem'
 
 export default {
   name: "ProfileView",
+  components: {
+    ProfileEditItem,
+  },
   data() {
     return {
       nickname: null,
@@ -85,13 +96,15 @@ export default {
   computed: {
     isLogin() {
       return this.$store.getters.isLogin
-    }
+    },
+    user() {
+      return this.$store.getters.getUser
+    },
   },
   methods: {
     getUser() {
       if (this.isLogin) {
-        const user = this.$store.getters.getUser
-        this.nickname = user.nickname
+        this.nickname = this.user.nickname
       } else {
         alert('로그인이 필요한 서비스입니다')
         this.$router.push({ name: 'LoginView' })
@@ -107,7 +120,6 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res)
           this.profile = res.data
         })
         .catch((err) => {
@@ -145,12 +157,18 @@ export default {
         })
     },
     editProfile() {
-      console.log('프로필 수정')
+      this.value = 4
     }
   },
   created(){
     this.getUser()
     this.getProfile()
+  },
+  watch : {
+    user() {
+      this.getUser()
+      this.getProfile()
+    }
   }
 }
 </script>

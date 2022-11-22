@@ -95,7 +95,6 @@ export default {
   methods: {
     signUp() {
       const API_URL = process.env.VUE_APP_API_URL
-
       const email = this.email
       const password1 = this.password1
       const password2 = this.password2
