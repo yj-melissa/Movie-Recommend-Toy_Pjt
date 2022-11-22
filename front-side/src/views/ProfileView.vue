@@ -15,6 +15,7 @@
                 <b-list-group-item @click="changevalue1" :class="{'active':value==1}">작성한 글 목록</b-list-group-item>
                 <b-list-group-item @click="changevalue2" :class="{'active':value==2}">작성한 댓글 목록</b-list-group-item>
                 <b-list-group-item @click="changevalue3" :class="{'active':value==3}">작성한 리뷰 목록</b-list-group-item>
+                <b-list-group-item @click="changevalue5" :class="{'active':value==5}">좋아하는 영화 목록</b-list-group-item>
               </b-list-group>
             </b-col>
             <b-col>
@@ -32,8 +33,8 @@
                 </div>
                 <div v-else-if="this.value==2">
                   <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 댓글</h4>
-                  <b-list-group v-for="comment in profile.comment_set" :key="comment.x">
-                    <b-list-group-item>
+                  <b-list-group>
+                    <b-list-group-item v-for="comment in profile.comment_set" :key="comment.x">
                       <router-link :to="{ name: 'ArticleDetailView', params: { articleid : comment.article } }">
                         {{ comment.content }}
                       </router-link>
@@ -42,8 +43,8 @@
                 </div>
                 <div v-else-if="this.value==3">
                   <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 리뷰</h4>
-                  <b-list-group v-for="review in profile.review_set" :key="review.x">
-                    <b-list-group-item>
+                  <b-list-group>
+                    <b-list-group-item v-for="review in profile.review_set" :key="review.x" >
                       <router-link :to="{ name: 'MovieDetailView', params: { movieid : review.movie } }">
                         {{ review.content }}
                       </router-link>
@@ -54,6 +55,15 @@
                   <ProfileEditItem
                     :current_nickname = nickname
                   />  
+                </div>
+                <div v-else-if="this.value==5">
+                  
+                  <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 좋아한 영화</h4>
+                  <b-list-group>
+                    <b-list-group-item v-for="movie in this.likeList" :key="movie.x">
+                      <p>{{movie.title}}</p>
+                    </b-list-group-item>
+                  </b-list-group>
                 </div>
               </div>
             </b-col>
@@ -91,6 +101,7 @@ export default {
       profile: [],
       value : 0,
       Alert : false,
+      likeList : [],
     }
   },
   computed: {
@@ -126,6 +137,24 @@ export default {
           console.log(err)
         })
     },
+    checkLike(){
+      const API_URL = process.env.VUE_APP_API_URL
+      axios({
+      method : 'get',
+      url: `${API_URL}/api/v1/server/${this.$store.state.user.pk}/likemovielist`,
+      headers: {
+        Authorization: `Bearer ${this.$store.getters.getToken}`
+      }
+      })
+        .then((res) => {
+          console.log(res)
+          this.likeList = res.data
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+    },
+
     changevalue1(){
       this.value = 1
     },
@@ -134,6 +163,9 @@ export default {
     },
     changevalue3(){
       this.value = 3
+    },
+    changevalue5(){
+      this.value = 5
     },
     alert(){
       this.Alert = true
@@ -158,11 +190,13 @@ export default {
     },
     editProfile() {
       this.value = 4
-    }
+    },
+
   },
   created(){
     this.getUser()
     this.getProfile()
+    this.checkLike()
   },
   watch : {
     user() {

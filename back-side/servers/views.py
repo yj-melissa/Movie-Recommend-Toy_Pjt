@@ -133,3 +133,17 @@ def likeslist(request, movie_pk):
         movie = get_object_or_404(Movie, pk=movie_pk)
         serializer = MovieSerializer(movie)
         return Response(serializer.data)   
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def likemovielist(request, user_pk):
+    if request.method == 'GET':
+        movies = get_list_or_404(Movie)
+        newlist = []
+        for movie in movies:
+            serializer = MovieSerializer(movie)
+            for user in serializer.data.get('like_users'):
+                if user == user_pk:
+                    newlist.append(serializer.data)
+                    
+        return Response(newlist)   
