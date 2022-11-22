@@ -1,16 +1,28 @@
 <template>
-  <div>
-    <p class="m-0">{{ comment.user.nickname }}</p>
-    <span v-if="isEdit">
-      <textarea rows="1" v-model.trim="content"></textarea>
-      <button @click="saveEdit">등록</button>
-    </span>
-    <span v-else>
-      <p class="m-0" >{{ comment.content }}</p>
-      <button @click="editComment" id="editBtn">수정</button>
-    </span>
-    <button @click="deleteComment">X</button>
-  </div>
+  <b-container class="bv-example-row">
+    <b-row>
+      <b-col class="text-left">{{ comment.user.nickname }}</b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <span v-if="isEdit">
+        <textarea rows="1" v-model.trim="content"></textarea>
+        </span>
+        <span v-else>
+          {{ comment.content }}
+        </span>
+      </b-col>
+      <b-col cols="4" class="text-right">
+        <span v-if="isEdit">
+          <button @click="saveEdit">등록</button>
+        </span>
+        <span v-else>
+          <button @click="editComment" id="editBtn">수정</button>
+        </span>
+        <button @click="deleteComment">X</button>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
