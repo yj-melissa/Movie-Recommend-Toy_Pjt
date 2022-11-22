@@ -1,6 +1,6 @@
 <template>
   <div class="container row mt-3" style="margin:0 auto">
-    <div class="card col-12 p-0 row justify-content-center text-left" style="margin:0 auto">
+    <!-- <div class="card col-12 p-0 row justify-content-center text-left" style="margin:0 auto">
       <h4 class="card-header py-3">
         {{ article?.title }}
       </h4>
@@ -13,59 +13,61 @@
           <button> <router-link :to="{name : 'ArticleCreateView', params: { articleid:article?.id } } ">수정</router-link></button>
           <button @click="articleDelete">삭제</button>
         </div>
-  <b-container class="bv-example-row">
-    <div id="card" class="card">
-      <b-row class="card-header mt-3" >
-        <b-col cols="12" class="text-center">
-          <h2 class="p-0">{{ article?.title }}</h2>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="12" class="text-right pr-3 pt-2">
-          <b-button-group>
-            <router-link :to="{name : 'ArticleCreateView', params: { articleid:article?.id } } "><b-button variant="info">수정</b-button></router-link>
-            <b-button @click="articleDelete" variant="danger">삭제</b-button>
-          </b-button-group>
-        </b-col>
-      </b-row>
-        
-      <div class="p-1 card-body">
-        <b-row align-v="center">
-          <b-col>
-            <div class="card-text text-left ml-2 p-3">
-              {{ article?.content }}
-            </div>
-          </b-col>
-          <b-col class="text-right mr-2" cols="3">작성자 : {{ article?.user.nickname }}</b-col>
-        </b-row>
-        
       </div>
-      <div class="card-footer container p-0 text-center">
-        <b-row align-v="center">
-          <b-col cols="11">
-            <textarea 
-              id="textarea-rows"
-              placeholder="댓글을 입력해주세요"
-              rows="3"
-              v-model="newComment"
-              class="w-100 p-2 m-2"
-            >
-            </textarea>
+    </div> -->
+    <b-container class="bv-example-row">
+      <div id="card" class="card">
+        <b-row class="card-header mt-3" >
+          <b-col cols="12" class="text-center">
+            <h2 class="p-0">{{ article?.title }}</h2>
           </b-col>
-          <b-col class="pr-4 text-left"><button @click="createComment" class="px-2 py-4  btn btn-outline-secondary">입력</button></b-col>
         </b-row>
-        <ul class="list-group list-group-flush p-0 m-0 text-left">
-          <ArticleDetailComments
-            v-for="comment in comments"
-            :key="comment.id"
-            :comment="comment"
-            @comment-update="getCommentData"
-            class="list-group-item bg-transparent"
-          />
-        </ul>
+        <b-row>
+          <b-col cols="12" class="text-right pr-3 pt-2">
+            <b-button-group>
+              <router-link :to="{name : 'ArticleCreateView', params: { articleid:article?.id } } "><b-button variant="info">수정</b-button></router-link>
+              <b-button @click="articleDelete" variant="danger">삭제</b-button>
+            </b-button-group>
+          </b-col>
+        </b-row>
+        <div class="p-1 card-body">
+          <b-row align-v="center">
+            <b-col>
+              <div class="card-text text-left ml-2 p-3">
+                {{ article?.content }}
+              </div>
+            </b-col>
+            <b-col class="text-right mr-2" cols="3">작성자 : {{ article?.user.nickname }}</b-col>
+          </b-row>
+        </div>
+
+        <div class="card-footer container p-0 text-center">
+          <b-row align-v="center">
+            <b-col cols="11">
+              <textarea 
+                id="textarea-rows"
+                placeholder="댓글을 입력해주세요"
+                rows="3"
+                v-model="newComment"
+                class="w-100 p-2 m-2"
+              >
+              </textarea>
+            </b-col>
+            <b-col class="pr-4 text-left"><button @click="createComment" class="px-2 py-4  btn btn-outline-secondary">입력</button></b-col>
+          </b-row>
+          <ul class="list-group list-group-flush p-0 m-0 text-left">
+            <ArticleDetailComments
+              v-for="comment in comments"
+              :key="comment.id"
+              :comment="comment"
+              @comment-update="getCommentData"
+              class="list-group-item bg-transparent"
+            />
+          </ul>
+        </div>
       </div>
-    </div>
-  </b-container>
+    </b-container>
+  </div>
 </template>
 
 <script>

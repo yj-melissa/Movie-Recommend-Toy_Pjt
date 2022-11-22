@@ -10,9 +10,6 @@
             :style="{animationDelay: index*100+'ms'}"
             v-text="t"
           />
-          
-          
-
           <b-card v-if="this.isloading == 1" border-variant="dark" header="" align="center">
             <b-card-text>
               <div>
@@ -47,7 +44,7 @@
               </b-list-group>
             </b-card-text>
           </b-card>
-          <b-card v-else-if="this.QuestionCount == 11" border-variant="dark" header="혹시 이 영화인가요?" align="center">
+          <b-card v-else-if="this.QuestionCount == 21" border-variant="dark" header="혹시 이 영화인가요?" align="center">
             <b-card-text>
               <div>
                 <img :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+this.FirstMovie.poster_path" alt="">
@@ -75,36 +72,6 @@
 
         </b-col>
       </b-row>
-      <b-row v-if="this.QuestionCount==11">
-        <div v-for="movie of this.AnoterMovie" :key="movie.index">
-          <span></span>
-        </div>
-        <div>
-        <b-carousel
-          id="carousel-1"
-          v-model="slide"
-          :interval="4000"
-          controls
-          indicators
-          background="#ababab"
-          img-width="1024"
-          img-height="480"
-          style="text-shadow: 1px 1px 2px #333;"
-          @sliding-start="onSlideStart"
-          @sliding-end="onSlideEnd"
-        >
-          <!-- Text slides with image -->
-          <b-carousel-slide v-for="movie of this.AnoterMovie" :key="movie.index">
-            <img src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+movie.poster_path" alt="">
-
-          </b-carousel-slide>
-        </b-carousel>
-
-        <p class="mt-4">
-          Slide #: {{ slide }}<br>
-          Sliding: {{ sliding }}
-        </p>
-      </div>
       <b-row v-if="this.AnotherMovie">
         <carousel-3d :disable3d="true" :space="365" :width="300" :height="450" :clickable="false" :controls-visible="true">
           <slide v-for="(movie,i) in this.AnotherMovie" :index="i" :key="i" :movie="movie">
@@ -124,7 +91,6 @@
 <script>
 import axios from 'axios'
 export default {
-
   data() {
     return {
       text: '좋아하는 영화를 하나 생각하세요',
@@ -156,12 +122,10 @@ export default {
     getRandomNumber(){
       this.QuestionNumber = Math.floor(Math.random()*3)
     },
-
     reset(){
       this.QuestionCount = 0
       this.MovieDataList = this.$store.state.Movies
     },
-
     changeQuestion(){
       this.QuestonList = [
         {
@@ -178,7 +142,6 @@ export default {
         }
       ]
     },
-
     select1(){
       const movieId = this.FirstMovie.id
       const API_URL = process.env.VUE_APP_API_URL
@@ -212,7 +175,6 @@ export default {
           this.RecommendList = NewList
           this.FirstMovie = NewList[0]
           this.QuestionCount += 1
-
         }else if(this.QuestionNumber==1){
           const Genre = this.FirstMovie.genre_ids[0]
           const NewList = []
@@ -230,7 +192,6 @@ export default {
           this.RecommendList = NewList
           this.FirstMovie = NewList[0]
           this.QuestionCount += 1
-
         }else if(this.QuestionNumber==2){
             const Release_date = Number(this.FirstMovie.release_date.split('-',1))
             const NewList = []
@@ -285,7 +246,6 @@ export default {
           this.RecommendList = NewList
           this.FirstMovie = NewList[0]
           this.QuestionCount += 1
-
         }else if(this.QuestionNumber==1){
           const Genre = this.FirstMovie.genre_ids[0]
           const NewList = []
@@ -303,7 +263,6 @@ export default {
           this.RecommendList = NewList
           this.FirstMovie = NewList[0]
           this.QuestionCount += 1
-
         }else if(this.QuestionNumber==2){
             const Release_date = Number(this.FirstMovie.release_date.split('-',1))
             const NewList = []
@@ -318,12 +277,10 @@ export default {
           }
         }
     },
-
     getAnoterMovie(){
       this.isloading = 1
       const movieId = this.FirstMovie.id
       const API_URL = process.env.VUE_APP_API_URL
-
       axios({
           method: 'get',
           url: `${API_URL}/api/v1/server/${movieId}/anothermovie/`,
@@ -340,12 +297,12 @@ export default {
           .catch((err) => {
             console.log(err)
           })
-    },    
+    },
+    
   },
   created(){
     this.getRandomNumber()
     this.changeQuestion()
-    this.test()
   },
   computed: {
     changeCount(){
@@ -357,7 +314,7 @@ export default {
   },
   watch : {
     QuestionCount: function(newValue){
-      if(newValue == 11){
+      if(newValue == 21){
         this.getAnoterMovie()
       }
     },
@@ -369,7 +326,6 @@ export default {
     
   }
 }
-
 </script>
 
 <style scoped>
@@ -389,7 +345,6 @@ export default {
 .animate__animated.animate__fadeInRight {
   --animate-duration: 1.5s;
 }
-
 .animate__animated.animate__backOutUp {
   --animate-duration: 5s;
 }
