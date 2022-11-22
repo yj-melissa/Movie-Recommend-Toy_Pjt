@@ -30,11 +30,12 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
 
-    email = models.EmailField(max_length=30, unique=True, null=False, blank=False)
-    nickname = models.CharField(max_length=10)
+    email = models.EmailField(max_length=100, unique=True, null=False, blank=False)
+    nickname = models.CharField(max_length=30)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    # profile = models.ImageField(upload_to='profile', blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
