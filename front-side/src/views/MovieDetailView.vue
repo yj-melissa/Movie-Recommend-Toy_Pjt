@@ -11,8 +11,8 @@
           <p class="white-text"> 개봉일자 : {{ changeMovie.release_date}}</p>
           <p class="white-text"> 상영시간 : {{ changeMovie.runtime}} 분 </p>
           <p class="white-text"> <span>장르 : </span><span v-for="genre of changeMovie.genres" :key="genre.id" :genre="genre.name"> {{genre.name}} </span></p>
-          <button v-if="this.value == 0 " @click="like"> 좋아요 </button>
-          <button v-else-if="this.value == 1" @click="like"> 좋아요 취소 </button>
+          <p @click="like" v-if="this.value == 0 " class="h3 mb-2 mt-4" > Pick <b-icon-lightning-fill variant="danger"></b-icon-lightning-fill></p>
+          <p @click="like" v-else-if="this.value == 1" class="h3 mb-2 mt-4" > Drop <b-icon-lightning-fill variant="dark"></b-icon-lightning-fill></p>
           
         </b-col>
       </b-row>
@@ -62,6 +62,7 @@
               <b-col class="text-center" cols="2">평점</b-col>
             </b-row>
           </b-list-group-item>
+          <div v-if="this.ReviewList.length>0">
           <b-list-group-item v-for="review in this.ReviewList" :key="review.number" :review="review">
             <b-container>
               <b-row align-v="center">
@@ -81,7 +82,9 @@
               </b-row>
             </b-container>
           </b-list-group-item>
+          </div>
         </b-list-group>
+        
       </b-row>
   </b-container>
 </template>

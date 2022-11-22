@@ -1,30 +1,40 @@
 <template>
-  <div>
-    <h4 class="mt-4 ml-1">회원 정보 수정</h4>
-    <!-- 닉네임 수정 -->
-    <div>
-      <label for="nickname">닉네임 : </label>
-      <form v-if="editingNickname" @submit.prevent="editNickname">
-        <div>
-          <input type="text" id="nickname" v-model.trim="nickname" />
-        </div>
-        <button type="submit" value="editNickname">수정하기</button>
-      </form>
-      <p v-else @click="editNickname">{{ current_nickname }}</p>
-    </div>
-    <!-- 비밀번호 수정 -->
-    <form @submit.prevent="editPassword">
-      <div>
-        <label for="password1">비밀번호 : </label>
-        <input type="password" id="password1" v-model.trim="password1" />
-      </div>
-      <div>
-        <label for="password2">비밀번호 재확인: </label>
-        <input type="password" id="password2" v-model.trim="password2" />
-      </div>
-      <button type="submit" value="editPassword">수정하기</button>
-    </form>
-  </div>
+  <b-container class="bv-example-row">
+    <b-row>
+      <b-col class="text-center" cols='12'><h4 class="mt-4 ml-1">회원 정보 수정</h4></b-col>
+    </b-row>
+    <b-row>
+      <b-col></b-col>
+      <b-col cols="10">
+        <b-row align-v="center" class="my-2">
+          <b-col cols="2" class="px-0"><label class="m-0" for="nickname">닉네임 : </label></b-col>
+          <b-col cols="9">
+            <form v-if="editingNickname" @submit.prevent="editNickname">
+              <b-row>
+                <b-col class="px-0"><input type="text" id="nickname" v-model.trim="nickname"></b-col>
+                <b-col class="px-0"><b-button size="sm" type="submit" value="editNickname">수정</b-button></b-col>
+              </b-row>
+            </form>
+            <div v-else @click="editNickname">{{ current_nickname }}</div>
+          </b-col>
+        </b-row>
+        <b-row class="my-2">
+          <form @submit.prevent="editPassword">
+            <div>
+              <label for="password1">비밀번호 : </label>
+              <input class="mx-2" type="password" id="password1" v-model.trim="password1" />
+            </div>
+            <div>
+              <label for="password2"> 재 확 인 : </label>
+              <input class="mx-3" type="password" id="password2" v-model.trim="password2" />
+            </div>
+            <b-button type="submit" value="editPassword">수정하기</b-button>
+          </form>
+        </b-row>
+      </b-col>
+      <b-col></b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
