@@ -1,12 +1,7 @@
 <template>
-  <div class="home m-0">
-    <div>
-      <label for="fiterselect">정렬하기</label>
-      <select name="fiterselect" id="fiterselect" @change="selectOption">
-        <option value="1">인기순</option>
-        <option value="2">평점순</option>
-        <option value="3">최신순</option>
-      </select>
+  <div class="home m-0 animate__animated animate__fadeInRight">
+    <div id="select">
+      <p> <b-button @click="select1" variant="outline-light">인기순</b-button> <b-button @click="select2" variant="outline-light">평점순</b-button> <b-button @click="select3" variant="outline-light">최신순</b-button> </p>
     </div>
     <div>
     <b-container class="bv-example-row">
@@ -58,15 +53,16 @@ export default {
   },
   data(){
     return {
-      MovieData : this.Movies,
+      MovieData : null,
+      selected : null,
     }
   },
   methods: {
-    getMovieData(data){
-      this.MovieData = _.cloneDeep(data)
+    getMovieData(){
+      this.MovieData = _.cloneDeep(this.Movies)
     },
-    selectOption(event){
-      const value = event.target.value
+    selectOption(){
+      const value = this.selected
       const Data = this.MovieData
       if(value == 2){
         Data.sort(function(a,b){
@@ -89,17 +85,43 @@ export default {
     getMovies(){
       console.log(this.Movies)
       this.MovieData = this.Movies
+    },
+    select1(){
+      this.selected = 1
+    },
+    select2(){
+      this.selected = 2
+    },
+    select3(){
+      this.selected = 3
     }
   },
   computed: {
     changeMovie(){
       return this.Movies
     },
+    changevalue(){
+      return this.selected
+    }
   },
   watch : {
     changeMovie(val) {
       this.getMovieData(val)
+    },
+    changevalue(){
+      this.selectOption()
     }
+    
   },
+  created(){
+    this.getMovieData()
+  }
 }
 </script>
+<style scoped>
+#select{
+  font-size: 20px;
+  color: beige;
+}
+
+</style>

@@ -8,13 +8,16 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
     "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
     "dotenv": "^16.0.3",
     "http-proxy-middleware": "^2.0.6",
     "lodash": "^4.17.21",
+    "swiper": "^8.4.4",
     "vue": "^2.7.14",
     "vue-carousel": "^0.18.0",
+    "vue-carousel-3d": "^1.0.1",
     "vue-fade-images": "^1.0.2",
     "vue-router": "^3.5.1",
     "vue-youtube": "^1.4.0",

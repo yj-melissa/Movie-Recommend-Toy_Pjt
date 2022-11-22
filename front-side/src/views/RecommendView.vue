@@ -1,5 +1,5 @@
 <template>
-  <div class="TextAnime1">
+  <div class="TextAnime1 animate__animated animate__fadeInRight">
     <b-container class="bv-example-row"  >
       <b-row>
         <b-col class="my-5">
@@ -10,7 +10,20 @@
             :style="{animationDelay: index*100+'ms'}"
             v-text="t"
           />
-          <b-card v-if="this.QuestionCount == 0" border-variant="dark" header="시작하기" align="center">
+          
+          
+
+          <b-card v-if="this.isloading == 1" border-variant="dark" header="" align="center">
+            <b-card-text>
+              <div>
+                <img class="animate__animated animate__backOutUp w-75" src="/spaceship.png" alt="">
+              </div>
+              <b-list-group>
+                <b-list-group-item> 결과를 찾으러 갑니다... </b-list-group-item>
+              </b-list-group>
+            </b-card-text>
+          </b-card>
+          <b-card v-else-if="this.QuestionCount == 0" border-variant="dark" header="시작하기" align="center">
             <b-card-text>
               <div>
                 <img class="w-75" src="/spaceship.png" alt="">
@@ -20,7 +33,7 @@
               </b-list-group>
             </b-card-text>
           </b-card>
-          <b-card v-else-if="this.QuestionCount < 11" border-variant="dark" :header="this.QuestonList[getNumber].Question" align="center">
+          <b-card v-else-if="this.QuestionCount < 21" border-variant="dark" :header="this.QuestonList[getNumber].Question" align="center">
             <b-card-text>
               <div v-if="this.QuestonList[getNumber].ImgUrl" class="my-2">
                 <img :src="this.QuestonList[getNumber].ImgUrl" alt="">
@@ -44,6 +57,7 @@
               </b-list-group>
             </b-card-text>
           </b-card>
+          
         </b-col>
         <b-col align-self="center"><img src="https://cdn0.iconfinder.com/data/icons/streamline-emoji-1/48/178-man-astronaut-2-512.png" alt=""></b-col>
       </b-row>
@@ -91,6 +105,15 @@
           Sliding: {{ sliding }}
         </p>
       </div>
+      <b-row v-if="this.AnotherMovie">
+        <carousel-3d :disable3d="true" :space="365" :width="300" :height="450" :clickable="false" :controls-visible="true">
+          <slide v-for="(movie,i) in this.AnotherMovie" :index="i" :key="i" :movie="movie">
+            <template slot-scope="{ index, isCurrent, leftIndex, rightIndex}">
+              <img :data-index="index" 
+              class="h-100 w-100" :class="{ current: isCurrent, onLeft: (leftIndex>=0), onRight: (rightIndex >=0) }" :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2/'+movie.poster_path" >
+            </template>
+          </slide>
+        </carousel-3d>
       </b-row>
     </b-container>
     
@@ -101,15 +124,17 @@
 <script>
 import axios from 'axios'
 export default {
+
   data() {
     return {
       text: '좋아하는 영화를 하나 생각하세요',
       text2: '생각하셨나요?',
+      isloading : 0,
       RecommendList : null,
       FirstMovie : this.$store.state.Movies[0],
       QuestionCount : 0,
       QuestionNumber : 0,
-      AnoterMovie : null,
+      AnotherMovie : null,
       QuestonList : [
         {
           ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.$store.state.Movies[0].actors[0].profile_path}`,
@@ -166,8 +191,6 @@ export default {
             this.RecommendList = res.data
             this.FirstMovie = res.data[0]
             this.QuestionCount += 1
-            console.log(this.RecommendList)
-            console.log(this.FirstMovie)
           })
           .catch((err) => {
             console.log(err)
@@ -238,8 +261,6 @@ export default {
             this.RecommendList = res.data
             this.FirstMovie = res.data[0]
             this.QuestionCount += 1
-            console.log(this.FirstMovie)
-            console.log(this.RecommendList)
           })
           .catch((err) => {
             console.log(err)
@@ -263,7 +284,6 @@ export default {
           }
           this.RecommendList = NewList
           this.FirstMovie = NewList[0]
-          console.log(this.FirstMovie)
           this.QuestionCount += 1
 
         }else if(this.QuestionNumber==1){
@@ -282,7 +302,6 @@ export default {
           }
           this.RecommendList = NewList
           this.FirstMovie = NewList[0]
-          console.log(this.FirstMovie)
           this.QuestionCount += 1
 
         }else if(this.QuestionNumber==2){
@@ -295,14 +314,13 @@ export default {
             }
             this.RecommendList = NewList
             this.FirstMovie = NewList[0]
-            console.log(this.FirstMovie)
-            console.log(this.RecommendList)
             this.QuestionCount += 1
           }
         }
     },
 
     getAnoterMovie(){
+      this.isloading = 1
       const movieId = this.FirstMovie.id
       const API_URL = process.env.VUE_APP_API_URL
 
@@ -315,17 +333,14 @@ export default {
             AnotherMovied.sort(function(a,b){
               return b.popularity - a.popularity
             })
-            this.AnoterMovie = AnotherMovied.slice(0,5)
+            console.log(AnotherMovied)
+            this.AnotherMovie = AnotherMovied.slice(0,3)
+            this.isloading = 0
           })
           .catch((err) => {
             console.log(err)
           })
-    },
-
-    test(){
-      console.log(this.QuestionCount)
-    }
-    
+    },    
   },
   created(){
     this.getRandomNumber()
@@ -370,5 +385,12 @@ export default {
   font-size: 2rem;
   animation: text-in .8s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
   color: #FAF9D9;
+}
+.animate__animated.animate__fadeInRight {
+  --animate-duration: 1.5s;
+}
+
+.animate__animated.animate__backOutUp {
+  --animate-duration: 5s;
 }
 </style>
