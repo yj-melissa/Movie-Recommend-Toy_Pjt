@@ -37,6 +37,7 @@ export default {
     return {
       isEdit: false,
       content: null,
+      isAuthor: false,
     }
   },
   methods: {
@@ -85,8 +86,19 @@ export default {
         .catch((err) => {
           console.log(err)
         })
-    }
+    },
+    checkAuthor() {
+      const user = this.$store.getters.getUser.pk
+      const author = this.comment.user.id
+      if (user == author) {
+        this.isAuthor = true
+      }
+      console.log(this.isAuthor)
+    },
   },
+  created() {
+    this.checkAuthor()
+  }
 }
 </script>
 

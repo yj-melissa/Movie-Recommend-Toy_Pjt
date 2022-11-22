@@ -1,6 +1,5 @@
 <template>
   <b-container class="animate__animated animate__fadeInRight bv-example-row my-4" id="grid" :style="{ backgroundColor: '#000000'}" >
-    <!-- :style="{ backgroundImage: 'url(https://www.themoviedb.org/t/p/w600_and_h900_bestv2/' + changeMovie.backdrop_path + ')' }" -->
       <b-row class="text-left">
         <b-col cols="6" class="px-0 text-center p-5" >
           <img :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+changeMovie.poster_path" alt="">
@@ -111,7 +110,8 @@ export default {
       const data = {
         movie_id : this.$route.params.movieid,
         content : this.newComment,
-        score : this.score+1
+        score : this.score+1,
+        user_id : this.$store.getters.getUser.pk
       }
       this.$store.dispatch('createMovieReview',data)
       this.newComment = null

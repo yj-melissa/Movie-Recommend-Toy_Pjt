@@ -5,7 +5,7 @@ from accounts.models import User
 class NicknameSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('nickname',)
+        fields = ('nickname', 'id',)
 
 class ArticleListSerializer(serializers.ModelSerializer):
     user = NicknameSerializer(read_only=True)
