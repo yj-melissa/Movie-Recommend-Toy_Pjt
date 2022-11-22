@@ -40,7 +40,6 @@
             <b-col class="text-right mr-2" cols="3">작성자 : {{ article?.user.nickname }}</b-col>
           </b-row>
         </div>
-
         <div class="card-footer container p-0 text-center">
           <b-row align-v="center">
             <b-col cols="11">

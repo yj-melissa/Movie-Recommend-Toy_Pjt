@@ -34,6 +34,9 @@ export default new Vuex.Store({
     getToken(state) {
       return state.accessToken
     },
+    getRefresh(state) {
+      return state.refreshToken
+    }
   },
 
   mutations: {
@@ -51,6 +54,8 @@ export default new Vuex.Store({
     },
 
     SAVE_USER_INFO(state, data) {
+      console.log('SAVE_USER_INFO')
+      console.log(data)
       state.accessToken = data.accessToken
       state.refreshToken = data.refreshToken
       state.user = data.user
@@ -104,6 +109,7 @@ export default new Vuex.Store({
         context.commit('LOGOUT')
     },
     saveUserInfo(context, data) {
+      console.log('saveUserInfo')
       console.log(data)
       context.commit('SAVE_USER_INFO', data)
     },
