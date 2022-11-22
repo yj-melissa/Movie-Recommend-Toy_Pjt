@@ -131,7 +131,7 @@ export default {
         method: 'post', 
         url: `${API_URL}/api/v1/accounts/user/`,
         data: {
-          nickname
+          // 프로필 이미지
         },
         headers: {
           Authorization: `Bearer ${this.$store.getters.getToken}`,

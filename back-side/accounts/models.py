@@ -1,3 +1,6 @@
+from imagekit.processors import Thumbnail
+from imagekit.models import ProcessedImageField
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 # Create your models here.
@@ -11,7 +14,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             email=email,
             nickname=nickname,
-            profile_img=profile_img,
+            # profile_img=profile_img,
         )
         user.set_password(password)
         user.save()
@@ -36,7 +39,13 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    profile_img = models.ImageField(upload_to='profile', blank=True)
+    # profile_img = models.ImageField(upload_to='profile', blank=True)
+    profile_img = ProcessedImageField(
+        upload_to='profile',
+        processors=[Thumbnail(200, 250)],
+        format='png',
+        # default='profile/download.png'
+        )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
