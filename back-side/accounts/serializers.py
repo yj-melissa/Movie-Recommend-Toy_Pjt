@@ -20,7 +20,7 @@ class UserSerializer(UserDetailsSerializer):
     likes_set = MovieSerializer(many = True, read_only = True)
     
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('nickname', 'article_set', 'comment_set', 'review_set', )
+        fields = UserDetailsSerializer.Meta.fields + ('nickname', 'article_set', 'comment_set', 'review_set', 'likes_set' )
 
     def update(self, instance, validated_data):
         # userprofile_serializer = self.fields['profile']
