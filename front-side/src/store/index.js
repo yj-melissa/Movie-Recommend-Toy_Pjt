@@ -42,7 +42,6 @@ export default new Vuex.Store({
   mutations: {
     GET_MOVIE(state, data) {
       state.Movies = data
-      console.log(state.Movies)
     },
 
     GET_DETAIL(state,data){
@@ -54,8 +53,6 @@ export default new Vuex.Store({
     },
 
     SAVE_USER_INFO(state, data) {
-      console.log('SAVE_USER_INFO')
-      console.log(data)
       state.accessToken = data.accessToken
       state.refreshToken = data.refreshToken
       state.user = data.user
@@ -94,7 +91,6 @@ export default new Vuex.Store({
 
     logout(context) {
       const token = context.getters.getToken
-      // console.log(token)
       axios({
         method: 'POST',
         url: `${API_URL}/api/v1/accounts/logout/`,
@@ -109,8 +105,6 @@ export default new Vuex.Store({
         context.commit('LOGOUT')
     },
     saveUserInfo(context, data) {
-      console.log('saveUserInfo')
-      console.log(data)
       context.commit('SAVE_USER_INFO', data)
     },
     getDetail(context,movieid){
@@ -127,7 +121,6 @@ export default new Vuex.Store({
         })
     },
     createMovieReview(context, data){
-      console.log(data)
       const movieid = data.movie_id
       // const User = data.User
       const content = data.content

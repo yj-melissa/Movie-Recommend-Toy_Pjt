@@ -1,20 +1,5 @@
 <template>
-  <div class="container row mt-3" style="margin:0 auto">
-    <!-- <div class="card col-12 p-0 row justify-content-center text-left" style="margin:0 auto">
-      <h4 class="card-header py-3">
-        {{ article?.title }}
-      </h4>
-      <div class="card-body">
-        <p>작성자 : {{ article?.user.nickname }}</p>
-        <p class="card-text py-3">
-          {{ article?.content }}
-        </p>
-        <div v-show="isAuthor">
-          <button> <router-link :to="{name : 'ArticleCreateView', params: { articleid:article?.id } } ">수정</router-link></button>
-          <button @click="articleDelete">삭제</button>
-        </div>
-      </div>
-    </div> -->
+  <div class="container row mt-3 animate__animated animate__fadeInRight" style="margin:0 auto">
     <b-container class="bv-example-row">
       <div id="card" class="card">
         <b-row class="card-header mt-3" >
@@ -23,7 +8,8 @@
           </b-col>
         </b-row>
         <b-row>
-          <b-col cols="12" class="text-right pr-3 pt-2">
+          <b-col class="text-left pl-4 pt-3" align-self="center" cols="3">작성자 : {{ article?.user.nickname }}</b-col>
+          <b-col cols="9" align-self="center" class="text-right pr-4 pt-3" v-show="isAuthor">
             <b-button-group>
               <router-link :to="{name : 'ArticleCreateView', params: { articleid:article?.id } } "><b-button variant="info">수정</b-button></router-link>
               <b-button @click="articleDelete" variant="danger">삭제</b-button>
@@ -33,11 +19,10 @@
         <div class="p-1 card-body">
           <b-row align-v="center">
             <b-col>
-              <div class="card-text text-left ml-2 p-3">
+              <div class="card-text text-left ml-2 p-3" id="content">
                 {{ article?.content }}
               </div>
             </b-col>
-            <b-col class="text-right mr-2" cols="3">작성자 : {{ article?.user.nickname }}</b-col>
           </b-row>
         </div>
         <div class="card-footer container p-0 text-center">
@@ -49,6 +34,7 @@
                 rows="3"
                 v-model="newComment"
                 class="w-100 p-2 m-2"
+                @keyup.enter="createComment"
               >
               </textarea>
             </b-col>
@@ -187,5 +173,8 @@ export default {
 <style>
 #card{
   min-height: 600px;
+}
+#content{
+  min-height: 200px;
 }
 </style>

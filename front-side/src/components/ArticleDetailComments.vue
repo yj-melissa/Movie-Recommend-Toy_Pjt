@@ -6,7 +6,7 @@
     <b-row>
       <b-col>
         <span v-if="isEdit">
-        <textarea rows="1" v-model.trim="content"></textarea>
+        <textarea rows="1" v-model.trim="content" @keyup.enter="saveEdit"></textarea>
         </span>
         <span v-else>
           {{ comment.content }}
@@ -14,12 +14,12 @@
       </b-col>
       <b-col cols="4" class="text-right">
         <span v-if="isEdit">
-          <button @click="saveEdit">등록</button>
+          <b-button  @click="saveEdit" size="sm" squared variant="outline-secondary">등록</b-button>
         </span>
         <span v-else>
-          <button @click="editComment" id="editBtn">수정</button>
+          <b-button  @click="editComment" size="sm" squared variant="outline-secondary" id="editBtn">수정</b-button>
         </span>
-        <button @click="deleteComment">X</button>
+        <b-button @click="deleteComment" size="sm" squared variant="outline-danger">X</b-button>
       </b-col>
     </b-row>
   </b-container>
@@ -61,9 +61,7 @@ export default {
             content : content
           }
         })
-          .then((res)=> {
-            const data = res.data
-            console.log(data)
+          .then(()=> {
             this.isEdit = false
             this.$emit('comment-update')
           })
@@ -93,7 +91,6 @@ export default {
       if (user == author) {
         this.isAuthor = true
       }
-      console.log(this.isAuthor)
     },
   },
   created() {

@@ -1,31 +1,39 @@
 <template>
-  <b-container class="bv-example-row">
-  <b-row class='my-4'>
-    <h1 class="b-col" v-if="isEdit">글 수정하기</h1>
-    <h1 class="b-col" v-else>글 작성하기</h1>
-  </b-row>
-  <b-row>
-    <b-input-group size="lg" prepend="제목">
-        <b-form-input v-model="title" placearea="title"></b-form-input>
-    </b-input-group>
-  </b-row>
-  <b-row class="mt-4">
-    <b-form-textarea
-        id="textarea-rows"
-        placeholder="내용을 입력하세요"
-        rows="8"
-        v-model="content"
-    ></b-form-textarea>
-  </b-row>
-  <b-row class="mt-4 text-right">
-    <b-col></b-col>
-    <b-col></b-col>
-    <b-col>
-      <button @click="editArticle" v-if="isEdit">수정하기</button>
-      <button @click="createArticle" v-else>작성하기</button>
-    </b-col>
-  </b-row>
-</b-container>
+  <b-container class="mt-3 bv-example-row animate__animated animate__fadeInRight">
+    <div class="card">
+      <b-row class="card-header mt-3" >
+        <b-col cols="12" class="text-center">
+          <h4 class="b-col" v-if="isEdit">글 수정하기</h4>
+          <h4 class="b-col" v-else>글 작성하기</h4>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col class="mx-1 my-2">
+          <b-input-group size="lg" prepend="제목">
+              <b-form-input v-model="title" placearea="title"></b-form-input>
+          </b-input-group>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col class="m-1">
+          <b-form-textarea
+              id="textarea-rows"
+              placeholder="내용을 입력하세요"
+              rows="25"
+              v-model="content"
+          ></b-form-textarea>
+        </b-col>
+      </b-row>
+      <b-row align-v="center" class="my-2 mx-1 text-right">
+        <b-col></b-col>
+        <b-col></b-col>
+        <b-col>
+          <b-button @click="editArticle" v-if="isEdit">수정하기</b-button>
+          <b-button @click="createArticle" v-else>작성하기</b-button>
+        </b-col>
+      </b-row>
+    </div>
+  </b-container>
 </template>
 
 <script>

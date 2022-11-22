@@ -1,4 +1,5 @@
 <template>
+
   <div v-if="isLoading" id="loading-page">
     <b-container class="bv-example-row">
       <b-row class="p-5"></b-row>

@@ -6,7 +6,7 @@ from dj_rest_auth.serializers import UserDetailsSerializer
 from community.serializers import ArticleListSerializer, CommentSerializer
 from servers.serializers import ReviewSerializer
 from backend.settings import MEDIA_ROOT
-
+from servers.serializers import ReviewSerializer, MovieSerializer
 class CustomRegisterSerializer(RegisterSerializer):
     nickname = serializers.CharField(max_length=30)
     # profile = serializers.ImageField(use_url=True)
@@ -31,9 +31,10 @@ class UserSerializer(UserDetailsSerializer):
     article_set = ArticleListSerializer(many=True, read_only = True)
     comment_set = CommentSerializer(many = True, read_only = True)
     review_set = ReviewSerializer(many = True, read_only = True)
-
+    likes_set = MovieSerializer(many = True, read_only = True)
+    
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('nickname', 'article_set', 'comment_set', 'review_set', )
+        fields = UserDetailsSerializer.Meta.fields + ('nickname', 'article_set', 'comment_set', 'review_set', 'likes_set', )
 
     def update(self, instance, validated_data):
         # userprofile_serializer = self.fields['profile']

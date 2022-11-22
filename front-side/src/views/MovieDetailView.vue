@@ -11,6 +11,9 @@
           <p class="white-text"> 개봉일자 : {{ changeMovie.release_date}}</p>
           <p class="white-text"> 상영시간 : {{ changeMovie.runtime}} 분 </p>
           <p class="white-text"> <span>장르 : </span><span v-for="genre of changeMovie.genres" :key="genre.id" :genre="genre.name"> {{genre.name}} </span></p>
+          <button v-if="this.value == 0 " @click="like"> 좋아요 </button>
+          <button v-else-if="this.value == 1" @click="like"> 좋아요 취소 </button>
+          
         </b-col>
       </b-row>
       <b-row>
@@ -28,13 +31,6 @@
         <b-col cols='1' id="score">
           <span> 평점 : </span>
         </b-col>
-        <!-- <b-col class="star"
-            v-for="index in 5"
-            :key="index"
-            @click="check(index)">
-          <span v-if="index < score">🌕</span>
-          <span v-if="index >= score">🌑</span>
-        </b-col> -->
         <b-col>
           <b-form-rating v-model="score" variant="warning" class="mb-2"
             show-value
@@ -59,14 +55,21 @@
       </b-row>
       <b-row>
         <b-list-group class="w-100 text-left px-4 mb-5 ">
+          <b-list-group-item>
+            <b-row>
+              <b-col class="text-center" cols="1">작성자</b-col>
+              <b-col class="text-center" cols="9">한줄평</b-col>
+              <b-col class="text-center" cols="2">평점</b-col>
+            </b-row>
+          </b-list-group-item>
           <b-list-group-item v-for="review in this.ReviewList" :key="review.number" :review="review">
             <b-container>
               <b-row align-v="center">
-                <b-col cols='10' class="px-4">
+                <b-col cols='1'>{{review.user.nickname}}</b-col>
+                <b-col cols='9' class="px-4">
                   {{review.content}}
                 </b-col>
-                <b-col cols='2' class="py-2 px-0">
-                  <span> 평점 : </span>
+                <b-col cols='2' class="text-center py-2 px-0">
                   <span
                   v-for="index in 5"
                   :key="index"
@@ -95,7 +98,9 @@ export default {
       newComment : null,
       ReviewList : [],
       videoId : null,
-      score: 3
+      score: 3,
+      value : 0,
+      isReview : 0,
     }
   },
   methods: {
@@ -107,14 +112,19 @@ export default {
     },
     
     createComment(){
-      const data = {
-        movie_id : this.$route.params.movieid,
-        content : this.newComment,
-        score : this.score+1,
-        user_id : this.$store.getters.getUser.pk
+      if(this.isReview == 1){
+        alert('이미 한줄평을 남겼습니다.')
+        this.newComment = null
+      }else{
+        const data = {
+          movie_id : this.$route.params.movieid,
+          content : this.newComment,
+          score : this.score+1,
+          user_id : this.$store.getters.getUser.pk
+        }
+        this.$store.dispatch('createMovieReview',data)
+        this.newComment = null
       }
-      this.$store.dispatch('createMovieReview',data)
-      this.newComment = null
     },
     getReviewList(){
       const List = []
@@ -125,6 +135,11 @@ export default {
         }
       }
       this.ReviewList = List
+      for(const MovieReview of this.ReviewList){
+        if (MovieReview.user.id == this.$store.state.user.pk){
+          this.isReview = 1
+        }
+      }
       this.Moviedata = this.$store.state.MovieDetail
     },
     getVedio(){
@@ -143,10 +158,71 @@ export default {
     check(index) {
       this.score = index + 1;
     },
+
+    like(){
+      const API_URL = process.env.VUE_APP_API_URL
+      if(this.value == 1){
+        axios({
+        method : 'get',
+        url: `${API_URL}/api/v1/server/${this.$route.params.movieid}/1/likes`,
+        headers: {
+          Authorization: `Bearer ${this.$store.getters.getToken}`
+        }
+      })
+        .then((res) => {
+          console.log(res)
+          this.value = 0
+          console.log('삭제')
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+      } else {
+        axios({
+        method : 'get',
+        url: `${API_URL}/api/v1/server/${this.$route.params.movieid}/0/likes`,
+        headers: {
+          Authorization: `Bearer ${this.$store.getters.getToken}`
+        }
+      })
+        .then((res) => {
+          console.log(res)
+          this.value = 1
+          console.log('추가')
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+      }
+      
+    },
+    checkLike(){
+      const API_URL = process.env.VUE_APP_API_URL
+      axios({
+      method : 'get',
+      url: `${API_URL}/api/v1/server/${this.$route.params.movieid}/likelist`,
+      headers: {
+        Authorization: `Bearer ${this.$store.getters.getToken}`
+      }
+      })
+        .then((res) => {
+          for(const user of res.data.like_users){
+            if(user == this.$store.state.user.pk){
+              this.value = 1
+            }
+          }
+          console.log(this.value)
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+    },
+
   },
   created() {
     this.getReviewList()
     this.getDetail(this.$route.params.movieid)
+    this.checkLike()
   },
   computed: {
     changeMovie(){

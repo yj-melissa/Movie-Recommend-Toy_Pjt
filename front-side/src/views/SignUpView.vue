@@ -1,26 +1,83 @@
 <template>
-  <div>
-    <h1>SIGN UP</h1>
-    <form @submit.prevent="signUp">
-      <div>
-        <label for="email">이메일 : </label>
-        <input type="email" id="email" v-model.trim="email">
-      </div>
-      <div>
-        <label for="password1">비밀번호 : </label>
-        <input type="password" id="password1" v-model.trim="password1">
-      </div>
-      <div>
-        <label for="password2">비밀번호 재확인: </label>
-        <input type="password" id="password2" v-model.trim="password2">
-      </div>
-      <div>
-        <label for="nickname">닉네임 : </label>
-        <input type="text" id="nickname" v-model.trim="nickname">
-      </div>
-      <input type="submit" value="가입하기">
-    </form>
-  </div>
+  <b-container class="animate__animated animate__backInRight bv-example-row">
+    <div id="con"></div>
+    <b-row align-v="center" class="mt-4">
+    <b-col cols="3"></b-col>
+    <b-col cols="6">
+    <b-card title="SIGN UP" >
+      <b-card-text>
+        <form @submit.prevent="signUp">
+          <b-row class="mt-4" align-v="center">
+            <b-col class="text-right">
+              <label class="m-0" for="input-1"> E-mail : </label>
+            </b-col>
+            <b-col cols="8" class="text-center">
+              <b-form-input
+                id="input-1"
+                v-model.trim="email"
+                type="email"
+                placeholder="Enter email"
+                required
+                class="w-75"
+              ></b-form-input>
+            </b-col>
+          </b-row>
+          <b-row class="my-4" align-v="center">
+            <b-col class="text-right">
+              <label class="m-0" for="input-2"> Password : </label>
+            </b-col>
+            <b-col cols="8" class="text-center">
+              <b-form-input
+                id="input-2"
+                v-model.trim="password1"
+                type="password"
+                placeholder="Enter Password"
+                required
+                class="w-75"
+              ></b-form-input>
+            </b-col>
+          </b-row>
+          <b-row class="my-4" align-v="center">
+            <b-col class="text-right">
+              <label class="m-0" for="input-3"> Password Check : </label>
+            </b-col>
+            <b-col cols="8" class="text-center">
+              <b-form-input
+                id="input-3"
+                v-model.trim="password2"
+                type="password"
+                placeholder="Enter Password once again"
+                required
+                class="w-75"
+              ></b-form-input>
+            </b-col>
+          </b-row>
+          <b-row class="my-4" align-v="center">
+            <b-col class="text-right">
+              <label class="m-0" for="input-4"> Nickname : </label>
+            </b-col>
+            <b-col cols="8" class="text-center">
+              <b-form-input
+                id="input-4"
+                v-model.trim="nickname"
+                type="text"
+                placeholder="Enter Your Nickname"
+                required
+                class="w-75"
+              ></b-form-input>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-button type="submit" class="mx-2" variant="outline-success">Make Your Account Now! </b-button>
+            </b-col>
+          </b-row>
+        </form>
+      </b-card-text>
+    </b-card>
+    </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -74,10 +131,13 @@ export default {
           //   alert(`${key}: ${value}`)
           // }
         })
-    }
-  },
+    },
+  }
 }
 </script>
 
 <style>
+#con{
+  min-height: 100px;
+}
 </style>

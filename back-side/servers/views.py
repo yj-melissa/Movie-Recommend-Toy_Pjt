@@ -1,10 +1,11 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import render, get_list_or_404, get_object_or_404
 
-from .serializers import SortedSerializer, ReviewSerializer, MovieSerializer
+from .serializers import ReviewSerializer, MovieSerializer
 from .models import Movie, Review
 
 # Create your views here.
@@ -113,3 +114,22 @@ def anothermovie(request, movie_pk):
     
     serializer = MovieSerializer(anothermovie, many= True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def likes(request,movie_pk,value):
+    movie = Movie.objects.get(pk = movie_pk)
+    if value == 1:
+        movie.like_users.remove(request.user)
+    elif value == 0:
+        movie.like_users.add(request.user)
+
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def likeslist(request, movie_pk):
+    if request.method == 'GET':
+        movie = get_object_or_404(Movie, pk=movie_pk)
+        serializer = MovieSerializer(movie)
+        return Response(serializer.data)   
