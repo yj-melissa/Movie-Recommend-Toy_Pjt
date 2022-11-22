@@ -1,20 +1,57 @@
 <template>
-  <div class="home">
-    <h1>LOGIN</h1>
-    <form @submit.prevent="login">
-      <div class="mb-3">
-        <label for="email" class="form-label">이메일: </label><br>
-        <input type="text" id="email" v-model.trim="email">
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">PASSWORD</label><br>
-        <input type="password" id="password" v-model.trim="password">
-      </div>
-      <button type="submit" class="btn btn-primary btn-sm m-2">LOGIN</button>
-      <router-link :to="{ name: 'SignUpView' }" class="btn btn-outline-primary btn-sm m-2">SIGNUP</router-link>
-    </form>
-    {{ user }}
-  </div>
+  <b-container class="animate__animated animate__bounceInDown bv-example-row">
+    <div id="con"></div>
+    <b-row align-v="center" class="mt-4">
+    <b-col cols="3"></b-col>
+    <b-col cols="6">
+    <b-card title="LOGIN" >
+      <b-card-text>
+        <form @submit.prevent="login">
+          <b-row class="mt-4" align-v="center">
+            <b-col class="text-right">
+              <label class="m-0" for="input-1"> E-mail : </label>
+            </b-col>
+            <b-col cols="8" class="text-center">
+              <b-form-input
+                id="input-1"
+                v-model.trim="email"
+                type="email"
+                placeholder="Enter email"
+                required
+                class="w-75"
+              ></b-form-input>
+            </b-col>
+          </b-row>
+          <b-row class="my-3" align-v="center">
+            <b-col class="text-right">
+              <label class="m-0" for="input-2"> Password : </label>
+            </b-col>
+            <b-col cols="8" class="text-center">
+              <b-form-input
+                id="input-2"
+                v-model.trim="password"
+                type="password"
+                placeholder="Enter Password"
+                required
+                class="w-75"
+              ></b-form-input>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-button type="submit" class="mx-2" variant="outline-dark">LOGIN</b-button>
+              <router-link :to="{ name: 'SignUpView' }"><b-button variant="outline-success">SIGN UP</b-button></router-link>
+            </b-col>
+          </b-row>
+        </form>
+      </b-card-text>
+        
+      
+    </b-card>
+    </b-col>
+    <b-col></b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -63,3 +100,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#con{
+  min-height: 250px;
+}
+</style>

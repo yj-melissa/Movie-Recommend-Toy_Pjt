@@ -1,16 +1,22 @@
 <template>
   <div id="app">
     <nav :style="{'background-color': '#000000'}">
-      <router-link :to="{name : 'HomeView'} ">Home</router-link> |
-      <router-link :to="{name : 'RecommendView'} ">Recommend</router-link> |
-      <router-link :to="{name : 'CommunityView'}">Community</router-link> | 
-      <span v-if="isLogin">
-        <router-link :to="{name : 'ProfileView' }">Profile</router-link> |
-        <a src="" @click="logout">Logout</a>
-      </span>
-      <span v-else>
-        <router-link :to="{name : 'LoginView'}">Login</router-link>
-      </span>
+      <b-row>
+        <b-col cols="12" class="text-center">
+          <router-link :to="{name : 'HomeView'} ">Home</router-link> |
+          <router-link :to="{name : 'RecommendView'} ">Recommend</router-link> |
+          <router-link :to="{name : 'CommunityView'}">Community</router-link>
+        </b-col>
+        <b-col class="text-right">
+          <span v-if="isLogin">
+            <router-link :to="{name : 'ProfileView' }">Profile</router-link> |
+            <a id="logout" @click="logout">Logout</a>
+          </span>
+          <span v-else>
+            <router-link :to="{name : 'LoginView'}">Login</router-link>
+          </span>
+        </b-col>
+      </b-row>
     </nav>
     <router-view/>
   </div>
@@ -29,8 +35,10 @@ export default ({
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
       this.$store.dispatch('logout')
+      this.$router.push({ name: 'LoginView' }) 
     },
   },
+  
 })
 </script>
 
@@ -65,5 +73,9 @@ nav a {
 nav a.router-link-exact-active {
   color: #CF0000;
 ;
+}
+
+#logout{
+  color: cornsilk;
 }
 </style>

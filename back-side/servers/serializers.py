@@ -26,3 +26,5 @@ class SortedSerializer(serializers.ModelSerializer):
     class Meta:
         model = SortedMovie
         fields = '__all__'
+
+        

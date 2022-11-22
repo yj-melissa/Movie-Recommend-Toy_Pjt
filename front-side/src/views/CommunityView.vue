@@ -1,5 +1,5 @@
 <template>
-  <b-container class="bv-example-row animate__animated animate__fadeInRight" >
+  <b-container class=" mt-3 bv-example-row animate__animated animate__fadeInRight" >
     <div id="board" class="card">
       <div class="card-header text-center"> 
        <b-row align-v="center"> 

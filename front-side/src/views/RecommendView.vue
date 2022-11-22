@@ -30,7 +30,20 @@
               </b-list-group>
             </b-card-text>
           </b-card>
-          <b-card v-else-if="this.QuestionCount < 21" border-variant="dark" :header="this.QuestonList[getNumber].Question" align="center">
+          <b-card v-else-if="this.QuestionCount == 1" border-variant="dark" :header="this.QuestonList[getNumber].Question" align="center">
+            <b-card-text>
+              <div v-if="this.QuestonList[getNumber].ImgUrl" class="my-2">
+                <img :src="this.QuestonList[getNumber].ImgUrl" alt="">
+              </div>
+              <b-list-group>
+                <b-list-group-item @click="select1" > 네 </b-list-group-item>
+                <b-list-group-item @click="select3" > 아니오 </b-list-group-item>
+                <b-progress :value="this.QuestionCount/10*100" variant="danger" :animated="true" class="mt-3"></b-progress>
+                <p> {{this.QuestionCount}} / 10</p>
+              </b-list-group>
+            </b-card-text>
+          </b-card>
+          <b-card v-else-if="this.QuestionCount < 11" border-variant="dark" :header="this.QuestonList[getNumber].Question" align="center">
             <b-card-text>
               <div v-if="this.QuestonList[getNumber].ImgUrl" class="my-2">
                 <img :src="this.QuestonList[getNumber].ImgUrl" alt="">
@@ -44,9 +57,9 @@
               </b-list-group>
             </b-card-text>
           </b-card>
-          <b-card v-else-if="this.QuestionCount == 21" border-variant="dark" header="혹시 이 영화인가요?" align="center">
+          <b-card v-else-if="this.QuestionCount == 11" border-variant="dark" header="혹시 이 영화인가요?" align="center">
             <b-card-text>
-              <div>
+              <div class="my-4">
                 <img :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+this.FirstMovie.poster_path" alt="">
               </div>
               <b-list-group>
@@ -72,12 +85,19 @@
 
         </b-col>
       </b-row>
-      <b-row v-if="this.AnotherMovie">
+      <b-row v-if="this.AnotherMovie" >
+        <b-row>
+          <b-col cols="12" id="m-title" class="text-center">
+            <b-badge href="#" variant="dark">비슷한 장르, 배우가 출연한 영화 </b-badge>
+          </b-col>
+        </b-row>
         <carousel-3d :disable3d="true" :space="365" :width="300" :height="450" :clickable="false" :controls-visible="true">
           <slide v-for="(movie,i) in this.AnotherMovie" :index="i" :key="i" :movie="movie">
             <template slot-scope="{ index, isCurrent, leftIndex, rightIndex}">
+              <router-link :to="{name : 'MovieDetailView', params:{movieid : movie.id}}">
               <img :data-index="index" 
               class="h-100 w-100" :class="{ current: isCurrent, onLeft: (leftIndex>=0), onRight: (rightIndex >=0) }" :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2/'+movie.poster_path" >
+              </router-link>
             </template>
           </slide>
         </carousel-3d>
@@ -291,7 +311,7 @@ export default {
               return b.popularity - a.popularity
             })
             console.log(AnotherMovied)
-            this.AnotherMovie = AnotherMovied.slice(0,3)
+            this.AnotherMovie = AnotherMovied.slice(0,10)
             this.isloading = 0
           })
           .catch((err) => {
@@ -314,7 +334,7 @@ export default {
   },
   watch : {
     QuestionCount: function(newValue){
-      if(newValue == 21){
+      if(newValue == 11){
         this.getAnoterMovie()
       }
     },
@@ -347,5 +367,10 @@ export default {
 }
 .animate__animated.animate__backOutUp {
   --animate-duration: 5s;
+}
+
+#m-title{
+  color: bisque;
+  font-size: 25px;
 }
 </style>
