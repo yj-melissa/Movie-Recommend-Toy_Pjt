@@ -12,6 +12,11 @@
       </form>
       <p v-else @click="editNickname">{{ current_nickname }}</p>
     </div>
+    <!-- 프로필 수정 -->
+    <form @submit.prevent="SetProfile">
+      <label for="profile_img">프로필 사진 : </label>
+      <input type="file" id="profile_img" name="profile_img" accept="image/*">
+    </form>
     <!-- 비밀번호 수정 -->
     <form @submit.prevent="editPassword">
       <div>
@@ -96,13 +101,14 @@ export default {
           alert('비밀번호를 다시 확인해주세요')
         } else {
           axios({
-            method: 'put',
+            method: 'post',
             url : `${process.env.VUE_APP_API_URL}/api/v1/accounts/password/change/`,
             headers : {
               Authorization : `Bearer ${this.$store.getters.getToken}`
             },
             data : {
-              password1, password2
+              new_password1: password1, 
+              new_password2: password2
             }
           })
             .then((res) => {
@@ -110,7 +116,7 @@ export default {
               localStorage.removeItem('access_token')
               localStorage.removeItem('refresh_token')
               this.$store.dispatch('logout')
-              this.$router.push({ name: 'HomeView' })
+              this.$router.push({ name: 'LoginView' })
             })
             .catch((err) => {
               console.log(err)
@@ -118,6 +124,22 @@ export default {
         }
       }
     },
+    setProfile() {
+      const API_URL = process.env.VUE_APP_API_URL
+
+      axios({
+        method: 'post', 
+        url: `${API_URL}/api/v1/accounts/user/`,
+        data: {
+          nickname
+        },
+        headers: {
+          Authorization: `Bearer ${this.$store.getters.getToken}`,
+          
+        },
+
+      })
+    }
   },
   created() {
     this.currentNickname()

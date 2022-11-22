@@ -97,6 +97,9 @@ export default {
           alert(errMessage)
         })
     },
+  },
+  created() {
+    localStorage.clear()
   }
 }
 </script>
