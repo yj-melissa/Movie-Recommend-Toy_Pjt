@@ -37,8 +37,9 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    GET_MOVIE(state, Movies) {
-      state.Movies = Movies
+    GET_MOVIE(state, data) {
+      state.Movies = data
+      console.log(state.Movies)
     },
 
     GET_DETAIL(state,data){
@@ -68,16 +69,11 @@ export default new Vuex.Store({
 
   actions: {
     getMovie(context){
-      console.log(`${API_URL}/api/v1/server/getmovie/`)
       axios({
         method : 'get',
         url : `${API_URL}/api/v1/server/getmovie/`,
-        headers: {
-          Authorization: `Bearer ${context.getters.getToken}`
-        }
       })
         .then((res)=>{
-          // console.log(res.data)
           const Movies =res.data.slice(0,30)
           Movies.sort(function(a,b){
             let a_num = Number(a.release_date.replace(/-/g,''))
@@ -166,8 +162,6 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
-
-
     
   },
   modules: {

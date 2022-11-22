@@ -10,9 +10,6 @@
             :style="{animationDelay: index*100+'ms'}"
             v-text="t"
           />
-          
-          
-
           <b-card v-if="this.isloading == 1" border-variant="dark" header="" align="center">
             <b-card-text>
               <div>
@@ -94,7 +91,6 @@
 <script>
 import axios from 'axios'
 export default {
-
   data() {
     return {
       text: '좋아하는 영화를 하나 생각하세요',
@@ -126,12 +122,10 @@ export default {
     getRandomNumber(){
       this.QuestionNumber = Math.floor(Math.random()*3)
     },
-
     reset(){
       this.QuestionCount = 0
       this.MovieDataList = this.$store.state.Movies
     },
-
     changeQuestion(){
       this.QuestonList = [
         {
@@ -148,7 +142,6 @@ export default {
         }
       ]
     },
-
     select1(){
       const movieId = this.FirstMovie.id
       const API_URL = process.env.VUE_APP_API_URL
@@ -182,7 +175,6 @@ export default {
           this.RecommendList = NewList
           this.FirstMovie = NewList[0]
           this.QuestionCount += 1
-
         }else if(this.QuestionNumber==1){
           const Genre = this.FirstMovie.genre_ids[0]
           const NewList = []
@@ -200,7 +192,6 @@ export default {
           this.RecommendList = NewList
           this.FirstMovie = NewList[0]
           this.QuestionCount += 1
-
         }else if(this.QuestionNumber==2){
             const Release_date = Number(this.FirstMovie.release_date.split('-',1))
             const NewList = []
@@ -255,7 +246,6 @@ export default {
           this.RecommendList = NewList
           this.FirstMovie = NewList[0]
           this.QuestionCount += 1
-
         }else if(this.QuestionNumber==1){
           const Genre = this.FirstMovie.genre_ids[0]
           const NewList = []
@@ -273,7 +263,6 @@ export default {
           this.RecommendList = NewList
           this.FirstMovie = NewList[0]
           this.QuestionCount += 1
-
         }else if(this.QuestionNumber==2){
             const Release_date = Number(this.FirstMovie.release_date.split('-',1))
             const NewList = []
@@ -288,12 +277,10 @@ export default {
           }
         }
     },
-
     getAnoterMovie(){
       this.isloading = 1
       const movieId = this.FirstMovie.id
       const API_URL = process.env.VUE_APP_API_URL
-
       axios({
           method: 'get',
           url: `${API_URL}/api/v1/server/${movieId}/anothermovie/`,
@@ -339,7 +326,6 @@ export default {
     
   }
 }
-
 </script>
 
 <style scoped>
@@ -359,7 +345,6 @@ export default {
 .animate__animated.animate__fadeInRight {
   --animate-duration: 1.5s;
 }
-
 .animate__animated.animate__backOutUp {
   --animate-duration: 5s;
 }

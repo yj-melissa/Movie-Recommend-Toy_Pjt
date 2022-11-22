@@ -111,7 +111,8 @@ export default {
       const data = {
         movie_id : this.$route.params.movieid,
         content : this.newComment,
-        score : this.score+1
+        score : this.score+1,
+        user_id : this.$store.getters.getUser.pk
       }
       this.$store.dispatch('createMovieReview',data)
       this.newComment = null

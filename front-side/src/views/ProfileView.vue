@@ -9,17 +9,18 @@
           <b-row>
             <b-col cols="3">
               <b-row class="m-3">
-                <h5> 현재 닉네임 : {{nickname}} </h5> <b-icon-gear class="my-1 mx-3"></b-icon-gear> 
+                <h5> 현재 닉네임 : {{nickname}} </h5> <b-icon-gear class="my-1 mx-3" @click="editProfile"></b-icon-gear> 
               </b-row>
               <b-list-group>
-                <b-list-group-item @click="changevalue1" :class="{'active':value==1}">{{ profile.nickname }}님이 작성한 글</b-list-group-item>
-                <b-list-group-item @click="changevalue2" :class="{'active':value==2}">{{ profile.nickname }}님이 작성한 댓글</b-list-group-item>
+                <b-list-group-item @click="changevalue1" :class="{'active':value==1}">작성한 글 목록</b-list-group-item>
+                <b-list-group-item @click="changevalue2" :class="{'active':value==2}">작성한 댓글 목록</b-list-group-item>
+                <b-list-group-item @click="changevalue3" :class="{'active':value==3}">작성한 리뷰 목록</b-list-group-item>
               </b-list-group>
             </b-col>
             <b-col>
               <div v-if="this.value==0"> </div>
               <div v-else-if="this.value==1">
-                <h4 class="mt-4 ml-1">작성 글 리스트</h4>
+                <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 글</h4>
                 <b-list-group v-for="article in profile.article_set" :key="article.x">
                   <b-list-group-item>
                     <router-link :to="{ name: 'ArticleDetailView', params: { articleid : article.id } }">
@@ -29,11 +30,21 @@
                 </b-list-group>
               </div>
               <div v-else-if="this.value==2">
-                <h4 class="mt-4 ml-1">댓글 리스트</h4>
+                <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 댓글</h4>
                 <b-list-group v-for="comment in profile.comment_set" :key="comment.x">
                   <b-list-group-item>
                     <router-link :to="{ name: 'ArticleDetailView', params: { articleid : comment.article } }">
                       {{ comment.content }}
+                    </router-link>
+                  </b-list-group-item>
+                </b-list-group>
+              </div>
+              <div v-else-if="this.value==3">
+                <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 리뷰</h4>
+                <b-list-group v-for="review in profile.review_set" :key="review.x">
+                  <b-list-group-item>
+                    <router-link :to="{ name: 'MovieDetailView', params: { movieid : review.movie } }">
+                      {{ review.content }}
                     </router-link>
                   </b-list-group-item>
                 </b-list-group>
@@ -96,7 +107,7 @@ export default {
         }
       })
         .then((res) => {
-          // console.log(res)
+          console.log(res)
           this.profile = res.data
         })
         .catch((err) => {
@@ -109,12 +120,33 @@ export default {
     changevalue2(){
       this.value = 2
     },
+    changevalue3(){
+      this.value = 3
+    },
     alert(){
       this.Alert = true
     },
     deleteaccount(){
-      console.log('탈퇴')
+      const API_URL = process.env.VUE_APP_API_URL
+      axios({
+        method: 'DELETE',
+        url: `${API_URL}/api/v1/accounts/delete/${this.$store.getters.getUser.pk}`,
+        headers: {
+          Authorization: `Bearer ${this.$store.getters.getToken}`
+        }
+      })
+        .then((res) => {
+          console.log(res)
+          localStorage.removeItem('access_token')
+          localStorage.removeItem('refresh_token')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
+    editProfile() {
+      console.log('프로필 수정')
+    }
   },
   created(){
     this.getUser()
