@@ -87,7 +87,7 @@ def get_movie_datas():
 
     count = 1
     # 1페이지부터 500페이지까지 (페이지당 20개, 총 10,000개)
-    for i in range(1, 100):
+    for i in range(1, 200):
         request_url = f"https://api.themoviedb.org/3/movie/popular?api_key={TMDB_API_KEY}&language=ko-KR&page={i}"
         movies = requests.get(request_url).json()
 
@@ -95,7 +95,7 @@ def get_movie_datas():
             actor_request_url = f"https://api.themoviedb.org/3/movie/{movie['id']}/credits?api_key={TMDB_API_KEY}&language=ko-KR"
             actors = requests.get(actor_request_url).json()
 
-            if movie.get('adult') == True:
+            if movie.get('vote_count') < 20:
                 pass
             
             else:
@@ -108,6 +108,10 @@ def get_movie_datas():
                             for j in genres:
                                 if j['id'] == i:
                                     genre_list.append(j['name'])
+
+                        for crew in actors['crew']:
+                            if crew.get("department")=="Directing" and crew.get("job")== "Director":
+                                director = crew
 
                         movie_dict = {
                             "model" : "servers.movie",
@@ -124,8 +128,10 @@ def get_movie_datas():
                             'poster_path' : movie.get('poster_path'),
                             'release_date' : movie.get('release_date'),
                             'vote_average' : movie.get('vote_average'),
-                            'actors' : actors['cast'] 
-                            }
+                            'actors' : actors['cast'],
+                            'director' : director
+                            },
+                            
                         }
 
                         count+=1

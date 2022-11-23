@@ -2,20 +2,57 @@
   <b-container class="animate__animated animate__fadeInRight bv-example-row my-4" id="grid" :style="{ backgroundColor: '#000000'}" >
       <b-row class="text-left">
         <b-col cols="6" class="px-0 text-center p-5" >
-          <img :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+changeMovie.poster_path" alt="">
+          <img v-if="changeMovie.poster_path" :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+changeMovie.poster_path" alt="">
         </b-col>
         <b-col cols="6" class="p-5" id="box" >
-          <h1 class="white-text">{{ changeMovie.title }}</h1>
-          <p class="white-text" >{{ changeMovie.overview }}</p>
-          <p class="white-text" > 평점 : {{ changeMovie.vote_average}}</p>
+          <b-row><h1 class="white-text">{{ changeMovie.title }}</h1></b-row>
+          <b-row><p class="white-text" >{{ changeMovie.overview }}</p></b-row>
+          <b-row>
+            <b-col>
+              <span class="white-text"> 평점 : {{ changeMovie.vote_average}} </span>
+            </b-col>
+            <b-col> 
+              <span class="text-right">
+                <p @click="like" v-if="this.value == 0 " class="h3" > Pick <b-icon-lightning-fill variant="danger"></b-icon-lightning-fill></p>
+                <p @click="like" v-else-if="this.value == 1" class="h3" > Drop <b-icon-lightning-fill variant="dark"></b-icon-lightning-fill></p>
+              </span>
+            </b-col>
+          </b-row>
+          
           <p class="white-text"> 개봉일자 : {{ changeMovie.release_date}}</p>
-          <p class="white-text"> 상영시간 : {{ changeMovie.runtime}} 분 </p>
-          <p class="white-text"> <span>장르 : </span><span v-for="genre of changeMovie.genres" :key="genre.id" :genre="genre.name"> {{genre.name}} </span></p>
-          <button v-if="this.value == 0 " @click="like"> 좋아요 </button>
-          <button v-else-if="this.value == 1" @click="like"> 좋아요 취소 </button>
+          <p class="white-text"> <span>장르 : </span><span v-for="genre of changeMovie.genre_ids" :key="genre.id" :genre="genre"> {{genre}} </span></p>
+          <p class="white-text"> 감독 : {{ changeMovie.director.name}} </p>
           
         </b-col>
       </b-row>
+      <b-row class="mb-2">
+        <b-col class="text-center text-white" cols="4" >출연진</b-col>
+        <b-col >
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+        
+      <b-row>
+        <b-col clos="2" ></b-col>
+        <b-col class="text-center" cols="9">
+          <b-list-group horizontal>
+            <b-list-group-item class=" mx-1 bg-dark" v-for="actor of changeMovie.actors.slice(0,5)" :key="actor.id">
+              <b-card
+                :img-src="`https://www.themoviedb.org/t/p/w138_and_h175_face/${actor.profile_path}`"
+                img-top
+                style="max-width: 120px;"
+                class="mb-2 bg-secondary"
+              >
+                <b-card-text class="text-white bg-secondary">
+                  {{actor.name}}
+                </b-card-text>
+              </b-card>
+            </b-list-group-item>
+          </b-list-group>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+      
       <b-row>
         <b-col cols='12' class="my-4">
           <div v-if="this.videoId" id="video">
@@ -54,6 +91,18 @@
         </b-col>
       </b-row>
       <b-row>
+        <b-col>
+        <b-pagination
+          pills
+          class="mt-4"
+          v-model="currentPage"
+          :total-rows="rows"
+          :per-page="perPage"
+          size="sm"
+          align="center"
+          aria-controls="commentlist"
+        ></b-pagination>
+
         <b-list-group class="w-100 text-left px-4 mb-5 ">
           <b-list-group-item>
             <b-row>
@@ -62,11 +111,12 @@
               <b-col class="text-center" cols="2">평점</b-col>
             </b-row>
           </b-list-group-item>
-          <b-list-group-item v-for="review in this.ReviewList" :key="review.number" :review="review">
+          <div v-if="this.ReviewList.length>0">
+          <b-list-group-item id='commentlist' :per-page="perPage" :current-page="currentPage" v-for="review in itemForList" :key="review.number" :review="review">
             <b-container>
               <b-row align-v="center">
-                <b-col cols='1'>{{review.user.nickname}}</b-col>
-                <b-col cols='9' class="px-4">
+                <b-col cols='2'>{{review.user.nickname}}</b-col>
+                <b-col cols='8' class="px-4">
                   {{review.content}}
                 </b-col>
                 <b-col cols='2' class="text-center py-2 px-0">
@@ -81,7 +131,9 @@
               </b-row>
             </b-container>
           </b-list-group-item>
+          </div>
         </b-list-group>
+        </b-col>
       </b-row>
   </b-container>
 </template>
@@ -93,6 +145,7 @@ export default {
   name: 'MovieDetailView',
   data() {
     return {
+      MovieDetail : null,
       Moviedata : [],
       Star : null,
       newComment : null,
@@ -101,12 +154,28 @@ export default {
       score: 3,
       value : 0,
       isReview : 0,
+
+      currentPage : 1,
+      perPage : 4,
     }
   },
   methods: {
-    getDetail(data){
-      this.$store.dispatch('getDetail',data)
+    getDetail(){
+      const API_URL = process.env.VUE_APP_API_URL
+      axios({
+        method : 'get',
+        url : `${API_URL}/api/v1/server/${this.$route.params.movieid}/getdetail`,
+      })
+        .then((res)=>{
+          this.MovieDetail = res.data
+          console.log(this.MovieDetail)
+        })
+        .catch((err)=> {
+          console.log(err)
+        })
     },
+
+
     getReview(){
       this.$store.dispatch('getReview')
     },
@@ -146,7 +215,7 @@ export default {
       // console.log(`https://www.googleapis.com/youtube/v3/search?key=${process.env.VUE_APP_YOUTUBE_APIKEY}&part=snippet&type=video&q=${this.$store.state.MovieDetail.title}공식예고편`)
       axios({
         method : 'get',
-        url : `https://www.googleapis.com/youtube/v3/search?key=${process.env.VUE_APP_YOUTUBE_API_KEY}&part=snippet&type=video&q=${this.$store.state.MovieDetail.title}공식예고편`
+        url : `https://www.googleapis.com/youtube/v3/search?key=${process.env.VUE_APP_YOUTUBE_API_KEY}&part=snippet&type=video&q=${this.MovieDetail.title}공식예고편`
       })
         .then((res)=>{
           this.videoId = res.data.items[0].id.videoId
@@ -221,12 +290,12 @@ export default {
   },
   created() {
     this.getReviewList()
-    this.getDetail(this.$route.params.movieid)
+    this.getDetail()
     this.checkLike()
   },
   computed: {
     changeMovie(){
-      return this.$store.state.MovieDetail
+      return this.MovieDetail
     },
     changeReview(){
       return this.$store.state.ReviewList
@@ -234,6 +303,12 @@ export default {
     getUrl(){
         return `https://www.youtube.com/embed/${this.videoId}?autoplay=1&mute=1 `
     },
+    rows(){
+      return this.ReviewList.length
+    },
+    itemForList(){
+      return this.ReviewList.slice((this.currentPage - 1) * this.perPage,this.currentPage * this.perPage);
+    }
   },
   watch : {
     changeReview() {

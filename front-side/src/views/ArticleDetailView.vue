@@ -40,9 +40,24 @@
             </b-col>
             <b-col class="pr-4 text-left"><button @click="createComment" class="px-2 py-4  btn btn-outline-secondary">입력</button></b-col>
           </b-row>
-          <ul class="list-group list-group-flush p-0 m-0 text-left">
+          
+          <b-pagination
+          pills
+          class="mt-4"
+          v-model="currentPage"
+          :total-rows="rows"
+          :per-page="perPage"
+          size="sm"
+          align="center"
+          aria-controls="commentlist"
+        ></b-pagination>
+
+          <ul id="commentlist" class="list-group list-group-flush p-0 m-0 text-left">
             <ArticleDetailComments
-              v-for="comment in comments"
+              
+              :per-page="perPage"
+              :current-page="currentPage"
+              v-for="comment in itemForComment"
               :key="comment.id"
               :comment="comment"
               @comment-update="getCommentData"
@@ -70,6 +85,9 @@ export default {
       newComment : null,
       comments: [],
       isAuthor: false,
+
+      currentPage : 1,
+      perPage : 4,
     }
   },
   methods: {
@@ -167,12 +185,20 @@ export default {
     this.getArticleData()
     this.getCommentData()
   },
+  computed : {
+    rows(){
+      return this.comments.length
+    },
+    itemForComment(){
+      return this.comments.slice((this.currentPage - 1) * this.perPage,this.currentPage * this.perPage)
+    }
+  }
 }
 </script>
 
 <style>
 #card{
-  min-height: 600px;
+  min-height: 400px;
 }
 #content{
   min-height: 200px;

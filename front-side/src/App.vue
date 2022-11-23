@@ -9,8 +9,9 @@
           <router-link :to="{name : 'CommunityView'}">Community</router-link>
         </b-col>
         <b-col class="text-right">
+          <span v-b-modal.modal-prevent-closing class="text-danger mr-3"> Search <b-icon icon="search" variant="danger" font-scale="1"></b-icon></span> 
           <span v-if="isLogin">
-            <router-link :to="{name : 'ProfileView' }">Profile</router-link> |
+            <router-link :to="{name : 'ProfileView' }"> Profile</router-link> |
             <a id="logout" @click="logout">Logout</a>
           </span>
           <span v-else>
@@ -18,6 +19,28 @@
           </span>
         </b-col>
       </b-row>
+
+      <b-modal id="modal-prevent-closing" title="영화 검색하기"
+      ref="modal"
+      @show="resetModal"
+      @hidden="resetModal"
+      @ok="handleOk">
+        <form ref="form" @submit.stop.prevent="handleSubmit">
+          <b-form-group
+            label="제목을 입력해주세요"
+            label-for="search-input"
+            invalid-feedback="검색어를 입력해주세요"
+            :state="searchState"
+          >
+            <b-form-input
+              id="search-input"
+              v-model="search"
+              :state="searchState"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </form>
+      </b-modal>
     </nav>
     <router-view/>
   </div>
@@ -26,14 +49,16 @@
 <script>
 export default ({
   name: 'App',
+  data(){
+    return{
+      search: '',
+      searchState: null,
+      logoImg : null
+    }
+  },
   computed: {
     isLogin() {
       return this.$store.getters.isLogin
-    }
-  },
-  data() {
-    return {
-      logoImg : null
     }
   },
   methods: {
@@ -43,6 +68,35 @@ export default ({
       this.$store.dispatch('logout')
       this.$router.push({ name: 'LoginView' }) 
     },
+    checkFormValidity() {
+      const valid = this.$refs.form.checkValidity()
+      this.searchState = valid
+      return valid
+    },
+    resetModal() {
+      this.search = ''
+      this.searchState = null
+    },
+    handleOk(bvModalEvent) {
+      // Prevent modal from closing
+      bvModalEvent.preventDefault()
+      // Trigger submit handler
+      this.handleSubmit()
+    },
+    handleSubmit() {
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return
+      }
+      // Push the name to submitted names
+      console.log(this.search)
+      this.$router.push({ name: 'SearchView',params: { serchname : this.search } }) 
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.$bvModal.hide('modal-prevent-closing')
+      })
+    }
+
   },
 })
 </script>

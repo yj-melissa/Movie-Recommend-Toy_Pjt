@@ -16,46 +16,110 @@
                 <b-list-group-item @click="changevalue1" :class="{'active':value==1}">작성한 글 목록</b-list-group-item>
                 <b-list-group-item @click="changevalue2" :class="{'active':value==2}">작성한 댓글 목록</b-list-group-item>
                 <b-list-group-item @click="changevalue3" :class="{'active':value==3}">작성한 리뷰 목록</b-list-group-item>
+                <b-list-group-item @click="changevalue5" :class="{'active':value==5}">좋아하는 영화 목록</b-list-group-item>
               </b-list-group>
             </b-col>
             <b-col>
               <div> 
                 <div v-if="this.value==0"> </div>
-                <div v-else-if="this.value==1">
+                <div class="overflow-auto" v-else-if="this.value==1">
                   <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 글</h4>
-                  <b-list-group v-for="article in profile.article_set" :key="article.x">
-                    <b-list-group-item>
+
+                  <b-pagination
+                    pills
+                    class="mt-4"
+                    v-model="articlecurrentPage"
+                    :total-rows="articlerows"
+                    :per-page="articleperPage"
+                    align="center"
+                    aria-controls="my-articlelist"
+                  ></b-pagination>
+
+                  <b-list-group id="my-articlelist" :per-page="articleperPage" :current-page="articlecurrentPage">
+                    <b-list-group-item v-for="article in itemsForArticleList" :key="article.x">
                       <router-link :to="{ name: 'ArticleDetailView', params: { articleid : article.id } }">
-                      {{ article.title }}
-                    </router-link>
+                        {{ article.title }}
+                      </router-link>
                     </b-list-group-item>
                   </b-list-group>
+                  
                 </div>
-                <div v-else-if="this.value==2">
+                  
+                <div class="overflow-auto" v-else-if="this.value==2">
                   <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 댓글</h4>
-                  <b-list-group v-for="comment in profile.comment_set" :key="comment.x">
-                    <b-list-group-item>
+                  <b-pagination
+                    class="mt-4"
+                    pills
+                    v-model="commentcurrentPage"
+                    :total-rows="commentrows"
+                    :per-page="commentperPage"
+                    align="center"
+                    aria-controls="my-commentlist"
+                  ></b-pagination>
+
+                  <b-list-group id="my-commentlist" :per-page="commentperPage" :current-page="commentcurrentPage">
+                    <b-list-group-item v-for="comment in itemsForList" :key="comment.x">
                       <router-link :to="{ name: 'ArticleDetailView', params: { articleid : comment.article } }">
                         {{ comment.content }}
                       </router-link>
                     </b-list-group-item>
                   </b-list-group>
+                  
                 </div>
                 <div v-else-if="this.value==3">
                   <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 리뷰</h4>
-                  <b-list-group v-for="review in profile.review_set" :key="review.x">
-                    <b-list-group-item>
-                      <router-link :to="{ name: 'MovieDetailView', params: { movieid : review.movie } }">
-                        {{ review.content }}
-                      </router-link>
-                    </b-list-group-item>
-                  </b-list-group>
+
+                  <div class="overflow-auto">
+
+                    <b-pagination
+                      class="mt-4"
+                      pills
+                      v-model="currentPage"
+                      :total-rows="reviewrows"
+                      :per-page="perPage"
+                      align="center"
+                      aria-controls="my-list"
+                    ></b-pagination>
+
+                    <b-table id="my-table" small :fields="reviewFields" :items="profile.review_set" :per-page="perPage"
+                      :current-page="currentPage">
+                      <!-- A virtual column -->
+                      <template #cell(content)="data">
+                        <router-link :to="{ name: 'MovieDetailView', params: { movieid : data.item.movie } }"> {{ data.item.content }} </router-link>
+                      </template>
+                    </b-table>
+
+                  </div>
                 </div>
                 <div v-else-if="this.value==4">
                   <ProfileEditItem
                     :current_nickname = nickname
                     :profile_img_src = profile.profile_img
                   />  
+                </div>
+                <div v-else-if="this.value==5">
+                  
+                  <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 좋아한 영화</h4>
+                    <div class="overflow-auto">
+                      
+                      <b-pagination
+                        class="mt-4"
+                        pills
+                        v-model="currentPage"
+                        :total-rows="rows"
+                        :per-page="perPage"
+                        align="center"
+                        aria-controls="my-list"
+                      ></b-pagination>
+
+                      <b-table id="my-table" small :fields="fields" :items="likeList" :per-page="perPage"
+                        :current-page="currentPage">
+                        <!-- A virtual column -->
+                        <template #cell(title)="data">
+                          <router-link :to="{ name: 'MovieDetailView', params: { movieid : data.item.id } }"> {{ data.item.title }} </router-link>
+                        </template>
+                      </b-table>
+                    </div>
                 </div>
               </div>
             </b-col>
@@ -89,10 +153,21 @@ export default {
   },
   data() {
     return {
+      fields: ['title'],
+      reviewFields: ['content'],
       nickname: null,
       profile: [],
       value : 0,
       Alert : false,
+      likeList : [],
+      perPage: 5,
+      currentPage: 1,
+      
+      articlecurrentPage : 1,
+      articleperPage : 5,
+
+      commentcurrentPage : 1,
+      commentperPage : 5,
     }
   },
   computed: {
@@ -101,6 +176,24 @@ export default {
     },
     user() {
       return this.$store.getters.getUser
+    },
+    rows() {
+      return this.likeList.length
+    },
+    reviewrows() {
+      return this.profile.review_set.length
+    },
+    articlerows(){
+      return this.profile.article_set.length
+    },
+    commentrows(){
+      return this.profile.comment_set.length
+    },
+    itemsForList() {
+      return this.profile.comment_set.slice((this.commentcurrentPage - 1) * this.commentperPage,this.commentcurrentPage * this.commentperPage);
+    },
+    itemsForArticleList() {
+      return this.profile.article_set.slice((this.articlecurrentPage - 1) * this.articleperPage,this.articlecurrentPage * this.articleperPage);
     },
   },
   methods: {
@@ -128,6 +221,24 @@ export default {
           console.log(err)
         })
     },
+    checkLike(){
+      const API_URL = process.env.VUE_APP_API_URL
+      axios({
+      method : 'get',
+      url: `${API_URL}/api/v1/server/${this.$store.state.user.pk}/likemovielist`,
+      headers: {
+        Authorization: `Bearer ${this.$store.getters.getToken}`
+      }
+      })
+        .then((res) => {
+          console.log(res)
+          this.likeList = res.data
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+    },
+
     changevalue1(){
       this.value = 1
     },
@@ -136,6 +247,9 @@ export default {
     },
     changevalue3(){
       this.value = 3
+    },
+    changevalue5(){
+      this.value = 5
     },
     alert(){
       this.Alert = true
@@ -159,11 +273,13 @@ export default {
     },
     editProfile() {
       this.value = 4
-    }
+    },
+
   },
   created(){
     this.getUser()
     this.getProfile()
+    this.checkLike()
   },
   watch : {
     user() {

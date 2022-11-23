@@ -12,9 +12,15 @@ class CustomRegisterSerializer(RegisterSerializer):
 
     def get_cleaned_data(self):
         data = super().get_cleaned_data()
-        data.nickname = self.data.get('nickname', '')
-        data.profile_img = self.FILES.get('profile_img', '')
         return data
+
+    def save(self, request):
+        user = super().save(request)
+        user.nickname = self.data.get('nickname')
+        user.profile_img = request.FILES['profile_img']
+        user.save()
+        return user
+    
 
 class UserSerializer(UserDetailsSerializer):
 
@@ -28,6 +34,7 @@ class UserSerializer(UserDetailsSerializer):
             'article_set', 
             'comment_set', 
             'review_set', 
+            # 'likes_set',
             'profile_img',
             )
 

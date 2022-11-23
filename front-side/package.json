@@ -16,6 +16,7 @@
     "lodash": "^4.17.21",
     "swiper": "^8.4.4",
     "vue": "^2.7.14",
+    "vue-bootstrap-pagination": "^2.10.3",
     "vue-carousel": "^0.18.0",
     "vue-carousel-3d": "^1.0.1",
     "vue-fade-images": "^1.0.2",

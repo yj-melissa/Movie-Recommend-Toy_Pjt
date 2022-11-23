@@ -15,6 +15,7 @@ class Movie(models.Model):
     release_date = models.TextField()
     vote_average = models.FloatField()
     actors = models.JSONField(default=False)
+    director = models.JSONField(null=True)
     # director =
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
 

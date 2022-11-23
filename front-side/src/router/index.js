@@ -9,6 +9,7 @@ import SignUpView from '@/views/SignUpView'
 import ArticleCreateView from '@/views/ArticleCreateView'
 import ArticleDetailView from '@/views/ArticleDetailView'
 import ProfileView from '@/views/ProfileView'
+import SearchView from '@/views/SearchView'
 Vue.use(VueRouter)
 
 const routes = [
@@ -61,7 +62,12 @@ const routes = [
     path: '/articledetail/:articleid',
     name: 'ArticleDetailView',
     component: ArticleDetailView
-  },  
+  },
+  {
+    path: '/serch/:serchname',
+    name: 'SearchView',
+    component: SearchView
+  },    
 ]
 
 const router = new VueRouter({
