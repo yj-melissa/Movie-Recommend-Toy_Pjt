@@ -14,7 +14,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             email=email,
             nickname=nickname,
-            # profile_img=profile_img,
+            profile_img=profile_img,
         )
         user.set_password(password)
         user.save()
@@ -39,12 +39,11 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    # profile_img = models.ImageField(upload_to='profile', blank=True)
     profile_img = ProcessedImageField(
         upload_to='profile',
         processors=[Thumbnail(200, 250)],
         format='png',
-        # default='profile/download.png'
+        blank=True,
         )
 
     USERNAME_FIELD = 'email'
@@ -59,4 +58,3 @@ class User(AbstractBaseUser):
 #     user = models.OneToOneField(User, related_name='userprofile', on_delete = models.CASCADE)
 #     # custom fields for user
 #     # nickname = models.CharField(max_length=10)
-

@@ -7,24 +7,24 @@ from backend.settings import MEDIA_ROOT
 from servers.serializers import ReviewSerializer, MovieSerializer
 class CustomRegisterSerializer(RegisterSerializer):
     nickname = serializers.CharField(max_length=30)
-    profile_img = serializers.ImageField(use_url=True, required=False)
+    profile_img = serializers.ImageField(use_url=False, required=False)
 
     # def get_cleaned_data(self):
     #     data = super().get_cleaned_data()
     #     data['nickname'] = self.data.get('nickname')
-    #     # data['profile_img'] = self.data.get('profile_img')
+    #     data['profile_img'] = self.data.get('profile_img', '')
     #     return data
 
     def save(self, request):
         user = super().save(request)
-        if request.FILES['profile_img']:
-            user.profile_img = request.FILES['profile_img']
-        else:
-            user.profile_img = 'profile/download.png'
+        # user.profile_img = request.FILES['profile_img']
+        user.profile_img = request.FILES.get('profile_img', '')
+        # if request.FILES['profile_img']:
+        #     user.profile_img = request.FILES['profile_img']
+        # else:
+        #     user.profile_img = null
         user.save()
         return user
-
-
 
 class UserSerializer(UserDetailsSerializer):
 
@@ -34,7 +34,14 @@ class UserSerializer(UserDetailsSerializer):
     # likes_movies = MovieSerializer(many = True, read_only = True)
     
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('nickname', 'article_set', 'comment_set', 'review_set', 'likes_movies', 'profile_img')
+        fields = UserDetailsSerializer.Meta.fields + (
+            'nickname', 
+            'article_set', 
+            'comment_set', 
+            'review_set', 
+            'likes_movies', 
+            'profile_img',
+            )
         fields = '__all__'
 
     def update(self, instance, validated_data):

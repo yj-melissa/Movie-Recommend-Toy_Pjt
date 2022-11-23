@@ -4,16 +4,16 @@
     <b-row align-v="center" class="mt-4">
     <b-col cols="3"></b-col>
     <b-col cols="6">
-    <b-card title="SIGN UP" >
+    <b-card title="SIGN UP">
       <b-card-text>
-        <form @submit.prevent="signUp">
+        <form @submit.prevent="signUp" enctype="multipart/form-data">
           <b-row class="mt-4" align-v="center">
             <b-col class="text-right">
-              <label class="m-0" for="input-1"> E-mail : </label>
+              <label class="m-0" for="email"> E-mail : </label>
             </b-col>
             <b-col cols="8" class="text-center">
               <b-form-input
-                id="input-1"
+                id="email"
                 v-model.trim="email"
                 type="email"
                 placeholder="Enter email"
@@ -24,11 +24,11 @@
           </b-row>
           <b-row class="my-4" align-v="center">
             <b-col class="text-right">
-              <label class="m-0" for="input-2"> Password : </label>
+              <label class="m-0" for="password1"> Password : </label>
             </b-col>
             <b-col cols="8" class="text-center">
               <b-form-input
-                id="input-2"
+                id="password1"
                 v-model.trim="password1"
                 type="password"
                 placeholder="Enter Password"
@@ -39,11 +39,11 @@
           </b-row>
           <b-row class="my-4" align-v="center">
             <b-col class="text-right">
-              <label class="m-0" for="input-3"> Password Check : </label>
+              <label class="m-0" for="password2"> Password Check : </label>
             </b-col>
             <b-col cols="8" class="text-center">
               <b-form-input
-                id="input-3"
+                id="password2"
                 v-model.trim="password2"
                 type="password"
                 placeholder="Enter Password once again"
@@ -54,17 +54,36 @@
           </b-row>
           <b-row class="my-4" align-v="center">
             <b-col class="text-right">
-              <label class="m-0" for="input-4"> Nickname : </label>
+              <label class="m-0" for="nickname"> Nickname : </label>
             </b-col>
             <b-col cols="8" class="text-center">
               <b-form-input
-                id="input-4"
+                id="nickname"
                 v-model.trim="nickname"
                 type="text"
                 placeholder="Enter Your Nickname"
                 required
                 class="w-75"
               ></b-form-input>
+            </b-col>
+          </b-row>
+          <b-row class="my-4" align-v="center">
+            <b-col class="text-right">
+              <label class="m-0" for="profile_img"> Profile Image : </label>
+            </b-col>
+            <b-col cols="8" class="text-center">
+              <input
+                type="file"
+                accept="image/*"
+                id="profile_img"
+                class="w-75"
+                @change="updateImageDisplay"
+                required=false
+                v-model="profile_img"
+              >
+              <div class="preview" v-show="imgDisplay">
+                <p>No files currently selected for upload</p>
+              </div>
             </b-col>
           </b-row>
           <b-row>
@@ -90,6 +109,8 @@ export default {
       password2: null,
       email: null,
       nickname: null,
+      profile_img: null,
+      imgDisplay: false,
     }
   },
   methods: {
@@ -99,14 +120,17 @@ export default {
       const password1 = this.password1
       const password2 = this.password2
       const nickname = this.nickname
+      const profile_img = this.profile_img
+
       axios({
         method: 'POST',
         url: `${API_URL}/api/v1/accounts/signup/`,
         data: {
-          email, password1, password2, nickname
+          email, password1, password2, nickname, profile_img
         }
       })
         .then((res) => {
+          console.log(res)
           const data = {
             accessToken: res.data.access_token,
             refreshToken: res.data.refresh_token,
@@ -132,6 +156,53 @@ export default {
           // }
         })
     },
+    updateImageDisplay() {
+      this.imgDisplay = true
+      const input = document.querySelector('#profile_img')
+      const preview = document.querySelector('.preview')
+
+      function validFileType(file) {
+        const fileTypes = [
+            'image/apng',
+            'image/bmp',
+            'image/gif',
+            'image/jpeg',
+            'image/pjpeg',
+            'image/png',
+            'image/svg+xml',
+            'image/tiff',
+            'image/webp',
+            `image/x-icon`
+        ]
+        return fileTypes.includes(file.type);
+      }
+
+      while(preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+      }
+      const curFiles = input.files;
+      if(curFiles.length != 0) {
+        const list = document.createElement('ol');
+        preview.appendChild(list);
+
+        for(const file of curFiles) {
+          const listItem = document.createElement('span');
+          const para = document.createElement('p');
+
+          if(validFileType(file)) {
+            const image = document.createElement('img');
+            image.src = URL.createObjectURL(file);
+
+            listItem.appendChild(image);
+          } else {
+            para.textContent = `${file.name}: Not a valid file type. Update your selection.`;
+            listItem.appendChild(para);
+          }
+          list.appendChild(listItem);
+        }
+      }
+    },    
+
   }
 }
 </script>

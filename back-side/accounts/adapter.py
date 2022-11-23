@@ -14,9 +14,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
 
     def save_user(self, request, user, form, commit=True):
         user = super().save_user(request, user, form, False)
-        user_field(user, 'nickname', request.data.get('nickname', ''))
-        user_field(user, 'profile', request.data.get('profile', ''))
-        # user.nickname = data.get('nickname')
-        # user.profile = data.get('profile')
+        # user_field(user, 'nickname', request.data.get('nickname', ''))
+        # user_field(user, 'user_profile', request.data.get('user_profile', ''))
         user.save()
         return user
