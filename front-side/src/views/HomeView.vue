@@ -84,11 +84,7 @@ export default {
         .then((res)=>{
           // console.log(res.data)
           const Movies =res.data
-          // Movies.sort(function(a,b){
-          //   let a_num = Number(a.release_date.replace(/-/g,''))
-          //   let b_num = Number(b.release_date.replace(/-/g,''))
-          //   return b_num - a_num
-          // })
+          
           Movies.sort(function(a,b){
             return b.popularity - a.popularity
           })

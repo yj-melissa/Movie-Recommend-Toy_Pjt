@@ -17,6 +17,27 @@ def getmovie(request):
         serializer = MovieSerializer(Movies, many = True)
         return Response(serializer.data)
 
+@api_view(['GET'])
+def getsearch(request):
+    keyward = request.GET['search']
+    newlist = []
+    if request.method == 'GET':
+        Movies = Movie.objects.all()
+        serializer = MovieSerializer(Movies, many = True)
+        for movie in serializer.data:
+            if movie.get('title').find(keyward) == -1:
+                pass
+            else:
+                newlist.append(movie)
+                
+        return Response(newlist)
+    
+
+@api_view(['GET'])
+def getdetail(request,movie_pk):
+    movie = get_object_or_404(Movie, id=movie_pk)
+    serializer = MovieSerializer(movie)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def getreview(request):
@@ -79,6 +100,39 @@ def sortmovie(request, movie_pk, question_number, select):
             elif select == 2:
                 for movie in movie_data:
                     if movie_date != movie.release_date[0:5]:
+                        sorted_movie.append(movie)
+        elif question_number == 3:
+            director = firstmovie.director['name']
+            if select == 1:
+                for movie in movie_data:
+                    if movie.director['name'] == director:
+                        sorted_movie.append(movie)
+
+            elif select == 2:
+                for movie in movie_data:
+                    if movie.director['name'] != director:
+                        sorted_movie.append(movie)
+        elif question_number == 4:
+            decade = firstmovie.release_date[0:3]
+            if select == 1:
+                for movie in movie_data:
+                    if movie.release_date[0:3] == decade:
+                        sorted_movie.append(movie)
+
+            elif select == 2:
+                for movie in movie_data:
+                    if movie.release_date[0:3] != decade:
+                        sorted_movie.append(movie)
+        elif question_number == 5:
+            language = "ko"
+            if select == 1:
+                for movie in movie_data:
+                    if movie.original_language == language:
+                        sorted_movie.append(movie)
+
+            elif select == 2:
+                for movie in movie_data:
+                    if movie.original_language != language:
                         sorted_movie.append(movie)
 
         serializer = MovieSerializer(sorted_movie, many= True)

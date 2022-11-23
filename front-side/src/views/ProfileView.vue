@@ -23,6 +23,17 @@
                 <div v-if="this.value==0"> </div>
                 <div class="overflow-auto" v-else-if="this.value==1">
                   <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 글</h4>
+
+                  <b-pagination
+                    pills
+                    class="mt-4"
+                    v-model="articlecurrentPage"
+                    :total-rows="articlerows"
+                    :per-page="articleperPage"
+                    align="center"
+                    aria-controls="my-articlelist"
+                  ></b-pagination>
+
                   <b-list-group id="my-articlelist" :per-page="articleperPage" :current-page="articlecurrentPage">
                     <b-list-group-item v-for="article in itemsForArticleList" :key="article.x">
                       <router-link :to="{ name: 'ArticleDetailView', params: { articleid : article.id } }">
@@ -30,26 +41,13 @@
                       </router-link>
                     </b-list-group-item>
                   </b-list-group>
-                  <b-pagination
-                    pills
-                    v-model="articlecurrentPage"
-                    :total-rows="articlerows"
-                    :per-page="articleperPage"
-                    align="center"
-                    aria-controls="my-articlelist"
-                  ></b-pagination>
+                  
                 </div>
                   
                 <div class="overflow-auto" v-else-if="this.value==2">
                   <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 댓글</h4>
-                  <b-list-group id="my-commentlist" :per-page="commentperPage" :current-page="commentcurrentPage">
-                    <b-list-group-item v-for="comment in itemsForList" :key="comment.x">
-                      <router-link :to="{ name: 'ArticleDetailView', params: { articleid : comment.article } }">
-                        {{ comment.content }}
-                      </router-link>
-                    </b-list-group-item>
-                  </b-list-group>
                   <b-pagination
+                    class="mt-4"
                     pills
                     v-model="commentcurrentPage"
                     :total-rows="commentrows"
@@ -57,11 +55,31 @@
                     align="center"
                     aria-controls="my-commentlist"
                   ></b-pagination>
+
+                  <b-list-group id="my-commentlist" :per-page="commentperPage" :current-page="commentcurrentPage">
+                    <b-list-group-item v-for="comment in itemsForList" :key="comment.x">
+                      <router-link :to="{ name: 'ArticleDetailView', params: { articleid : comment.article } }">
+                        {{ comment.content }}
+                      </router-link>
+                    </b-list-group-item>
+                  </b-list-group>
+                  
                 </div>
                 <div v-else-if="this.value==3">
                   <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 작성한 리뷰</h4>
 
                   <div class="overflow-auto">
+
+                    <b-pagination
+                      class="mt-4"
+                      pills
+                      v-model="currentPage"
+                      :total-rows="reviewrows"
+                      :per-page="perPage"
+                      align="center"
+                      aria-controls="my-list"
+                    ></b-pagination>
+
                     <b-table id="my-table" small :fields="reviewFields" :items="profile.review_set" :per-page="perPage"
                       :current-page="currentPage">
                       <!-- A virtual column -->
@@ -70,14 +88,6 @@
                       </template>
                     </b-table>
 
-                    <b-pagination
-                      pills
-                      v-model="currentPage"
-                      :total-rows="reviewrows"
-                      :per-page="perPage"
-                      align="center"
-                      aria-controls="my-list"
-                    ></b-pagination>
                   </div>
                 </div>
                 <div v-else-if="this.value==4">
@@ -89,15 +99,9 @@
                   
                   <h4 class="mt-4 ml-1">{{ profile.nickname }}님이 좋아한 영화</h4>
                     <div class="overflow-auto">
-                      <b-table id="my-table" small :fields="fields" :items="likeList" :per-page="perPage"
-                        :current-page="currentPage">
-                        <!-- A virtual column -->
-                        <template #cell(title)="data">
-                          <router-link :to="{ name: 'MovieDetailView', params: { movieid : data.item.id } }"> {{ data.item.title }} </router-link>
-                        </template>
-                      </b-table>
-
+                      
                       <b-pagination
+                        class="mt-4"
                         pills
                         v-model="currentPage"
                         :total-rows="rows"
@@ -105,6 +109,14 @@
                         align="center"
                         aria-controls="my-list"
                       ></b-pagination>
+
+                      <b-table id="my-table" small :fields="fields" :items="likeList" :per-page="perPage"
+                        :current-page="currentPage">
+                        <!-- A virtual column -->
+                        <template #cell(title)="data">
+                          <router-link :to="{ name: 'MovieDetailView', params: { movieid : data.item.id } }"> {{ data.item.title }} </router-link>
+                        </template>
+                      </b-table>
                     </div>
                 </div>
               </div>

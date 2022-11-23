@@ -20,6 +20,16 @@
               </b-list-group>
             </b-card-text>
           </b-card>
+          <b-card v-else-if="this.isloadingWait == 1" border-variant="dark" header="" align="center">
+            <b-card-text>
+              <div>
+                <img class="animate__animated animate__backOutUp w-75" src="/spaceship.png" alt="">
+              </div>
+              <b-list-group>
+                <b-list-group-item> 결과를 찾으러 갑니다... </b-list-group-item>
+              </b-list-group>
+            </b-card-text>
+          </b-card>
           <b-card v-else-if="this.QuestionCount == 0" border-variant="dark" header="시작하기" align="center">
             <b-card-text>
               <div>
@@ -119,6 +129,7 @@ export default {
       RecommendList : null,
       FirstMovie : this.$store.state.Movies[0],
       QuestionCount : 0,
+      isloadingWait : 0,
       QuestionNumber : 0,
       AnotherMovie : null,
       QuestonList : [
@@ -133,6 +144,18 @@ export default {
         {
           ImgUrl : null,
           Question : `'${this.$store.state.Movies[0].release_date.split('-',1)}'년에 개봉한 영화인가요?`
+        },
+        {
+          ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.$store.state.Movies[0].director.profile_path}`,
+          Question : `영화의 감독이 '${this.$store.state.Movies[0].director.name}' 인가요?`
+        },
+        {
+          ImgUrl : null,
+          Question : `'${this.$store.state.Movies[0].release_date.substr(0,3)}0'년대 영화인가요?`
+        },
+        {
+          ImgUrl : null,
+          Question : '한국 영화인가요?'
         }
       ]
     }
@@ -140,7 +163,7 @@ export default {
   name: 'RecommendView',
   methods : {
     getRandomNumber(){
-      this.QuestionNumber = Math.floor(Math.random()*3)
+      this.QuestionNumber = Math.floor(Math.random()*6)
     },
     reset(){
       this.QuestionCount = 0
@@ -159,6 +182,18 @@ export default {
         {
           ImgUrl : null,
           Question : `'${this.FirstMovie.release_date.split('-',1)}'년에 개봉한 영화인가요?`
+        },
+        {
+          ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.FirstMovie.director.profile_path}`,
+          Question : `영화의 감독이 '${this.FirstMovie.director.name}' 인가요?`
+        },
+        {
+          ImgUrl : null,
+          Question : `'${this.FirstMovie.release_date.substr(0,3)}0'년대 영화인가요?`
+        },
+        {
+          ImgUrl : null,
+          Question : '한국 영화인가요?'
         }
       ]
     },
@@ -166,22 +201,23 @@ export default {
       const movieId = this.FirstMovie.id
       const API_URL = process.env.VUE_APP_API_URL
       if(!this.RecommendList){
+        this.isloadingWait = 1
         axios({
           method: 'get',
           url: `${API_URL}/api/v1/server/${movieId}/${this.QuestionNumber}/1/sortmovie/`,
         })
           .then((res) => {
             this.RecommendList = res.data
+            console.log(this.RecommendList)
             this.FirstMovie = res.data[0]
             this.QuestionCount += 1
+            this.isloadingWait = 0
           })
           .catch((err) => {
             console.log(err)
           })
       } else{
-        
         const MovieList = this.RecommendList
-        
         if(this.QuestionNumber == 0){
           const Actor = this.FirstMovie.actors[0].name
           const NewList = []
@@ -224,8 +260,43 @@ export default {
             this.FirstMovie = NewList[0]
             console.log(this.FirstMovie)
             this.QuestionCount += 1
+        }else if(this.QuestionNumber==3){
+          const Director = this.FirstMovie.director.name
+          const NewList = []
+          for(const Movie of MovieList){
+            if(Movie.director.name == Director){
+              NewList.push(Movie)
+            }
           }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          this.QuestionCount += 1
+        }else if(this.QuestionNumber==4){
+          const decade = Number(this.FirstMovie.release_date.substr(0,3)+'0')
+          const NewList = []
+          for(const Movie of MovieList){
+            if(Number(Movie.release_date.substr(0,3)+'0') == decade ){
+              NewList.push(Movie)
+            }
+          }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          this.QuestionCount += 1
+
+        }else if(this.QuestionNumber==5){
+          const language = "ko"
+          const NewList = []
+          for(const Movie of MovieList){
+            if(Movie.original_language == language){
+              NewList.push(Movie)
+            }
+          }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          this.QuestionCount += 1
         }
+      }
+      
     },
     select2(){
       this.QuestionCount += 1
@@ -234,6 +305,7 @@ export default {
       const movieId = this.FirstMovie.id
       const API_URL = process.env.VUE_APP_API_URL
       if(!this.RecommendList){
+        this.isloadingWait = 1
         axios({
           method: 'GET',
           url: `${API_URL}/api/v1/server/${movieId}/${this.QuestionNumber}/2/sortmovie/`,
@@ -242,6 +314,7 @@ export default {
             this.RecommendList = res.data
             this.FirstMovie = res.data[0]
             this.QuestionCount += 1
+            this.isloadingWait = 0
           })
           .catch((err) => {
             console.log(err)
@@ -294,8 +367,41 @@ export default {
             this.RecommendList = NewList
             this.FirstMovie = NewList[0]
             this.QuestionCount += 1
+        }else if(this.QuestionNumber==3){
+          const Director = this.FirstMovie.director.name
+          const NewList = []
+          for(const Movie of MovieList){
+            if(Movie.director.name != Director){
+              NewList.push(Movie)
+            }
           }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          this.QuestionCount += 1
+        }else if(this.QuestionNumber==4){
+          const decade = Number(this.FirstMovie.release_date.substr(0,3)+'0')
+          const NewList = []
+          for(const Movie of MovieList){
+            if(Number(Movie.release_date.substr(0,3)+'0') != decade ){
+              NewList.push(Movie)
+            }
+          }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          this.QuestionCount += 1
+        }else if(this.QuestionNumber==5){
+          const language = "ko"
+          const NewList = []
+          for(const Movie of MovieList){
+            if(Movie.original_language != language){
+              NewList.push(Movie)
+            }
+          }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          this.QuestionCount += 1
         }
+      }
     },
     getAnoterMovie(){
       this.isloading = 1
