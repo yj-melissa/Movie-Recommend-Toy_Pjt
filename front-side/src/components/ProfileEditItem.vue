@@ -26,7 +26,7 @@
       <div class="preview">
         <img :src="profile_img_src">
       </div>
-      <button type="submit" value="editProfileImg">수정하기</button>
+      <b-button type="submit" value="editProfileImg">수정하기</b-button>
     </form>
     <!-- 비밀번호 수정 -->
     <form @submit.prevent="editPassword">
@@ -38,7 +38,7 @@
         <label for="password2">비밀번호 재확인: </label>
         <input type="password" id="password2" v-model.trim="password2" />
       </div>
-      <button type="submit" value="editPassword">수정하기</button>
+      <b-button type="submit" value="editPassword">수정하기</b-button>
     </form>
   </div>
 </template>

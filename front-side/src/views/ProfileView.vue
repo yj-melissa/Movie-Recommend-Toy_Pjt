@@ -11,7 +11,7 @@
               <b-row class="m-3">
                 <h5> 현재 닉네임 : {{nickname}} </h5> <b-icon-gear class="my-1 mx-3" @click="editProfile"></b-icon-gear> 
               </b-row>
-              <img :src="profile.profile_img" alt="profileImg">
+              <img :src="profile.profile_img" alt="profileImg" class="mb-3 my-1 mx-3">
               <b-list-group>
                 <b-list-group-item @click="changevalue1" :class="{'active':value==1}">작성한 글 목록</b-list-group-item>
                 <b-list-group-item @click="changevalue2" :class="{'active':value==2}">작성한 댓글 목록</b-list-group-item>

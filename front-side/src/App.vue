@@ -2,6 +2,7 @@
   <div id="app">
     <nav :style="{'background-color': '#000000'}">
       <b-row>
+        <img src="http://127.0.0.1:8000/media/logo.png">
         <b-col cols="12" class="text-center">
           <router-link :to="{name : 'HomeView'} ">Home</router-link> |
           <router-link :to="{name : 'RecommendView'} ">Recommend</router-link> |
@@ -30,6 +31,11 @@ export default ({
       return this.$store.getters.isLogin
     }
   },
+  data() {
+    return {
+      logoImg : null
+    }
+  },
   methods: {
     logout() {      
       localStorage.removeItem('access_token')
@@ -38,7 +44,6 @@ export default ({
       this.$router.push({ name: 'LoginView' }) 
     },
   },
-  
 })
 </script>
 
