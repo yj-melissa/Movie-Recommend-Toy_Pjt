@@ -1,15 +1,17 @@
 <template>
   <div id="app">
-    <nav :style="{'background-color': '#000000'}">
-      <b-row>
-        <img src="http://127.0.0.1:8000/media/logo.png">
-        <b-col cols="12" class="text-center">
-          <router-link :to="{name : 'HomeView'} ">Home</router-link> |
-          <router-link :to="{name : 'RecommendView'} ">Recommend</router-link> |
-          <router-link :to="{name : 'CommunityView'}">Community</router-link>
+    <nav class="py-1" :style="{'background-color': '#000000'}">
+      <b-row align-v="center">
+        <b-col>
+          <img src="http://127.0.0.1:8000/media/logo.png" alt="logo" width="150" height="80">
         </b-col>
-        <b-col class="text-right">
-          <span v-b-modal.modal-prevent-closing class="text-danger mr-3"> Search <b-icon icon="search" variant="danger" font-scale="1"></b-icon></span> 
+        <b-col>
+            <router-link :to="{name : 'HomeView'} ">Home</router-link> |
+            <router-link :to="{name : 'RecommendView'} ">Recommend</router-link> |
+            <router-link :to="{name : 'CommunityView'}">Community</router-link>
+        </b-col>
+        <b-col>
+          <span v-b-modal.modal-prevent-closing class="text-warning mr-3"> Search <b-icon icon="search" variant="warning" font-scale="1"></b-icon></span> 
           <span v-if="isLogin">
             <router-link :to="{name : 'ProfileView' }"> Profile</router-link> |
             <a id="logout" @click="logout">Logout</a>
@@ -127,7 +129,7 @@ nav a {
   color: #FAF9D9;
 }
 nav a.router-link-exact-active {
-  color: #CF0000;
+  color: #ffc107;
 ;
 }
 #logout{
