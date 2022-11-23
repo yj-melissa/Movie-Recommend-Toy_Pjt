@@ -157,6 +157,8 @@ export default {
 
       currentPage : 1,
       perPage : 4,
+
+      spare : null
     }
   },
   methods: {
@@ -168,7 +170,6 @@ export default {
       })
         .then((res)=>{
           this.MovieDetail = res.data
-          console.log(this.MovieDetail)
         })
         .catch((err)=> {
           console.log(err)
@@ -239,9 +240,8 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res)
+          this.spare = res.data
           this.value = 0
-          console.log('삭제')
         })
         .catch((err)=>{
           console.log(err)
@@ -255,9 +255,8 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res)
+          this.spare = res.data
           this.value = 1
-          console.log('추가')
         })
         .catch((err)=>{
           console.log(err)
@@ -280,7 +279,6 @@ export default {
               this.value = 1
             }
           }
-          console.log(this.value)
         })
         .catch((err)=>{
           console.log(err)
@@ -301,7 +299,7 @@ export default {
       return this.$store.state.ReviewList
     },
     getUrl(){
-        return `https://www.youtube.com/embed/${this.videoId}?autoplay=1&mute=1 `
+      return `https://www.youtube.com/embed/${this.videoId}?autoplay=1&mute=1 `
     },
     rows(){
       return this.ReviewList.length
@@ -315,7 +313,6 @@ export default {
       this.getReviewList()
     },
     changeMovie(){
-      console.log(this.$store.state.MovieDetail)
       this.getVedio()
     }
   }

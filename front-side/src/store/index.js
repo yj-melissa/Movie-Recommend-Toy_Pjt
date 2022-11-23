@@ -104,9 +104,11 @@ export default new Vuex.Store({
         })
         context.commit('LOGOUT')
     },
+
     saveUserInfo(context, data) {
       context.commit('SAVE_USER_INFO', data)
     },
+
     getDetail(context,movieid){
       axios({
         method: 'GET',
@@ -120,9 +122,9 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
+
     createMovieReview(context, data){
       const movieid = data.movie_id
-      // const User = data.User
       const content = data.content
       const score = data.score
       axios({
@@ -145,6 +147,7 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
+    
     getReview(context){
       axios({
         method : 'GET',
