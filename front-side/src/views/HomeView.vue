@@ -124,12 +124,10 @@ export default {
   color : white;
   height: 100%;
 }
-
 #loading-page{
   color: azure;
   font-size: 25px;
 }
-
 @keyframes text-in {
   0% {
     transform: translate(0, -20px);
@@ -143,7 +141,6 @@ export default {
   animation: text-in .8s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
   color: #FAF9D9;
 }
-
 .animate__animated.animate__backOutUp {
   --animate-duration: 3s;
 }

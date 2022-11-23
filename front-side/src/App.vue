@@ -60,21 +60,17 @@ export default ({
   -moz-background-size: cover;
   -o-background-size : cover;
 }
-
 nav {
   padding: 30px;
 }
-
 nav a {
   font-weight: bold;
   color: #FAF9D9;
 }
-
 nav a.router-link-exact-active {
   color: #CF0000;
 ;
 }
-
 #logout{
   color: cornsilk;
 }

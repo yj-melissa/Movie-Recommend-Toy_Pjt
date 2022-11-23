@@ -72,7 +72,7 @@
               <label class="m-0" for="profile_img"> Profile Image : </label>
             </b-col>
             <b-col cols="8" class="text-center">
-              <input
+              <v-file-input
                 type="file"
                 accept="image/*"
                 id="profile_img"
@@ -80,7 +80,7 @@
                 @change="updateImageDisplay"
                 required=false
                 v-model="profile_img"
-              >
+              ></v-file-input>
               <div class="preview" v-show="imgDisplay">
                 <p>No files currently selected for upload</p>
               </div>
