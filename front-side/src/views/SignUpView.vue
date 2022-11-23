@@ -14,7 +14,7 @@
             <b-col cols="8" class="text-center">
               <b-form-input
                 id="email"
-                v-model.trim="email"
+                v-model.trim="data.email"
                 type="email"
                 placeholder="Enter email"
                 required
@@ -29,7 +29,7 @@
             <b-col cols="8" class="text-center">
               <b-form-input
                 id="password1"
-                v-model.trim="password1"
+                v-model.trim="data.password1"
                 type="password"
                 placeholder="Enter Password"
                 required
@@ -44,7 +44,7 @@
             <b-col cols="8" class="text-center">
               <b-form-input
                 id="password2"
-                v-model.trim="password2"
+                v-model.trim="data.password2"
                 type="password"
                 placeholder="Enter Password once again"
                 required
@@ -59,7 +59,7 @@
             <b-col cols="8" class="text-center">
               <b-form-input
                 id="nickname"
-                v-model.trim="nickname"
+                v-model.trim="data.nickname"
                 type="text"
                 placeholder="Enter Your Nickname"
                 required
@@ -73,13 +73,12 @@
             </b-col>
             <b-col cols="8" class="text-center">
               <v-file-input
-                type="file"
                 accept="image/*"
                 id="profile_img"
                 class="w-75"
+                prepend-icon="mdi-camera"
+                v-model="data.profile_img"
                 @change="updateImageDisplay"
-                required=false
-                v-model="profile_img"
               ></v-file-input>
               <div class="preview" v-show="imgDisplay">
                 <p>No files currently selected for upload</p>
@@ -105,31 +104,41 @@ export default {
   name: "SignUpView",
   data() {
     return {
-      password1: null,
-      password2: null,
-      email: null,
-      nickname: null,
-      profile_img: null,
+      data: {
+        password1: null,
+        password2: null,
+        email: null,
+        nickname: null,
+        profile_img: null,
+      },      
       imgDisplay: false,
     }
   },
   methods: {
     signUp() {
       const API_URL = process.env.VUE_APP_API_URL
-      const email = this.email
-      const password1 = this.password1
-      const password2 = this.password2
-      const nickname = this.nickname
-      const profile_img = this.profile_img
+      const data = this.data
+      const formData = new FormData()
+      formData.append('password1', data.password1)
+      formData.append('password2', data.password2)
+      formData.append('email', data.email)
+      formData.append('nickname', data.nickname)
+      if (data.profile_img === null) {
+        formData.append('profile_img', [])
+      } else {
+        formData.append('profile_img', data.profile_img)
+      }
 
       axios({
         method: 'POST',
         url: `${API_URL}/api/v1/accounts/signup/`,
-        data: {
-          email, password1, password2, nickname, profile_img
-        }
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        data: formData
       })
         .then((res) => {
+          console.log(this.data)
           console.log(res)
           const data = {
             accessToken: res.data.access_token,
@@ -150,14 +159,11 @@ export default {
           const errMessage = err.response.request.response
           console.log(errMessage)
           alert(errMessage)
-          // const jsonErrMessage = JSON.parse(errMessage)
-          // for (const [key, value] of Object.entries(jsonErrMessage)) {
-          //   alert(`${key}: ${value}`)
-          // }
         })
     },
     updateImageDisplay() {
       this.imgDisplay = true
+      console.log(this.data.profile_img)
       const input = document.querySelector('#profile_img')
       const preview = document.querySelector('.preview')
 

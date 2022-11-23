@@ -11,6 +11,7 @@
               <b-row class="m-3">
                 <h5> 현재 닉네임 : {{nickname}} </h5> <b-icon-gear class="my-1 mx-3" @click="editProfile"></b-icon-gear> 
               </b-row>
+              <img :src="profile.profile_img" alt="profileImg">
               <b-list-group>
                 <b-list-group-item @click="changevalue1" :class="{'active':value==1}">작성한 글 목록</b-list-group-item>
                 <b-list-group-item @click="changevalue2" :class="{'active':value==2}">작성한 댓글 목록</b-list-group-item>
@@ -53,6 +54,7 @@
                 <div v-else-if="this.value==4">
                   <ProfileEditItem
                     :current_nickname = nickname
+                    :profile_img_src = profile.profile_img
                   />  
                 </div>
               </div>
@@ -121,7 +123,6 @@ export default {
       })
         .then((res) => {
           this.profile = res.data
-          console.log(res.data)
         })
         .catch((err) => {
           console.log(err)
@@ -148,8 +149,7 @@ export default {
           Authorization: `Bearer ${this.$store.getters.getToken}`
         }
       })
-        .then((res) => {
-          console.log(res)
+        .then(() => {
           localStorage.removeItem('access_token')
           localStorage.removeItem('refresh_token')
         })
