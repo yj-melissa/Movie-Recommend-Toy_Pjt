@@ -49,7 +49,8 @@
             <b-img rounded="circle" class="bg-dark" v-bind="imgSize" :src="profile_img_src"></b-img>
           </b-col>
         </b-row>
-        <b-row class="row my-2 align-items-center" align-v="center">
+        <b-form @submit.prevent="editPassword">
+          <b-row class="row my-2 align-items-center" align-v="center">
             <b-col cols="2" class="px-0">
               <label class="m-0 p-0" for="password1"> 비밀번호 : </label>
             </b-col>
@@ -78,8 +79,9 @@
                 class="w-75"
               ></b-form-input>
             </b-col>
-            <b-button cols="2" type="submit" value="editPassword" size="sm">수정</b-button>
-        </b-row>
+            <b-button cols="2" type="submit" size="sm">수정</b-button>
+          </b-row>
+        </b-form>
       </b-col>
     </b-row>
   </b-container>
@@ -153,7 +155,7 @@ export default {
       const password1 = this.password1
       const password2 = this.password2
       if (password1 && password2) {
-        if (password1 < 8 || password2 < 8) {
+        if ((password1.length < 8) || (password2.length < 8)) {
           alert('비밀번호는 8자 이상 입력해주세요')
         } else if (password1 != password2) {
           alert('비밀번호를 다시 확인해주세요')
@@ -166,7 +168,7 @@ export default {
             },
             data : {
               new_password1: password1, 
-              new_password2: password2
+              new_password2: password2,
             }
           })
             .then((res) => {
@@ -176,8 +178,7 @@ export default {
               this.$store.dispatch('logout')
               this.$router.push({ name: 'LoginView' })
             })
-            .catch((err) => {
-              console.log(err)
+            .catch(() => {
             })
         }
       }

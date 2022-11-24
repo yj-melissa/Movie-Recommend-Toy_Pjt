@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="py-1" :style="{'background-color': '#000000'}">
-      <b-row align-v="center">
+      <b-row align-v="center" >
         <b-col>
           <router-link :to="{name : 'HomeView'} "><img src="http://127.0.0.1:8000/media/logo.png" alt="logo" width="150" height="80"></router-link>
         </b-col>
@@ -106,8 +106,10 @@ export default ({
 
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Do+Hyeon:400');
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Do Hyeon', Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -123,6 +125,10 @@ export default ({
 }
 nav {
   padding: 30px;
+  font-size: 20px;
+}
+a {
+  text-decoration : none
 }
 nav a {
   font-weight: bold;

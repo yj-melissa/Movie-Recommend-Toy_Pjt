@@ -71,7 +71,6 @@ export default {
         }
       })
         .then((res) => {
-          // console.log(res)
           this.articles = res.data
         })
         .catch((error) => {

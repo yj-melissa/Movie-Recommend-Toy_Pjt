@@ -9,14 +9,14 @@
         <b-container class="bv-example-row">
           <b-row>
             <b-col cols="3">
-              <b-row>
+              <b-row class="m-3">
                 <b-col class="text-center">
                 <b-img :src="profile.profile_img" rounded="circle" alt="profileImg" class="bg-dark" v-bind="imgSize"></b-img>
                 </b-col>
               </b-row>
-              <b-row class="m-3">
+              <!-- <b-row class="m-3">
                 <h5> {{nickname}} </h5> <b-icon-gear class="my-1 mx-3" @click="editProfile"></b-icon-gear> 
-              </b-row>
+              </b-row> -->
               <b-list-group>
                 <b-list-group-item @click="changevalue1" :class="{'active':value==1}">작성한 글 목록</b-list-group-item>
                 <b-list-group-item @click="changevalue2" :class="{'active':value==2}">작성한 댓글 목록</b-list-group-item>

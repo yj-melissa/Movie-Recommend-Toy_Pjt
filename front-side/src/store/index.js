@@ -164,8 +164,7 @@ export default new Vuex.Store({
           const data = res.data
           context.commit('GET_REVIEW',data)
         })
-        .catch((err)=>{
-          console.log(err)
+        .catch(()=>{
         })
     },
     
