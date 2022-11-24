@@ -129,40 +129,46 @@ export default {
         formData.append('profile_img', data.profile_img)
       }
 
-      axios({
-        method: 'POST',
-        url: `${API_URL}/api/v1/accounts/signup/`,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        data: formData
-      })
-        .then((res) => {
-          console.log(this.data)
-          console.log(res)
-          const data = {
-            accessToken: res.data.access_token,
-            refreshToken: res.data.refresh_token,
-            user: {
-              pk: res.data.user.pk,
-              nickname: res.data.user.nickname
-            }
-          }
-          localStorage.setItem('access_token', res.data.access_token)
-          localStorage.setItem('refresh_token', res.data.refresh_token)
-          this.$store.dispatch('saveUserInfo', data)
-          alert(`${data.user.nickname}님을 환영합니다!`)
-          this.$router.push({ name: 'HomeView' })
-        })
-        .catch((err) => {
-          const errMessage = err.response.request.response
-          console.log(errMessage)
-          alert(errMessage)
-        })
+      const password1 = data.password1
+      const password2 = data.password2
+      if (password1 && password2) {
+        if ((password1.length < 8) || (password2.length < 8)) {
+          alert('비밀번호는 8자 이상 입력해주세요')
+        } else if (password1 != password2) {
+          alert('비밀번호를 다시 확인해주세요')
+        } else { 
+          axios({
+            method: 'POST',
+            url: `${API_URL}/api/v1/accounts/signup/`,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+            data: formData
+          })
+            .then((res) => {
+              const data = {
+                accessToken: res.data.access_token,
+                refreshToken: res.data.refresh_token,
+                user: {
+                  pk: res.data.user.pk,
+                  nickname: res.data.user.nickname
+                }
+              }
+              localStorage.setItem('access_token', res.data.access_token)
+              localStorage.setItem('refresh_token', res.data.refresh_token)
+              this.$store.dispatch('saveUserInfo', data)
+              alert(`${data.user.nickname}님을 환영합니다!`)
+              this.$router.push({ name: 'HomeView' })
+            })
+            .catch((err) => {
+              const errMessage = err.response.request.response
+              alert(errMessage)
+            })
+        }
+      }
     },
     updateImageDisplay() {
       this.imgDisplay = true
-      console.log(this.data.profile_img)
       const input = document.querySelector('#profile_img')
       const preview = document.querySelector('.preview')
 
@@ -197,7 +203,6 @@ export default {
           if(validFileType(file)) {
             const image = document.createElement('img');
             image.src = URL.createObjectURL(file);
-
             listItem.appendChild(image);
           } else {
             para.textContent = `${file.name}: Not a valid file type. Update your selection.`;
@@ -216,4 +221,5 @@ export default {
 #con{
   min-height: 100px;
 }
+
 </style>
