@@ -9,7 +9,7 @@
       <b-row>
         <b-col cols='4'></b-col>
         <b-col cols='2'>
-          <fade-images class="animate__animated animate__backOutUp"  :delay="5000" :width="200" :height="200"
+          <fade-images class="animate__animated animate__backOutUp animate__infinite"  :delay="5000" :width="200" :height="200"
             :images="images" />
         </b-col>
         <b-col></b-col>

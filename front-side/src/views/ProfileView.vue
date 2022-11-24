@@ -9,7 +9,11 @@
         <b-container class="bv-example-row">
           <b-row>
             <b-col cols="3">
-              <img :src="profile.profile_img" alt="profileImg" class="mb-3 my-1 mx-3" v-bind="imgSize">
+              <b-row>
+                <b-col class="text-center">
+                <b-img :src="profile.profile_img" rounded="circle" alt="profileImg" class="bg-dark" v-bind="imgSize"></b-img>
+                </b-col>
+              </b-row>
               <b-row class="m-3">
                 <h5> {{nickname}} </h5> <b-icon-gear class="my-1 mx-3" @click="editProfile"></b-icon-gear> 
               </b-row>
@@ -172,8 +176,8 @@ export default {
       commentperPage : 5,
 
       imgSize: {
-        width: 200, 
-        height: 250,
+        width: 100, 
+        height: 100,
       }
     }
   },

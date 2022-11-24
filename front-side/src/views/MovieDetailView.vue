@@ -2,9 +2,9 @@
   <b-container class="animate__animated animate__fadeInRight bv-example-row my-4" id="grid" :style="{ backgroundColor: '#000000'}" >
       <b-row class="text-left">
         <b-col cols="6" class="px-0 text-center p-5" >
-          <img v-if="changeMovie.poster_path" :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+changeMovie.poster_path" alt="">
+          <img v-if="changeMovie" :src="'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/'+changeMovie.poster_path" alt="">
         </b-col>
-        <b-col cols="6" class="p-5" id="box" >
+        <b-col v-if="changeMovie" cols="6" class="p-5" id="box" >
           <b-row><h1 class="white-text">{{ changeMovie.title }}</h1></b-row>
           <b-row><p class="white-text" >{{ changeMovie.overview }}</p></b-row>
           <b-row>
@@ -34,7 +34,7 @@
         
       <b-row>
         <b-col clos="2" ></b-col>
-        <b-col class="text-center" cols="9">
+        <b-col v-if="changeMovie" class="text-center" cols="9">
           <b-list-group horizontal>
             <b-list-group-item class=" mx-1 bg-dark" v-for="actor of changeMovie.actors.slice(0,5)" :key="actor.id">
               <b-card
@@ -106,8 +106,8 @@
         <b-list-group class="w-100 text-left px-4 mb-5 ">
           <b-list-group-item>
             <b-row>
-              <b-col class="text-center" cols="1">작성자</b-col>
-              <b-col class="text-center" cols="9">한줄평</b-col>
+              <b-col class="text-center" cols="2">작성자</b-col>
+              <b-col class="text-center" cols="8">한줄평</b-col>
               <b-col class="text-center" cols="2">평점</b-col>
             </b-row>
           </b-list-group-item>

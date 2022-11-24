@@ -3,7 +3,7 @@
     <nav class="py-1" :style="{'background-color': '#000000'}">
       <b-row align-v="center">
         <b-col>
-          <img src="http://127.0.0.1:8000/media/logo.png" alt="logo" width="150" height="80">
+          <router-link :to="{name : 'HomeView'} "><img src="http://127.0.0.1:8000/media/logo.png" alt="logo" width="150" height="80"></router-link>
         </b-col>
         <b-col>
             <router-link :to="{name : 'HomeView'} ">Home</router-link> |

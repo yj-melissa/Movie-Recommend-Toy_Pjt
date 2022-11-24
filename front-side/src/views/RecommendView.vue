@@ -123,8 +123,8 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      text: '좋아하는 영화를 하나 생각하세요',
-      text2: '생각하셨나요?',
+      text: '좋아하는 영화를 맞출게요',
+      text2: '시작해볼까요?',
       isloading : 0,
       RecommendList : null,
       FirstMovie : this.$store.state.Movies[0],
