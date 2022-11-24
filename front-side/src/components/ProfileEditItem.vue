@@ -11,7 +11,9 @@
           <b-col cols="9">
             <form v-if="editingNickname" @submit.prevent="editNickname">
               <b-row>
-                <b-col class="px-0"><input type="text" id="nickname" v-model.trim="nickname"></b-col>
+                <b-col class="px-0">
+                  <b-form-input type="text" id="nickname" v-model.trim="nickname"></b-form-input>
+                </b-col>
                 <b-col class="px-0"><b-button size="sm" type="submit" value="editNickname">수정</b-button></b-col>
               </b-row>
             </form>
@@ -19,17 +21,53 @@
           </b-col>
         </b-row>
         <b-row class="my-2">
-          <form @submit.prevent="editPassword">
-            <div>
-              <label for="password1">비밀번호 : </label>
-              <input class="mx-2" type="password" id="password1" v-model.trim="password1" />
-            </div>
-            <div>
-              <label for="password2"> 재 확 인 : </label>
-              <input class="mx-3" type="password" id="password2" v-model.trim="password2" />
-            </div>
+            <form @submit.prevent="setProfileImg">
+              <label for="profile_img">프로필 사진 : </label>
+              <v-file-input
+                accept="image/*"
+                id="profile_img"
+                class="w-75"
+                prepend-icon="mdi-camera"
+                v-model="profile_img"
+                @change="updateImageDisplay"
+              >
+              </v-file-input>
+              <div class="preview">
+                <img :src="profile_img_src">
+              </div>
+              <b-button type="submit" value="editProfileImg">수정하기</b-button>
+            </form>
+        </b-row>
+        <b-row class="my-4 text-left" align-v="center">
+            <b-col class="">
+              <label class="m-0" for="password1"> Password : </label>
+            </b-col>
+            <b-col cols="8" class="">
+              <b-form-input
+                id="password1"
+                v-model.trim="password1"
+                type="password"
+                placeholder="Enter Password"
+                required
+                class="w-75"
+              ></b-form-input>
+            </b-col>
+          </b-row>
+          <b-row class="my-4" align-v="center">
+            <b-col class="">
+              <label class="m-0" for="password2"> Password Check : </label>
+            </b-col>
+            <b-col cols="8" class="">
+              <b-form-input
+                id="password2"
+                v-model.trim="password2"
+                type="password"
+                placeholder="Enter Password once again"
+                required
+                class="w-75"
+              ></b-form-input>
+            </b-col>
             <b-button type="submit" value="editPassword">수정하기</b-button>
-          </form>
         </b-row>
       </b-col>
       <b-col></b-col>
@@ -49,10 +87,12 @@ export default {
       password2: null,
       editingNickname: false,
       editingPassword: false,
+      profile_img: null,
     }
   },
   props: {
     current_nickname: String,
+    profile_img_src: String,
   },
   methods: {
     currentNickname() {
@@ -62,8 +102,6 @@ export default {
       this.editingNickname = true
       const nickname = this.nickname
       const API_URL = process.env.VUE_APP_API_URL
-      // 닉네임 수정 (닉네임이 기존과 다를때 -> 회원정보 수정 요청)
-      // 공백이면 에러 메세지
       if (!nickname) {
         alert("닉네임을 입력하세요!")
       }
@@ -95,8 +133,6 @@ export default {
       }
     },
     editPassword() {
-      // 비밀번호 수정
-      // pw1 == pw2, 8자 이상일 때 axios 요청
       const password1 = this.password1
       const password2 = this.password2
       if (password1 && password2) {
@@ -106,13 +142,14 @@ export default {
           alert('비밀번호를 다시 확인해주세요')
         } else {
           axios({
-            method: 'put',
+            method: 'post',
             url : `${process.env.VUE_APP_API_URL}/api/v1/accounts/password/change/`,
             headers : {
               Authorization : `Bearer ${this.$store.getters.getToken}`
             },
             data : {
-              password1, password2
+              new_password1: password1, 
+              new_password2: password2
             }
           })
             .then((res) => {
@@ -120,7 +157,7 @@ export default {
               localStorage.removeItem('access_token')
               localStorage.removeItem('refresh_token')
               this.$store.dispatch('logout')
-              this.$router.push({ name: 'HomeView' })
+              this.$router.push({ name: 'LoginView' })
             })
             .catch((err) => {
               console.log(err)
@@ -128,6 +165,92 @@ export default {
         }
       }
     },
+    setProfileImg() {
+      const API_URL = process.env.VUE_APP_API_URL
+      const formData = new FormData()
+      formData.append('nickname', this.nickname)
+      if (this.profile_img === null) {
+        formData.append('profile_img', [])
+      } else {
+        formData.append('profile_img', this.profile_img)
+      }
+
+      axios({
+        method: 'PUT',
+        url: `${API_URL}/api/v1/accounts/user/`,
+        headers: {
+          Authorization: `Bearer ${this.$store.getters.getToken}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        data: formData
+      })
+        .then((res) => {
+          const data = {
+            accessToken: this.$store.getters.getToken,
+            refreshToken: this.$store.getters.getRefresh,
+            user: {
+              pk: res.data.pk,
+              nickname: res.data.nickname
+            }
+          }
+          this.$store.dispatch('saveUserInfo', data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+        .catch((err) => {
+          const errMessage = err.response.request.response
+          console.log(errMessage)
+          alert(errMessage)
+        })
+    },
+    updateImageDisplay() {
+      this.imgDisplay = true
+      console.log(this.profile_img)
+      const input = document.querySelector('#profile_img')
+      const preview = document.querySelector('.preview')
+
+      function validFileType(file) {
+        const fileTypes = [
+            'image/apng',
+            'image/bmp',
+            'image/gif',
+            'image/jpeg',
+            'image/pjpeg',
+            'image/png',
+            'image/svg+xml',
+            'image/tiff',
+            'image/webp',
+            `image/x-icon`
+        ]
+        return fileTypes.includes(file.type);
+      }
+
+      while(preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+      }
+      const curFiles = input.files;
+      if(curFiles.length != 0) {
+        const list = document.createElement('ol');
+        preview.appendChild(list);
+
+        for(const file of curFiles) {
+          const listItem = document.createElement('span');
+          const para = document.createElement('p');
+
+          if(validFileType(file)) {
+            const image = document.createElement('img');
+            image.src = URL.createObjectURL(file);
+
+            listItem.appendChild(image);
+          } else {
+            para.textContent = `${file.name}: Not a valid file type. Update your selection.`;
+            listItem.appendChild(para);
+          }
+          list.appendChild(listItem);
+        }
+      }
+    },    
   },
   created() {
     this.currentNickname()

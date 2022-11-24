@@ -1,16 +1,20 @@
+from imagekit.processors import Thumbnail
+from imagekit.models import ProcessedImageField
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 # Create your models here.
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, nickname, password, **kwargs):
+    def create_user(self, email, nickname, password, profile_img, **kwargs):
         if not email:
             raise ValueError('Users must have an email address')
 
         user = self.model(
             email=email,
             nickname=nickname,
+            profile_img=profile_img,
         )
         user.set_password(password)
         user.save()
@@ -35,7 +39,12 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    # profile = models.ImageField(upload_to='profile', blank=True)
+    profile_img = ProcessedImageField(
+        upload_to='profile',
+        processors=[Thumbnail(200, 250)],
+        format='png',
+        blank=True,
+        )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -44,9 +53,3 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.email
-
-# class UserProfile(models.Model):
-#     user = models.OneToOneField(User, related_name='userprofile', on_delete = models.CASCADE)
-#     # custom fields for user
-#     # nickname = models.CharField(max_length=10)
-

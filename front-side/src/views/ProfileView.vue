@@ -2,12 +2,14 @@
   <div class="container row mt-3 animate__animated animate__fadeInRight" style="margin:0 auto">
     <div class="card col-12 p-0 row justify-content-center text-left" style="margin:0 auto">
       <h4 class="card-header py-3 text-center">
-        {{ nickname }}님의 프로필 페이지
+        {{ nickname }}님의 프로필 페이지 
+        <b-icon-gear class="" @click="editProfile"></b-icon-gear>
       </h4>
       <div class="card-body">
         <b-container class="bv-example-row">
           <b-row>
             <b-col cols="3">
+              <img :src="profile.profile_img" alt="profileImg" class="mb-3 my-1 mx-3" v-bind="imgSize">
               <b-row class="m-3">
                 <h5> {{nickname}} </h5> <b-icon-gear class="my-1 mx-3" @click="editProfile"></b-icon-gear> 
               </b-row>
@@ -93,6 +95,7 @@
                 <div v-else-if="this.value==4">
                   <ProfileEditItem
                     :current_nickname = nickname
+                    :profile_img_src = profile.profile_img
                   />  
                 </div>
                 <div v-else-if="this.value==5">
@@ -167,6 +170,11 @@ export default {
 
       commentcurrentPage : 1,
       commentperPage : 5,
+
+      imgSize: {
+        width: 200, 
+        height: 250,
+      }
     }
   },
   computed: {
@@ -214,7 +222,11 @@ export default {
         }
       })
         .then((res) => {
+          console.log(res)
           this.profile = res.data
+          if (!res.data.profile.profile_img) {
+            this.profile.profile_img = 'http://127.0.0.1:8000/media/profile/default.png'
+          }
         })
         .catch((err) => {
           console.log(err)
@@ -293,4 +305,5 @@ export default {
 .animate__animated.animate__fadeInRight {
   --animate-duration: 1.5s;
 }
+
 </style>
