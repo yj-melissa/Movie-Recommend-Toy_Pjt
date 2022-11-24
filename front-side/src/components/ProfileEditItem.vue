@@ -1,12 +1,12 @@
 <template>
   <b-container class="bv-example-row">
-    <b-row>
+    <b-row class="mb-2">
       <b-col class="text-center" cols='12'><h4 class="mt-4 ml-1">회원 정보 수정</h4></b-col>
     </b-row>
     <b-row>
       <b-col></b-col>
       <b-col cols="10">
-        <b-row align-v="center" class="my-2">
+        <b-row align-v="center" class="my-2 mb-2">
           <b-col cols="2" class="px-0"><label class="m-0" for="nickname">닉네임 : </label></b-col>
           <b-col cols="9">
             <form v-if="editingNickname" @submit.prevent="editNickname">
@@ -17,32 +17,43 @@
                 <b-col class="px-0"><b-button size="sm" type="submit" value="editNickname">수정</b-button></b-col>
               </b-row>
             </form>
-            <div v-else @click="editNickname">{{ current_nickname }}</div>
+            <div v-else @click="editNickname"><strong>{{ current_nickname }}</strong></div>
           </b-col>
         </b-row>
         <b-row class="my-2">
-            <form @submit.prevent="setProfileImg">
-              <label for="profile_img">프로필 사진 : </label>
-              <v-file-input
-                accept="image/*"
-                id="profile_img"
-                class="w-75"
-                prepend-icon="mdi-camera"
-                v-model="profile_img"
-                @change="updateImageDisplay"
-              >
-              </v-file-input>
-              <div class="preview">
-                <img :src="profile_img_src">
-              </div>
-              <b-button type="submit" value="editProfileImg">수정하기</b-button>
-            </form>
-        </b-row>
-        <b-row class="my-4 text-left" align-v="center">
-            <b-col class="">
-              <label class="m-0" for="password1"> Password : </label>
+            <b-col v-if="profile_img_src">
+              <form @submit.prevent="setProfileImg">
+                <b-row>
+                  <label for="profile_img">프로필 사진 : </label>
+                </b-row>
+                <b-row align-v="center">
+                  <b-col cols="8">
+                    <v-file-input
+                      accept="image/*"
+                      id="profile_img"
+                      prepend-icon="mdi-camera"
+                      v-model="profile_img"
+                      @change="updateImageDisplay"
+                    >
+                    </v-file-input>
+                  </b-col>
+                  <b-col>
+                    <b-button type="submit" value="editProfileImg" size="sm">수정</b-button>
+                  </b-col>
+                </b-row>
+              </form>
             </b-col>
-            <b-col cols="8" class="">
+        </b-row>
+        <b-row>
+          <b-col class="preview text-center mb-3">
+            <b-img rounded="circle" class="bg-dark" v-bind="imgSize" :src="profile_img_src"></b-img>
+          </b-col>
+        </b-row>
+        <b-row class="row my-2 align-items-center" align-v="center">
+            <b-col cols="2" class="px-0">
+              <label class="m-0 p-0" for="password1"> 비밀번호 : </label>
+            </b-col>
+            <b-col cols="7" class="">
               <b-form-input
                 id="password1"
                 v-model.trim="password1"
@@ -53,11 +64,11 @@
               ></b-form-input>
             </b-col>
           </b-row>
-          <b-row class="my-4" align-v="center">
-            <b-col class="">
-              <label class="m-0" for="password2"> Password Check : </label>
+          <b-row class="row my-2 align-items-center" align-v="center">
+            <b-col cols="2">
+              <label class="m-0" for="password2"> 재확인 : </label>
             </b-col>
-            <b-col cols="8" class="">
+            <b-col cols="7" class="">
               <b-form-input
                 id="password2"
                 v-model.trim="password2"
@@ -67,10 +78,9 @@
                 class="w-75"
               ></b-form-input>
             </b-col>
-            <b-button type="submit" value="editPassword">수정하기</b-button>
+            <b-button cols="2" type="submit" value="editPassword" size="sm">수정</b-button>
         </b-row>
       </b-col>
-      <b-col></b-col>
     </b-row>
   </b-container>
 </template>
@@ -88,6 +98,11 @@ export default {
       editingNickname: false,
       editingPassword: false,
       profile_img: null,
+      
+      imgSize: {
+        width: 100, 
+        height: 100,
+      },
     }
   },
   props: {

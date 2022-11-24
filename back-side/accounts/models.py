@@ -41,7 +41,7 @@ class User(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     profile_img = ProcessedImageField(
         upload_to='profile',
-        processors=[Thumbnail(200, 250)],
+        processors=[Thumbnail(100, 100)],
         format='png',
         blank=True,
         )

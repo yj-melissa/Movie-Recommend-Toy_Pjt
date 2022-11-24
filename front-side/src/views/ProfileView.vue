@@ -226,9 +226,8 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res)
           this.profile = res.data
-          if (!res.data.profile.profile_img) {
+          if (!res.data.profile_img) {
             this.profile.profile_img = 'http://127.0.0.1:8000/media/profile/default.png'
           }
         })

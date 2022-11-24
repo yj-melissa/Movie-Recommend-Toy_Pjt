@@ -17,7 +17,7 @@ class CustomRegisterSerializer(RegisterSerializer):
     def save(self, request):
         user = super().save(request)
         user.nickname = self.data.get('nickname')
-        user.profile_img = request.FILES['profile_img']
+        user.profile_img = request.FILES.get('profile_img', '')
         user.save()
         return user
     
