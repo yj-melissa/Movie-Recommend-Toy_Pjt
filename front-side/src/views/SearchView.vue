@@ -54,6 +54,8 @@ export default {
           Movie : [],
           keyword : null,
           keywordtemp : null,
+
+      
         }
     },
     methods : {
@@ -68,7 +70,6 @@ export default {
             },
           })
             .then((res)=>{
-              console.log(res)
               this.Movie = res.data
               this.isLoding = 0
             })
@@ -81,7 +82,6 @@ export default {
         },
         maketempsearch(){
           this.keyword = this.keywordtemp
-          console.log(this.keyword)
         }
     },
     computed:{

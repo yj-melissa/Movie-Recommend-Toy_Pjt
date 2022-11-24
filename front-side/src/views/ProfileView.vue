@@ -9,7 +9,7 @@
           <b-row>
             <b-col cols="3">
               <b-row class="m-3">
-                <h5> 현재 닉네임 : {{nickname}} </h5> <b-icon-gear class="my-1 mx-3" @click="editProfile"></b-icon-gear> 
+                <h5> {{nickname}} </h5> <b-icon-gear class="my-1 mx-3" @click="editProfile"></b-icon-gear> 
               </b-row>
               <b-list-group>
                 <b-list-group-item @click="changevalue1" :class="{'active':value==1}">작성한 글 목록</b-list-group-item>
@@ -160,6 +160,7 @@ export default {
       likeList : [],
       perPage: 5,
       currentPage: 1,
+      spare : null,
       
       articlecurrentPage : 1,
       articleperPage : 5,
@@ -229,7 +230,6 @@ export default {
       }
       })
         .then((res) => {
-          console.log(res)
           this.likeList = res.data
         })
         .catch((err)=>{
@@ -262,7 +262,7 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res)
+          this.spare = res.data
           localStorage.removeItem('access_token')
           localStorage.removeItem('refresh_token')
         })

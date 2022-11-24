@@ -118,7 +118,6 @@ export default {
           localStorage.setItem('access_token', res.data.access_token)
           localStorage.setItem('refresh_token', res.data.refresh_token)
           this.$store.dispatch('saveUserInfo', data)
-          console.log(data)
           alert(`${data.user.nickname}님을 환영합니다!`)
           this.$router.push({ name: 'HomeView' })
         })

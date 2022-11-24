@@ -208,7 +208,6 @@ export default {
         })
           .then((res) => {
             this.RecommendList = res.data
-            console.log(this.RecommendList)
             this.FirstMovie = res.data[0]
             this.QuestionCount += 1
             this.isloadingWait = 0
@@ -258,7 +257,6 @@ export default {
             }
             this.RecommendList = NewList
             this.FirstMovie = NewList[0]
-            console.log(this.FirstMovie)
             this.QuestionCount += 1
         }else if(this.QuestionNumber==3){
           const Director = this.FirstMovie.director.name
@@ -416,7 +414,6 @@ export default {
             AnotherMovied.sort(function(a,b){
               return b.popularity - a.popularity
             })
-            console.log(AnotherMovied)
             this.AnotherMovie = AnotherMovied.slice(0,10)
             this.isloading = 0
           })
