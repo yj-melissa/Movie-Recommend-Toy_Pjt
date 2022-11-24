@@ -80,6 +80,7 @@
                 v-model="data.profile_img"
                 @change="updateImageDisplay"
               ></v-file-input>
+              <div class=imgpreview></div>
               <div class="preview" v-show="imgDisplay">
                 <p>No files currently selected for upload</p>
               </div>
@@ -112,6 +113,7 @@ export default {
         profile_img: null,
       },      
       imgDisplay: false,
+      isImg : 0,
     }
   },
   methods: {
@@ -162,7 +164,6 @@ export default {
     },
     updateImageDisplay() {
       this.imgDisplay = true
-      console.log(this.data.profile_img)
       const input = document.querySelector('#profile_img')
       const preview = document.querySelector('.preview')
 
@@ -187,24 +188,27 @@ export default {
       }
       const curFiles = input.files;
       if(curFiles.length != 0) {
-        const list = document.createElement('ol');
-        preview.appendChild(list);
-
-        for(const file of curFiles) {
-          const listItem = document.createElement('span');
+        if(this.isImg == 1){
+          alert("이미 프로필 이미지가 있습니다.")
+          return
+        }else{
+          for(const file of curFiles) {
+          const div = document.querySelector('.imgpreview');
           const para = document.createElement('p');
 
           if(validFileType(file)) {
             const image = document.createElement('img');
             image.src = URL.createObjectURL(file);
-
-            listItem.appendChild(image);
+            image.setAttribute('class','w-100')
+            div.appendChild(image);
+            this.isImg = 1 
           } else {
             para.textContent = `${file.name}: Not a valid file type. Update your selection.`;
-            listItem.appendChild(para);
+            div.appendChild(para);
           }
-          list.appendChild(listItem);
+        }  
         }
+        
       }
     },    
 
@@ -212,8 +216,16 @@ export default {
 }
 </script>
 
-<style>
-#con{
+<style scoped>
+  #con{
   min-height: 100px;
-}
-</style>
+  }
+  #img-pre{
+    width: 100px;
+    height: 100px;
+  }
+  .imgpreview{
+    width: 200px;
+    height: 200px;
+  }
+</style>>

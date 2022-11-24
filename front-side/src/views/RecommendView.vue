@@ -156,14 +156,22 @@ export default {
         {
           ImgUrl : null,
           Question : '한국 영화인가요?'
-        }
+        },
+        {
+          ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.$store.state.Movies[0].actors[1].profile_path}`,
+          Question : `'${this.$store.state.Movies[0].actors[1].name}'이(가) 출연한 영화인가요?`
+        },
+        {
+          ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.$store.state.Movies[0].actors[0].profile_path}`,
+          Question : ` 영화속에 '${this.$store.state.Movies[0].actors[0].character}' 라는 배역이 있나요?`
+        },
       ]
     }
   },
   name: 'RecommendView',
   methods : {
     getRandomNumber(){
-      this.QuestionNumber = Math.floor(Math.random()*6)
+      this.QuestionNumber = Math.floor(Math.random()*8)
     },
     reset(){
       this.QuestionCount = 0
@@ -194,7 +202,15 @@ export default {
         {
           ImgUrl : null,
           Question : '한국 영화인가요?'
-        }
+        },
+        {
+          ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.FirstMovie.actors[1].profile_path}`,
+          Question : `'${this.FirstMovie.actors[1].name}'이(가) 출연한 영화인가요?`
+        },
+        {
+          ImgUrl : `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${this.FirstMovie.actors[0].profile_path}`,
+          Question : ` 영화속에 '${this.FirstMovie.actors[0].character}' 라는 배역이 있나요?`
+        },
       ]
     },
     select1(){
@@ -287,6 +303,32 @@ export default {
           for(const Movie of MovieList){
             if(Movie.original_language == language){
               NewList.push(Movie)
+            }
+          }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          this.QuestionCount += 1
+        }else if(this.QuestionNumber==6){
+          const Actor = this.FirstMovie.actors[1].name
+          const NewList = []
+          for(const Movie of MovieList){
+            for(const MovieActorList of Movie.actors){
+              if(Actor == MovieActorList.name){
+                NewList.push(Movie)
+              } 
+            }
+          }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          this.QuestionCount += 1
+        }else if(this.QuestionNumber==7){
+          const ch = this.FirstMovie.actors[0].character
+          const NewList = []
+          for(const Movie of MovieList){
+            for(const MovieActorList of Movie.actors){
+              if(ch == MovieActorList.character){
+                NewList.push(Movie)
+              } 
             }
           }
           this.RecommendList = NewList
@@ -392,6 +434,40 @@ export default {
           const NewList = []
           for(const Movie of MovieList){
             if(Movie.original_language != language){
+              NewList.push(Movie)
+            }
+          }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          this.QuestionCount += 1
+        }else if(this.QuestionNumber==6){
+          const Actor = this.FirstMovie.actors[1].name
+          const NewList = []
+          for(const Movie of MovieList){
+            let flag = 0
+            for(const MovieActorList of Movie.actors){
+              if(Actor == MovieActorList.name){
+                flag = 1
+              } 
+            }
+            if(flag == 0){
+              NewList.push(Movie)
+            }
+          }
+          this.RecommendList = NewList
+          this.FirstMovie = NewList[0]
+          this.QuestionCount += 1
+        }else if(this.QuestionNumber==7){
+          const ch = this.FirstMovie.actors[0].character
+          const NewList = []
+          for(const Movie of MovieList){
+            let flag = 0
+            for(const MovieActorList of Movie.actors){
+              if(ch == MovieActorList.character){
+                flag = 1
+              } 
+            }
+            if(flag == 0){
               NewList.push(Movie)
             }
           }

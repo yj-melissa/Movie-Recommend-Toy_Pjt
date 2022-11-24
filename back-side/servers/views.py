@@ -39,12 +39,23 @@ def getdetail(request,movie_pk):
     serializer = MovieSerializer(movie)
     return Response(serializer.data)
 
-@api_view(['GET'])
+@api_view(['GET','DELETE'])
 def getreview(request):
     if request.method == 'GET':
         comments = get_list_or_404(Review)
         serializer = ReviewSerializer(comments, many = True)
-        return Response(serializer.data)        
+        return Response(serializer.data)
+
+@api_view(['GET','DELETE'])
+def deletereview(request,comment_pk):
+    if request.method == 'DELETE':
+        comment = get_object_or_404(Review, id=comment_pk)
+        comment.delete()
+        comments = get_list_or_404(Review)
+        serializer = ReviewSerializer(comments, many = True)
+
+        return Response(serializer.data)
+        
 
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
@@ -61,6 +72,7 @@ def review_create(request, movie_pk):
     # comments = get_list_or_404(Comment)
     # serializer = CommentSerializer(comments,many = True)
     # return Response(serializer.data)
+
 @api_view(['GET'])
 def sortmovie(request, movie_pk, question_number, select):
     
@@ -134,6 +146,29 @@ def sortmovie(request, movie_pk, question_number, select):
                 for movie in movie_data:
                     if movie.original_language != language:
                         sorted_movie.append(movie)
+        elif question_number == 6:
+            actor = firstmovie.actors[1].get('name')
+            if select == 1:
+                for movie in movie_data:
+                    for actor_d in movie.actors:
+                        if actor_d.get('name') == actor:
+                            sorted_movie.append(movie)
+            elif select == 2:
+                for movie in movie_data:
+                    if actor not in movie.actors:
+                        sorted_movie.append(movie)
+        elif question_number == 7:
+            actor = firstmovie.actors[0].get('chractor')
+            if select == 1:
+                for movie in movie_data:
+                    for actor_d in movie.actors:
+                        if actor_d.get('chractor') == actor:
+                            sorted_movie.append(movie)
+            elif select == 2:
+                for movie in movie_data:
+                    if actor not in movie.actors:
+                        sorted_movie.append(movie)
+                        
 
         serializer = MovieSerializer(sorted_movie, many= True)
         return Response(serializer.data)

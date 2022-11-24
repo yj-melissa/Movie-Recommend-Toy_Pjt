@@ -99,6 +99,8 @@ export default {
       editingPassword: false,
       profile_img: null,
       
+      spare : null, 
+
       imgSize: {
         width: 100, 
         height: 100,
@@ -168,7 +170,7 @@ export default {
             }
           })
             .then((res) => {
-              console.log(res)
+              this.spare = res.data
               localStorage.removeItem('access_token')
               localStorage.removeItem('refresh_token')
               this.$store.dispatch('logout')
@@ -221,7 +223,6 @@ export default {
     },
     updateImageDisplay() {
       this.imgDisplay = true
-      console.log(this.profile_img)
       const input = document.querySelector('#profile_img')
       const preview = document.querySelector('.preview')
 

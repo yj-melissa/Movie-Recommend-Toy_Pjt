@@ -11,14 +11,18 @@
       <div class="card-body">
         <b-row>
           <b-col cols="12">
-          <b-list-group class="text-left">
+          <b-list-group class="text-left" id="articlelist" 
+            :per-page="perPage"
+            :current-page="currentPage"
+            
+            >
             <b-list-group-item>
               <b-row>
-                <b-col class="text-center" cols="10"> 제 목 </b-col>
-                <b-col class="text-right" cols="2">작성자</b-col>
+                <b-col class="text-center" cols="11"> 제 목 </b-col>
+                <b-col class="text-right" cols="1">작성자</b-col>
               </b-row>
-            </b-list-group-item>
-            <b-list-group-item v-for="article in articles" :key="article.x" :articles="article">
+            </b-list-group-item >
+            <b-list-group-item v-for="article in itemForArticles" :key="article.x" :articles="article">
               <b-row>
               <b-col cols="8">
               <router-link :to="{name : 'ArticleDetailView', params:{articleid : article.id} }">
@@ -31,6 +35,16 @@
           </b-list-group>
           </b-col>
         </b-row>
+        <b-pagination
+          pills
+          class="mt-4"
+          v-model="currentPage"
+          :total-rows="rows"
+          :per-page="perPage"
+          size="sm"
+          align="center"
+          aria-controls="aritclelist"
+        ></b-pagination>
       </div>
     </div>
   </b-container>
@@ -42,6 +56,8 @@ export default {
   data() {
     return {
       articles: [],
+      currentPage : 1,
+      perPage : 10,
     }
   },
   methods : {
@@ -65,6 +81,14 @@ export default {
   },
   created(){
     return this.getArticles()
+  },
+  computed : {
+    rows(){
+      return this.articles.length
+    },
+    itemForArticles(){
+      return this.articles.slice((this.currentPage - 1) * this.perPage,this.currentPage * this.perPage)
+    }
   }
 }
 </script>
