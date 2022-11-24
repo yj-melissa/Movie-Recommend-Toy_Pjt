@@ -9,10 +9,7 @@
         <b-container class="bv-example-row">
           <b-row>
             <b-col cols="3">
-              <img :src="profile.profile_img" alt="profileImg" class="mb-3 my-1 mx-3" v-bind="imgSize">
-              <b-row class="m-3">
-                <h5> {{nickname}} </h5> <b-icon-gear class="my-1 mx-3" @click="editProfile"></b-icon-gear> 
-              </b-row>
+              <img :src="profile.profile_img" alt="profileImg" class="mb-3 my-1" v-bind="imgSize">
               <b-list-group>
                 <b-list-group-item @click="changevalue1" :class="{'active':value==1}">작성한 글 목록</b-list-group-item>
                 <b-list-group-item @click="changevalue2" :class="{'active':value==2}">작성한 댓글 목록</b-list-group-item>
@@ -222,9 +219,8 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res)
           this.profile = res.data
-          if (!res.data.profile.profile_img) {
+          if (!res.data.profile_img) {
             this.profile.profile_img = 'http://127.0.0.1:8000/media/profile/default.png'
           }
         })

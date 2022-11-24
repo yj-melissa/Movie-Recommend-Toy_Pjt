@@ -124,7 +124,7 @@ export default {
       formData.append('email', data.email)
       formData.append('nickname', data.nickname)
       if (data.profile_img === null) {
-        formData.append('profile_img', [])
+        // formData.append('profile_img', [])
       } else {
         formData.append('profile_img', data.profile_img)
       }
