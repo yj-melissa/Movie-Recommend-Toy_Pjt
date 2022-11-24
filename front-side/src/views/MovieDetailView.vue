@@ -117,7 +117,7 @@
               <b-row align-v="center">
                 <b-col cols='2'>{{review.user.nickname}}</b-col>
                 <b-col cols='8' class="px-4">
-                  {{review.content}}
+                  <span>{{review.content}}</span><button class="ml-2 text-danger" v-if="user.pk == review.user.id" @click="commentDelete(`${review.id}`,$event)">x</button>
                 </b-col>
                 <b-col cols='2' class="text-center py-2 px-0">
                   <span
@@ -145,6 +145,7 @@ export default {
   name: 'MovieDetailView',
   data() {
     return {
+      user : this.$store.state.user ,
       MovieDetail : null,
       Moviedata : [],
       Star : null,
@@ -284,6 +285,31 @@ export default {
           console.log(err)
         })
     },
+
+    commentDelete(event) {
+      const CommentId = event
+      axios({
+        method : 'delete',
+        url : `${process.env.VUE_APP_API_URL}/api/v1/server/${CommentId}/deletereview/`,
+        headers : {
+            Authorization : `Bearer ${this.$store.getters.getToken}`
+          },
+      })
+        .then((res) => {
+          const List = []
+          for(const review of res.data){
+            if(review.movie == this.$route.params.movieid){
+              List.push(review)
+            }
+          }
+          this.ReviewList = List
+          this.$store.dispatch('changeReview',List)
+          this.isReview = 0
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
 
   },
   created() {

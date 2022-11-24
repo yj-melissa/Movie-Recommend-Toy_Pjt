@@ -67,6 +67,10 @@ export default new Vuex.Store({
     GET_ARTICLE_DATA(state, data) {
       state.article = data
     },
+
+    CHANGE_REVIEW(state, List){
+      state.ReviewList = List
+    }
   }, 
 
   actions: {
@@ -165,6 +169,9 @@ export default new Vuex.Store({
         })
     },
     
+    changeReview(context, List){
+      context.commit('CHANGE_REVIEW',List)
+    }
   },
   modules: {
   }

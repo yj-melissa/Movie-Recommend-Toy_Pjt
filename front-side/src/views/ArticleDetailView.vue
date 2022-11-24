@@ -42,15 +42,21 @@
           </b-row>
           
           <b-pagination
-          pills
-          class="mt-4"
-          v-model="currentPage"
-          :total-rows="rows"
-          :per-page="perPage"
-          size="sm"
-          align="center"
-          aria-controls="commentlist"
-        ></b-pagination>
+            pills
+            class="mt-4"
+            v-model="currentPage"
+            :total-rows="rows"
+            :per-page="perPage"
+            size="sm"
+            align="center"
+            aria-controls="commentlist"
+          ></b-pagination>
+          
+          <b-row>
+            <b-col class="text-right px-4 py-2">
+              <router-link :to="{name : 'CommunityView'}"><b-button size="sm">목록으로</b-button></router-link>
+            </b-col>
+          </b-row> 
 
           <ul id="commentlist" class="list-group list-group-flush p-0 m-0 text-left">
             <ArticleDetailComments
