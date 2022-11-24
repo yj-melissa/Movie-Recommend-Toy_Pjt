@@ -23,7 +23,7 @@
     </div>
     <div v-else>
       <b-card class="bg-dark text-white " title="검색 결과">
-        <b-card-text v-if="Movie" >
+        <b-card-text v-if="Movie.length>0" >
           <b-list-group>
             <b-list-group-item class="bg-secondary text-left" v-for="movie in changeMovie" :key="movie.id">
               <router-link class="decorate-none" :to="{ name: 'MovieDetailView', params: { movieid : movie.id } }"> {{movie.title}} </router-link>
