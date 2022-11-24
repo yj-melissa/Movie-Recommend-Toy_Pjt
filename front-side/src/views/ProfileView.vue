@@ -10,6 +10,9 @@
           <b-row>
             <b-col cols="3">
               <img :src="profile.profile_img" alt="profileImg" class="mb-3 my-1 mx-3" v-bind="imgSize">
+              <b-row class="m-3">
+                <h5> {{nickname}} </h5> <b-icon-gear class="my-1 mx-3" @click="editProfile"></b-icon-gear> 
+              </b-row>
               <b-list-group>
                 <b-list-group-item @click="changevalue1" :class="{'active':value==1}">작성한 글 목록</b-list-group-item>
                 <b-list-group-item @click="changevalue2" :class="{'active':value==2}">작성한 댓글 목록</b-list-group-item>
@@ -160,6 +163,7 @@ export default {
       likeList : [],
       perPage: 5,
       currentPage: 1,
+      spare : null,
       
       articlecurrentPage : 1,
       articleperPage : 5,
@@ -238,7 +242,6 @@ export default {
       }
       })
         .then((res) => {
-          console.log(res)
           this.likeList = res.data
         })
         .catch((err)=>{
@@ -270,7 +273,8 @@ export default {
           Authorization: `Bearer ${this.$store.getters.getToken}`
         }
       })
-        .then(() => {
+        .then((res) => {
+          this.spare = res.data
           localStorage.removeItem('access_token')
           localStorage.removeItem('refresh_token')
         })

@@ -88,6 +88,8 @@ export default {
 
       currentPage : 1,
       perPage : 4,
+
+      spare : null,
     }
   },
   methods: {
@@ -102,7 +104,7 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res.data)
+          this.spare = res.data
           this.article = res.data
           this.checkAuthor()
         })
@@ -153,8 +155,7 @@ export default {
           }
         })
           .then((res)=> {
-            const data = res.data
-            console.log(data)
+            this.spare = res.data
             this.getCommentData()
             this.newComment=null
           })
@@ -173,7 +174,7 @@ export default {
           },
       })
         .then((res) => {
-          console.log(res)
+          this.spare = res.data
           this.$router.push({ name: 'CommunityView'})
         })
         .catch((err) => {
