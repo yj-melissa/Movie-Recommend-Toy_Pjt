@@ -12,7 +12,7 @@
           {{ comment.content }}
         </span>
       </b-col>
-      <b-col cols="4" class="text-right">
+      <b-col cols="4" class="text-right" v-if="isAuthor">
         <span v-if="isEdit">
           <b-button  @click="saveEdit" size="sm" squared variant="outline-secondary">등록</b-button>
         </span>

@@ -206,7 +206,7 @@ export default {
           if(validFileType(file)) {
             const image = document.createElement('img');
             image.src = URL.createObjectURL(file);
-            listItem.appendChild(image);
+            // listItem.appendChild(image);
             image.setAttribute('class','w-100')
             div.appendChild(image);
             this.isImg = 1 
