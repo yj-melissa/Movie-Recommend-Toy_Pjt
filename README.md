@@ -20,22 +20,21 @@
 
 ## 회원가입
 
-![image.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-1.png)
+![image-1.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-1.png)
 
-- dj-rest-auth의 회원 가입 기능을 customize하여 수정
 - 별도 ID 없이 email로 가입
 - 프로필 이미지 등록 및 선택한 이미지 미리 보기 지원
 - 회원가입 후 자동으로 로그인 처리, 환영 메시지 출력 후 자동으로 홈으로 이동
 
 ## 로그인
 
-![image-2.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-2.png)
+![image-2.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-2.png)
 
 로그인 성공시 서버에서 받은 기본 토큰 정보와 유저 정보를 클라이언트 측에서 저장하도록 함
 
 ## 메인 페이지
 
-![image-3.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-3.png)
+![image-3.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-3.png)
 
 - 두 개의 컴포넌트(MovieCarousel, MovieItems)를 사용해 화면 구성
 - axios를 이용해 영화 데이터를 요청, 받은 데이터를 각 컴포넌트에 전달
@@ -45,8 +44,12 @@
 
 ### 영화 상세 페이지
 
-![image-4.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-4.png)
-![image-5.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-5.png)
+![image-4.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-4.png)
+
+![image-5.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-5.png)
+
+
+
 
 - Params로 선택한 영화의 id를 받아 서버에 전송, 서버에서 해당 영화 정보를 받아옴
 - 영화 제목, 내용, 개봉일자, 장르, 평점, 출연진, 감독을 출력함
@@ -57,46 +60,62 @@
 
 ### 검색
 
-![image-6.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-6.png)
-![image-7.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-7.png)
-![image-8.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-8.png)
+![image-6.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-6.png)
+
+![image-7.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-7.png)
+
+![image-8.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-8.png)
+
+
 
 - 모달을 사용, 검색어를 입력하면 params로 전달, SearchView로 이동
+
 - QueryString으로 서버에 요청, 서버에서 검색어가 제목에 포함된 영화들을 반환
+
 - 출력된 제목을 클릭하면 상세 페이지로 이동
+
 - 검색결과가 없으면 검색결과가 없다는 결과 출력
 
 ### 커뮤니티
 
-![image-9.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-9.png)
-
-- 제목과 작성자 출력
+- ![image-9.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-9.png)
+  
+  제목과 작성자 출력
 - 게시판 목록 페이지네이션 처리
 
 ### 커뮤니티 글 상세 페이지
 
-![image-10.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-10.png)
+![image-10.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-10.png)
 
 - 댓글 출력(페이지네이션 적용)
 - 글, 댓글 작성자에게만 수정, 삭제 버튼 보이도록 처리
 
 ### 커뮤니티 글 생성 페이지
 
-![image-11.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-11.png)
+![image-11.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-11.png)
 
 - 글 등록 완료시 작성한 글 상세 페이지로 이동
 
 ### 프로필 페이지
 
-![image-12.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-12.png)
-![image-13.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-13.png)
+![image-12.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-12.png)
+
+![image-13.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-13.png)
+
+
 
 - 작성한 글, 댓글, 리뷰, 좋아요 표시한 영화 확인 가능 (페이지네이션 처리)
+
 - 각 제목 클릭시 해당 글/영화 상세 페이지로 이동
+
 - 기본 설정한 프로필 출력 (미등록시 기본 프로필 출력)
+
 - 닉네임, 프로필 사진, 비밀번호 수정 가능
+  
   - 비밀번호 수정 시 로그아웃 처리
+
 - 회원 탈퇴
+  
   - 모달로 재확인 문구 출력
 
 ### 로그아웃
@@ -106,7 +125,7 @@
 
 ### 영화 추천 서비스 (무비 아키네이터)
 
-![image-14.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-14.png)
+![image-14.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-14.png)
 
 기본 작동  원리
 
@@ -118,8 +137,12 @@
 6. 마지막 질문까지 마치고 난 후 가지고 있는 영화 리스트의 최상단에 있는 영화를 출력함
 7. 결과로 나온 영화의 장르, 배우가 출연한 영화를 추천리스트로 만들어 캐러셀로 출력
 
-![image-15.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-15.png)
-![image-16.png](C:\Users\lyjun\PROGRAMMING\ssafy8\pjt\Movie-Recommend-Toy_Pjt\README_img\image-16.png)
+![image-15.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-15.png)
+
+![image-16.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-16.png)
+
+
+
 
 ### 프로젝트 후기
 
