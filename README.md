@@ -28,13 +28,13 @@
 
 ## 로그인
 
-![image-2.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-2.png)
+<img src="./README_img/image-2.png"?>
 
 로그인 성공시 서버에서 받은 기본 토큰 정보와 유저 정보를 클라이언트 측에서 저장하도록 함
 
 ## 메인 페이지
 
-![image-3.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-3.png)
+<img src="./README_img/image-3.png">
 
 - 두 개의 컴포넌트(MovieCarousel, MovieItems)를 사용해 화면 구성
 - axios를 이용해 영화 데이터를 요청, 받은 데이터를 각 컴포넌트에 전달
@@ -44,9 +44,9 @@
 
 ### 영화 상세 페이지
 
-![image-4.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-4.png)
+<img src="./README_img/image-4.png">
 
-![image-5.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-5.png)
+<img src="./README_img/image-5.png">
 
 - Params로 선택한 영화의 id를 받아 서버에 전송, 서버에서 해당 영화 정보를 받아옴
 - 영화 제목, 내용, 개봉일자, 장르, 평점, 출연진, 감독을 출력함
@@ -57,11 +57,11 @@
 
 ### 검색
 
-![image-6.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-6.png)
+<img src="./README_img/image-6.png">
 
-![image-7.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-7.png)
+<img src="./README_img/image-7.png">
 
-![image-8.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-8.png)
+<img src="./README_img/image-8.png">
 
 - 모달을 사용, 검색어를 입력하면 params로 전달, SearchView로 이동
 
@@ -73,30 +73,30 @@
 
 ### 커뮤니티
 
-- ![image-9.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-9.png)
-  
-  제목과 작성자 출력
+<img src="./README_img/image-9.png">
+
+- 제목과 작성자 출력
 
 - 게시판 목록 페이지네이션 처리
 
 ### 커뮤니티 글 상세 페이지
 
-![image-10.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-10.png)
+<img src="./README_img/image-10.png">
 
 - 댓글 출력(페이지네이션 적용)
 - 글, 댓글 작성자에게만 수정, 삭제 버튼 보이도록 처리
 
 ### 커뮤니티 글 생성 페이지
 
-![image-11.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-11.png)
+<img src="./README_img/image-11.png">
 
 - 글 등록 완료시 작성한 글 상세 페이지로 이동
 
 ### 프로필 페이지
 
-![image-12.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-12.png)
+<img src="./README_img/image-12.png">
 
-![image-13.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-13.png)
+<img src="./README_img/image-13.png">
 
 - 작성한 글, 댓글, 리뷰, 좋아요 표시한 영화 확인 가능 (페이지네이션 처리)
 
@@ -119,7 +119,7 @@
 
 ### 영화 추천 서비스 (무비 아키네이터)
 
-![image-14.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-14.png)
+<img src="./README_img/image-14.png">
 
 기본 작동  원리
 
@@ -131,9 +131,9 @@
 6. 마지막 질문까지 마치고 난 후 가지고 있는 영화 리스트의 최상단에 있는 영화를 출력함
 7. 결과로 나온 영화의 장르, 배우가 출연한 영화를 추천리스트로 만들어 캐러셀로 출력
 
-![image-15.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-15.png)
+<img src="./README_img/image-15.png">
 
-![image-16.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-16.png)
+<<img src="./README_img/image-16.png">
 
 ### 프로젝트 후기
 
