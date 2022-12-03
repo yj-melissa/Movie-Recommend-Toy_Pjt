@@ -20,7 +20,7 @@
 
 ## 회원가입
 
-![image-1.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-1.png)
+<img src="./README_img/image-1.png">
 
 - 별도 ID 없이 email로 가입
 - 프로필 이미지 등록 및 선택한 이미지 미리 보기 지원
@@ -48,9 +48,6 @@
 
 ![image-5.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-5.png)
 
-
-
-
 - Params로 선택한 영화의 id를 받아 서버에 전송, 서버에서 해당 영화 정보를 받아옴
 - 영화 제목, 내용, 개봉일자, 장르, 평점, 출연진, 감독을 출력함
 - 유튜브에서 예고편을 검색해 자동 실행하게 함
@@ -66,8 +63,6 @@
 
 ![image-8.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-8.png)
 
-
-
 - 모달을 사용, 검색어를 입력하면 params로 전달, SearchView로 이동
 
 - QueryString으로 서버에 요청, 서버에서 검색어가 제목에 포함된 영화들을 반환
@@ -81,6 +76,7 @@
 - ![image-9.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-9.png)
   
   제목과 작성자 출력
+
 - 게시판 목록 페이지네이션 처리
 
 ### 커뮤니티 글 상세 페이지
@@ -101,8 +97,6 @@
 ![image-12.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-12.png)
 
 ![image-13.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-13.png)
-
-
 
 - 작성한 글, 댓글, 리뷰, 좋아요 표시한 영화 확인 가능 (페이지네이션 처리)
 
@@ -140,9 +134,6 @@
 ![image-15.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-15.png)
 
 ![image-16.png](C:\Users\lyjun\OneDrive\Desktop\README_img\image-16.png)
-
-
-
 
 ### 프로젝트 후기
 
